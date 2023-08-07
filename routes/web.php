@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\v1\Auth\LoginController;
+use App\Http\Controllers\v1\Pages\PagesController;
+use App\Http\Controllers\v1\Admin\AdminController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,18 +16,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', [PagesController::class, 'index'])->name('index');
+
+
+Route::group(['prefix' => 'auth'], function (){
+    Route::get('/login', [LoginController::class, 'loginPage'])->name('auth.login-page');
+    Route::get('/forget-password', [LoginController::class, 'forgetPasswordPage'])->name('auth.forget-password');
 });
 
-Auth::routes();
+Route::group(['prefix' => 'admin'], function(){
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+});
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
