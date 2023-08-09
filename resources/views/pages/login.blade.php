@@ -25,7 +25,7 @@
                                         <label class="col-form-label">Password</label>
                                     </div>
                                     <div class="col-auto">
-                                        <a class="text-muted" href="{{('auth/forget-password')}}">
+                                        <a class="text-muted" href="{{route('auth.forget-password')}}">
                                             Forgot password?
                                         </a>
                                     </div>

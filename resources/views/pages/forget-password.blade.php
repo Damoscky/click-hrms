@@ -24,7 +24,7 @@
                                 <button class="btn btn-primary account-btn" type="submit">Reset Password</button>
                             </div>
                             <div class="account-footer">
-                                <p>Remember your password? <a href="{{('/')}}">Login</a></p>
+                                <p>Remember your password? <a href="{{route('index')}}">Login</a></p>
                             </div>
                         </form>
 

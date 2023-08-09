@@ -990,18 +990,18 @@ a.bg-danger:focus, a.bg-danger:hover, button.bg-danger:focus, button.bg-danger:h
 }
 
 .btn-primary {
-  background-color: #ff9b44;
-  border: 1px solid #ff9b44;
+  background-color: #000080;
+  border: 1px solid #000080;
   color: #ffffff !important;
 }
 .btn-primary:focus, .btn-primary:hover, .btn-primary:active, .btn-primary.active {
   color: #ffffff;
-  background-color: #fd8e2d;
-  border-color: #fd8e2d;
+  background-color: #d24dff;
+  border-color: #d24dff;
 }
 .btn-primary:focus .open > .dropdown-toggle.btn-primary, .btn-primary:hover .open > .dropdown-toggle.btn-primary, .btn-primary:active .open > .dropdown-toggle.btn-primary, .btn-primary.active .open > .dropdown-toggle.btn-primary {
-  background-color: #fd8e2d;
-  border: 1px solid #fd8e2d;
+  background-color: #d24dff;
+  border: 1px solid #d24dff;
 }
 .btn-primary.active.focus .open > .dropdown-toggle.btn-primary.focus, .btn-primary.active.focus .open > .dropdown-toggle.btn-primary:focus, .btn-primary.active.focus .open > .dropdown-toggle.btn-primary:hover, .btn-primary.active:focus .open > .dropdown-toggle.btn-primary.focus, .btn-primary.active:focus .open > .dropdown-toggle.btn-primary:focus, .btn-primary.active:focus .open > .dropdown-toggle.btn-primary:hover, .btn-primary.active:hover .open > .dropdown-toggle.btn-primary.focus, .btn-primary.active:hover .open > .dropdown-toggle.btn-primary:focus, .btn-primary.active:hover .open > .dropdown-toggle.btn-primary:hover, .btn-primary .focus.focus .open > .dropdown-toggle.btn-primary.focus, .btn-primary .focus.focus .open > .dropdown-toggle.btn-primary:focus, .btn-primary .focus.focus .open > .dropdown-toggle.btn-primary:hover, .btn-primary .focus:focus .open > .dropdown-toggle.btn-primary.focus, .btn-primary .focus:focus .open > .dropdown-toggle.btn-primary:focus, .btn-primary .focus:focus .open > .dropdown-toggle.btn-primary:hover, .btn-primary .focus:hover .open > .dropdown-toggle.btn-primary.focus, .btn-primary .focus:hover .open > .dropdown-toggle.btn-primary:focus, .btn-primary .focus:hover .open > .dropdown-toggle.btn-primary:hover {
   background-color: #fd8e2d;
@@ -4784,7 +4784,7 @@ input[type=file].form-control {
 
 [data-layout-mode=orange] body .header {
   background: #ff9b44;
-  background: linear-gradient(to right, #000080 0%, #fc6075 100%);
+  background: linear-gradient(to right, #000080 50%, #fc6075 150%);
 }
 [data-layout-mode=orange] body .header .header-left .logo {
   display: block;
@@ -7432,8 +7432,8 @@ textarea.form-control {
 }
 
 .add-btn {
-  background-color: #ff9b44;
-  border: 1px solid #ff9b44;
+  background-color: #000080;
+  border: 1px solid #000080;
   color: #ffffff;
   float: right;
   font-weight: 500;
@@ -7445,8 +7445,8 @@ textarea.form-control {
 }
 .add-btn:hover {
   color: #ffffff;
-  background-color: #ff9b44;
-  border: 1px solid #ff9b44;
+  background-color: #d24dff;
+  border: 1px solid #d24dff;
 }
 
 .avatar-dropdown .dropdown-toggle:after {
