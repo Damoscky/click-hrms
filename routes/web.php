@@ -5,6 +5,9 @@ use App\Http\Controllers\v1\Pages\PagesController;
 use App\Http\Controllers\v1\Admin\AdminController;
 use App\Http\Controllers\v1\Admin\DepartmentController;
 use App\Http\Controllers\v1\Admin\EmployeeController;
+use App\Http\Controllers\v1\Admin\ClientController;
+use App\Http\Controllers\v1\Admin\TimesheetController;
+use App\Http\Controllers\v1\Admin\ShiftController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,7 +39,25 @@ Route::group(['prefix' => 'admin'], function(){
 
     Route::group(['prefix' => 'employee'], function(){
         Route::get('/', [EmployeeController::class, 'index'])->name('admin.employee.all');
+        Route::get('/view', [EmployeeController::class, 'show'])->name('admin.employee.show');
+        Route::get('/availability', [EmployeeController::class, 'availability'])->name('admin.employee.availability');
     });
+
+    Route::group(['prefix' => 'clients'], function(){
+        Route::get('/', [ClientController::class, 'index'])->name('admin.client.all');
+        Route::get('/view', [ClientController::class, 'show'])->name('admin.client.show');
+    });
+
+    Route::group(['prefix' => 'timesheet'], function(){
+        Route::get('/', [TimesheetController::class, 'index'])->name('admin.timesheet.all');
+    });
+
+    Route::group(['prefix' => 'shifts'], function(){
+        Route::get('/', [ShiftController::class, 'index'])->name('admin.shift.all');
+        Route::get('/pending', [ShiftController::class, 'pendingShifts'])->name('admin.shift.pending');
+        Route::get('/assigned', [ShiftController::class, 'assignedShifts'])->name('admin.shift.assigned');
+    });
+
 
 });
 

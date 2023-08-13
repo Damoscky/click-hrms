@@ -1204,6 +1204,7 @@ a.bg-danger:focus, a.bg-danger:hover, button.bg-danger:focus, button.bg-danger:h
 .btn-danger {
   background-color: #f62d51;
   border: 1px solid #f62d51;
+  color: #ffffff !important;
 }
 .btn-danger:hover, .btn-danger:focus, .btn-danger:active, .btn-danger.active {
   background-color: #e63333;
@@ -2382,6 +2383,7 @@ input[type=file].form-control {
   -webkit-transition: all 0.2s ease;
   -ms-transition: all 0.2s ease;
   transition: all 0.2s ease;
+  background: linear-gradient(to right, #160a11 50%, #06064c 150%);
 }
 .sidebar .sidebar-menu,
 .two-col-bar .sidebar-menu {

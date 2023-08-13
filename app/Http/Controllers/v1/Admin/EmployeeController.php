@@ -11,4 +11,15 @@ class EmployeeController extends Controller
     {
         return view('admin.employee.all-employees');
     }
+
+
+    public function show()
+    {
+        return view('admin.employee.view-employee');
+    }
+
+    public function availability()
+    {
+        return view('admin.employee.availability');
+    }
 }

@@ -42,7 +42,7 @@
             </div>
             <div class="col-md-4 d-flex">
                 <div class="stats-info w-100">
-                    <h6>Inactive Department Leaves</h6>
+                    <h6>Inactive Department</h6>
                     <h4>0 </h4>
                 </div>
             </div>
