@@ -193,7 +193,7 @@
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="profile.html">My Profile</a>
                         <a class="dropdown-item" href="settings.html">Settings</a>
-                        <a class="dropdown-item" href="index.html">Logout</a>
+                        <a class="dropdown-item" href="{{route('auth.logout')}}">Logout</a>
                     </div>
                 </li>
             </ul>
@@ -204,7 +204,7 @@
                 <div class="dropdown-menu dropdown-menu-right">
                     <a class="dropdown-item" href="profile.html">My Profile</a>
                     <a class="dropdown-item" href="settings.html">Settings</a>
-                    <a class="dropdown-item" href="index.html">Logout</a>
+                    <a class="dropdown-item" href="{{route('auth.logout')}}">Logout</a>
                 </div>
             </div>
         </div>

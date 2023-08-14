@@ -15,8 +15,8 @@
                         </ul>
                     </div>
                     <div class="col-auto float-end ms-auto">
-                        <a href="shift-list.html" class="btn add-btn m-r-5">Shifts</a>
-                        <a href="#" class="btn add-btn m-r-5" data-bs-toggle="modal" data-bs-target="#add_schedule">
+                        {{-- <a href="shift-list.html" class="btn add-btn m-r-5">Shifts</a> --}}
+                        <a href="#" class="btn add-btn m-r-5" data-bs-toggle="modal" data-bs-target="#assign_shift">
                             Assign Shifts</a>
                     </div>
                 </div>
@@ -71,7 +71,7 @@
                                         <h2 class="table-avatar">
                                             <a href="profile.html" class="avatar"><img
                                                     src="{{asset('assets')}}/img/profiles/avatar-02.jpg" alt="User Image" /></a>
-                                            <a href="profile.html">John Doe <span>Web Designer</span></a>
+                                            <a href="profile.html">John Doe </a>
                                         </h2>
                                     </td>
                                     <td>
@@ -157,11 +157,11 @@
         </div>
     </div>
 
-    <div id="add_schedule" class="modal custom-modal fade" role="dialog">
+    <div id="assign_shift" class="modal custom-modal fade" role="dialog">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Add Schedule</h5>
+                    <h5 class="modal-title">Assign Shift</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -171,30 +171,95 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="input-block mb-3">
-                                    <label class="col-form-label">Department <span class="text-danger">*</span></label>
-                                    <select class="select">
-                                        <option value="">Select</option>
-                                        <option value="">Development</option>
-                                        <option value="1">Finance</option>
-                                        <option value="2">Finance and Management</option>
-                                        <option value="3">Hr & Finance</option>
-                                        <option value="4">ITech</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="input-block mb-3">
-                                    <label class="col-form-label">Employee Name <span class="text-danger">*</span></label>
+                                    <label class="col-form-label">Employee Name <span
+                                            class="text-danger">*</span></label>
                                     <select class="select">
                                         <option value="">Select</option>
                                         <option value="1">Richard Miles</option>
                                         <option value="2">John Smith</option>
+                                        <option value="4">Wilmer Deluna</option>
                                         <option value="3">Mike Litorus</option>
+                                        <option value="4">Wilmer Deluna</option>
                                         <option value="4">Wilmer Deluna</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="col-sm-6">
+                                <div class="input-block mb-3">
+                                    <label class="col-form-label">Shifts <span
+                                            class="text-danger">*</span></label>
+                                    <select class="select">
+                                        <option value="">-- Select Shift --</option>
+                                        <option value="1">Richard Miles - First Health Care</option>
+                                        <option value="2">John Smith - Click Health Care</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="input-block mb-3">
+                                    <label class="col-form-label">Contact Number <span
+                                            class="text-danger">*</span></label>
+                                    <div class="input-group time">
+                                        <input class="form-control" type="text" name="contact_number" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="input-block mb-3">
+                                    <label class="col-form-label">Rules & Regulations </label>
+                                    <textarea class="form-control"></textarea>
+                                </div>
+                            </div>
+                            
+                            <div class="col-sm-12">
+                                <div class="input-block mb-3">
+                                    <label class="col-form-label">Notify Client </label>
+                                    <div class="form-switch">
+                                        <input type="checkbox" class="form-check-input" id="customSwitch1"
+                                            checked="" />
+                                        <label class="form-check-label" for="customSwitch1"></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="submit-section">
+                            <button class="btn btn-primary submit-btn">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="add_schedule" class="modal custom-modal fade" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Availablility || John Doe</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="input-block mb-3">
+                                    <label class="col-form-label">Employee Name</label>
+                                    <div>
+                                        <input class="form-control" disabled value="John Doe" type="text" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="input-block mb-3">
+                                    <label class="col-form-label">Employee Code</label>
+                                    <div>
+                                        <input class="form-control" disabled value="EMP-0984" type="text" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
                                 <div class="input-block mb-3">
                                     <label class="col-form-label">Date</label>
                                     <div class="cal-icon">
@@ -202,50 +267,11 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-6">
-                                <div class="input-block mb-3">
-                                    <label class="col-form-label">Shifts <span class="text-danger">*</span></label>
-                                    <select class="select">
-                                        <option value="">Select</option>
-                                        <option value="1">10'o clock Shift</option>
-                                        <option value="2">10:30 shift</option>
-                                        <option value="3">Daily Shift</option>
-                                        <option value="4">New Shift</option>
-                                    </select>
-                                </div>
-                            </div>
+                            
                             <div class="col-sm-4">
                                 <div class="input-block mb-3">
-                                    <label class="col-form-label">Min Start Time
+                                    <label class="col-form-label">Start Time
                                         <span class="text-danger">*</span></label>
-                                    <div class="input-group time">
-                                        <input class="form-control timepicker" /><span class="input-group-text"><i
-                                                class="fa-regular fa-clock"></i></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="input-block mb-3">
-                                    <label class="col-form-label">Start Time <span class="text-danger">*</span></label>
-                                    <div class="input-group time">
-                                        <input class="form-control timepicker" /><span class="input-group-text"><i
-                                                class="fa-regular fa-clock"></i></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="input-block mb-3">
-                                    <label class="col-form-label">Max Start Time
-                                        <span class="text-danger">*</span></label>
-                                    <div class="input-group time">
-                                        <input class="form-control timepicker" /><span class="input-group-text"><i
-                                                class="fa-regular fa-clock"></i></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="input-block mb-3">
-                                    <label class="col-form-label">Min End Time <span class="text-danger">*</span></label>
                                     <div class="input-group time">
                                         <input class="form-control timepicker" /><span class="input-group-text"><i
                                                 class="fa-regular fa-clock"></i></span>
@@ -261,24 +287,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-4">
-                                <div class="input-block mb-3">
-                                    <label class="col-form-label">Max End Time <span class="text-danger">*</span></label>
-                                    <div class="input-group time">
-                                        <input class="form-control timepicker" /><span class="input-group-text"><i
-                                                class="fa-regular fa-clock"></i></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="input-block mb-3">
-                                    <label class="col-form-label">Break Time <span class="text-danger">*</span></label>
-                                    <input class="form-control timepicker" type="text" />
-                                </div>
-                            </div>
                             <div class="col-sm-12">
                                 <div class="input-block mb-3">
-                                    <label class="col-form-label">Accept Extra Hours </label>
+                                    <label class="col-form-label">Notify Employee </label>
                                     <div class="form-check form-switch">
                                         <input type="checkbox" class="form-check-input" id="customSwitch1"
                                             checked="" />
@@ -286,16 +297,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-12">
-                                <div class="input-block mb-3">
-                                    <label class="col-form-label">Publish </label>
-                                    <div class="form-check form-switch">
-                                        <input type="checkbox" class="form-check-input" id="customSwitch2"
-                                            checked="" />
-                                        <label class="form-check-label" for="customSwitch2"></label>
-                                    </div>
-                                </div>
-                            </div>
+                            
                         </div>
                         <div class="submit-section">
                             <button class="btn btn-primary submit-btn">Submit</button>

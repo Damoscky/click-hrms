@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\v1\Auth\LoginController;
+use App\Http\Controllers\v1\Auth\RegisterController;
 use App\Http\Controllers\v1\Pages\PagesController;
 use App\Http\Controllers\v1\Admin\AdminController;
 use App\Http\Controllers\v1\Admin\DepartmentController;
@@ -25,11 +26,12 @@ Route::get('/', [PagesController::class, 'index'])->name('index');
 
 
 Route::group(['prefix' => 'auth'], function (){
-    Route::get('/login', [LoginController::class, 'loginPage'])->name('auth.login-page');
+    Route::post('/login', [LoginController::class, 'login'])->name('auth.login');
+    Route::get('/logout', [LoginController::class, 'logout'])->name('auth.logout');
     Route::get('/forget-password', [LoginController::class, 'forgetPasswordPage'])->name('auth.forget-password');
 });
 
-Route::group(['prefix' => 'admin'], function(){
+Route::group(['prefix' => 'admin', 'middleware' => ["auth:web", 'superadmin']], function(){
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
     Route::group(['prefix' => 'department'], function(){

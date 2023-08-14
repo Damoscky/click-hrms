@@ -14,7 +14,8 @@
                         <h3 class="account-title">Login</h3>
                         <p class="account-subtitle">Login to your dashboard</p>
 
-                        <form action="{{('admin/dashboard')}}">
+                        <form method="POST" action="{{route('auth.login')}}">
+                            {{ csrf_field() }}
                             <div class="input-block mb-4">
                                 <label class="col-form-label">Email Address</label>
                                 <input class="form-control" type="email" name="email" value="">
