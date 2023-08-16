@@ -8,6 +8,7 @@ use App\Http\Controllers\v1\Admin\DepartmentController;
 use App\Http\Controllers\v1\Admin\EmployeeController;
 use App\Http\Controllers\v1\Admin\ClientController;
 use App\Http\Controllers\v1\Admin\TimesheetController;
+use App\Http\Controllers\v1\Admin\StaffController;
 use App\Http\Controllers\v1\Admin\ShiftController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,11 +28,14 @@ Route::get('/', [PagesController::class, 'index'])->name('index');
 
 Route::group(['prefix' => 'auth'], function (){
     Route::post('/login', [LoginController::class, 'login'])->name('auth.login');
+    Route::post('/reset/password', [LoginController::class, 'resetPassword'])->name('auth.reset-password');
+    Route::get('/reset-password/{token}', [LoginController::class, 'createPasswordPage'])->name('auth.create-password');
+    Route::post('/create-new-password', [LoginController::class, 'createPassword'])->name('auth.create-new-password');
     Route::get('/logout', [LoginController::class, 'logout'])->name('auth.logout');
     Route::get('/forget-password', [LoginController::class, 'forgetPasswordPage'])->name('auth.forget-password');
 });
 
-Route::group(['prefix' => 'admin', 'middleware' => ["auth:web", 'superadmin']], function(){
+Route::group(['prefix' => 'admin', 'middleware' => ["auth:web", "superadmin"]], function(){
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
     Route::group(['prefix' => 'department'], function(){
@@ -43,6 +47,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ["auth:web", 'superadmin']], 
         Route::get('/', [EmployeeController::class, 'index'])->name('admin.employee.all');
         Route::get('/view', [EmployeeController::class, 'show'])->name('admin.employee.show');
         Route::get('/availability', [EmployeeController::class, 'availability'])->name('admin.employee.availability');
+    });
+
+    Route::group(['prefix' => 'staff'], function(){
+        Route::get('/', [StaffController::class, 'index'])->name('admin.staff.all');
     });
 
     Route::group(['prefix' => 'clients'], function(){

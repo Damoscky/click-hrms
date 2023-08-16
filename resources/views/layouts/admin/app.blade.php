@@ -214,33 +214,50 @@
                 <div id="sidebar-menu" class="sidebar-menu">
 
                     <ul class="sidebar-vertical">
-                        <li class="menu-title">
-                            <span>Main</span>
-                        </li>
-                        <li>
-                            <a href="{{ route('admin.dashboard') }}"><i class="la la-dashboard"></i> <span>
+                       
+                        @role(['admin', 'superadmin'])  
+                            <li class="menu-title">
+                                <span>Main</span>
+                            </li>
+                            <li>
+                                <a href="{{ route('admin.dashboard') }}"><i class="la la-dashboard"></i> <span>
                                     Dashboard</span>
-                            </a>
-                        </li>
+                                </a>
+                            </li>
+                        @endrole
+                        
+
 
                         <li class="menu-title">
                             <span>Management</span>
                         </li>
-                        <li class="submenu">
-                            <a href="#"><i class="la la-users"></i> <span> Employees</span>
-                                <span class="menu-arrow"></span></a>
-                            <ul>
-                                <li><a href="{{ route('admin.employee.all') }}">All Employees</a></li>
-                            </ul>
-                        </li>
-                        <li class="submenu">
-                            <a href="#"><i class="la la-user-circle-o"></i> <span> Clients</span>
-                                <span class="menu-arrow"></span></a>
-                            <ul>
-                                <li><a href="{{ route('admin.client.all') }}">All Clients</a></li>
-                                
-                            </ul>
-                        </li>
+                        @role(['admin', 'superadmin']) 
+                            <li class="submenu">
+                                <a href="#"><i class="la la-users"></i> <span> Employees</span>
+                                    <span class="menu-arrow"></span></a>
+                                <ul>
+                                    <li><a href="{{ route('admin.employee.all') }}">All Employees</a></li>
+                                </ul>
+                            </li>
+                        @endrole
+                        @role(['admin', 'superadmin']) 
+                            <li class="submenu">
+                                <a href="#"><i class="la la-user-circle-o"></i> <span> Clients</span>
+                                    <span class="menu-arrow"></span></a>
+                                <ul>
+                                    <li><a href="{{ route('admin.client.all') }}">All Clients</a></li>
+                                    
+                                </ul>
+                            </li>
+                            <li class="submenu">
+                                <a href="#"><i class="la la-user"></i> <span> Staff</span>
+                                    <span class="menu-arrow"></span></a>
+                                <ul>
+                                    <li><a href="{{ route('admin.staff.all') }}">All Staffs</a></li>
+                                    
+                                </ul>
+                            </li>
+                        @endrole
                         <li class="active">
                             <a href="{{ route('admin.timesheet.all') }}"><i class="la la-clock-o"></i> <span> Timesheet</span></a>
                         </li>

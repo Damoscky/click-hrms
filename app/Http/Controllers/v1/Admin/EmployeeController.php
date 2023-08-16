@@ -3,13 +3,20 @@
 namespace App\Http\Controllers\v1\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Department;
 use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
 {
     public function index()
     {
-        return view('admin.employee.all-employees');
+        if(!auth()->user()->hasPermission('view.employee')){
+
+            toastr()->error("Access Denied :(");
+            return back();
+        }
+        $departments = Department::where('is_active', true)->get();
+        return view('admin.employee.all-employees', ['departments' => $departments]);
     }
 
 

@@ -14,7 +14,8 @@
                         <h3 class="account-title">Forget Password</h3>
                         <p class="account-subtitle">Please enter your email address</p>
 
-                        <form action="https://smarthr.dreamguystech.com/html/template/admin-dashboard.html">
+                        <form action="{{route('auth.reset-password')}}" method="POST">
+                            {{ csrf_field() }}
                             <div class="input-block mb-4">
                                 <label class="col-form-label">Email Address</label>
                                 <input class="form-control" type="email" name="email" value="">

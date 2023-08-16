@@ -14,6 +14,12 @@ class AdminController extends Controller
 
     public function dashboard()
     {
-        return view('admin.dashboard');
+        if(auth()->user()->hasPermission('view.dashboard')){
+            return view('admin.dashboard');
+        }
+        toastr()->error("Access Denied :(");
+        return back();
+            
+
     }
 }

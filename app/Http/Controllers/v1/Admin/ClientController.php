@@ -9,11 +9,19 @@ class ClientController extends Controller
 {
     public function index()
     {
-        return view('admin.client.all-client');
+        if(auth()->user()->hasPermission('view.client')){
+            return view('admin.client.all-client');
+        }
+        toastr()->error("Access Denied :(");
+        return back();
     }
 
     public function show()
     {
+        if(!auth()->user()->hasPermission('view.client')){
+            toastr()->error("Access Denied :(");
+            return back();
+        }
         return view('admin.client.view-client');
     }
 }
