@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('phoneno')->unique();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->string('password')->nullable();
             $table->boolean('is_verified')->default(false)->comment('True, False');
             $table->boolean('is_active')->default(false)->comment('True, False');
             $table->boolean('can_login')->default(false)->comment('True, False');

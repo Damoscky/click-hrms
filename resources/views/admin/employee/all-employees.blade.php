@@ -343,32 +343,34 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form action="#" method="post">
+                        <form action="{{route('admin.employee.store')}}" method="POST">
+
+                            {{ csrf_field()}}
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="input-block mb-3">
                                         <label class="col-form-label">First Name <span
                                                 class="text-danger">*</span></label>
-                                        <input class="form-control" name="first_name" type="text" />
+                                        <input class="form-control" name="first_name" required type="text" />
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="input-block mb-3">
                                         <label class="col-form-label">Last Name</label>
-                                        <input class="form-control" name="last_name" type="text" />
+                                        <input class="form-control" name="last_name" required type="text" />
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="input-block mb-3">
                                         <label class="col-form-label">Email <span class="text-danger">*</span></label>
-                                        <input class="form-control" name="" type="email" />
+                                        <input class="form-control" name="email" required type="email" />
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="input-block mb-3">
                                         <label class="col-form-label">Confirm Email <span
                                                 class="text-danger">*</span></label>
-                                        <input class="form-control" name="confirm_email" type="email" />
+                                        <input class="form-control" name="email_confirmation" required type="email" />
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
@@ -376,20 +378,20 @@
                                         <label class="col-form-label">Resumption Date
                                             <span class="text-danger">*</span></label>
                                         <div class="cal-icon">
-                                            <input class="form-control datetimepicker" type="text" />
+                                            <input class="form-control datetimepicker" name="resumption_date" type="text" />
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="input-block mb-3">
                                         <label class="col-form-label">Phone Number</label>
-                                        <input class="form-control" name="phone_number" type="text" />
+                                        <input class="form-control" name="phone_number" required type="text" />
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="input-block mb-3">
                                         <label class="col-form-label">Gender</label>
-                                        <select class="select">
+                                        <select class="select" required name="gender">
                                             <option value="Male">Male </option>
                                             <option value="Female">Female</option>
                                         </select>
@@ -399,7 +401,7 @@
                                     <div class="input-block mb-3">
                                         <label class="col-form-label">Department <span
                                                 class="text-danger">*</span></label>
-                                        <select class="select">
+                                        <select class="select" required name="department_id">
                                             <option>Select Department</option>
                                             @if (count($departments) > 0)
                                                 @foreach ($departments as $department)

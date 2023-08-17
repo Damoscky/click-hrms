@@ -48,10 +48,10 @@ class LoginController extends Controller
         }
 
         // Check if user has been deactivated
-        if (!auth()->user()->is_active) {
-            toastr()->error("Your account has been deactivated. Please contact the administrator");
-            return back();
-        }
+        // if (!auth()->user()->is_active) {
+        //     toastr()->error("Your account has been deactivated. Please contact the administrator");
+        //     return back();
+        // }
 
         // Check if user has been deactivated
         if (!auth()->user()->can_login) {
@@ -78,7 +78,17 @@ class LoginController extends Controller
         Notification::route('mail', $user->email)->notify(new LoginNotification($user));
 
         toastr()->success("You're logged in successfully!");
-        return redirect()->route('admin.dashboard');
+        
+        if (auth()->user()->roles[0]->slug == "employee") {
+            if(!auth()->user()->is_completed){
+                return redirect()->route('employee.complete-registration');
+            }
+            return redirect()->route('employee.dashboard');
+        }
+        if (auth()->user()->roles[0]->slug == "superadmin") {
+            return redirect()->route('admin.dashboard');
+        }
+        
 
 
     }
@@ -199,6 +209,8 @@ class LoginController extends Controller
             
         $updatePassword = $userdata->update([
             'password' => Hash::make($password),
+            'can_login' => true,
+            'is_verified' => true,
         ]);
 
         DB::table('password_resets')->where('token', $request->token)->delete();

@@ -5,7 +5,8 @@ use App\Http\Controllers\v1\Auth\RegisterController;
 use App\Http\Controllers\v1\Pages\PagesController;
 use App\Http\Controllers\v1\Admin\AdminController;
 use App\Http\Controllers\v1\Admin\DepartmentController;
-use App\Http\Controllers\v1\Admin\EmployeeController;
+use App\Http\Controllers\v1\Admin\EmployeeController AS AdminEmployeeController;
+use App\Http\Controllers\v1\Employee\EmployeeController AS EmployeeController;
 use App\Http\Controllers\v1\Admin\ClientController;
 use App\Http\Controllers\v1\Admin\TimesheetController;
 use App\Http\Controllers\v1\Admin\StaffController;
@@ -35,6 +36,15 @@ Route::group(['prefix' => 'auth'], function (){
     Route::get('/forget-password', [LoginController::class, 'forgetPasswordPage'])->name('auth.forget-password');
 });
 
+//Employee Route
+Route::group(['prefix' => 'employee', 'middleware' => ["auth:web", "employee"]], function (){
+    Route::get('/dashboard', [EmployeeController::class, 'dashboard'])->name('employee.dashboard');
+    Route::get('/complete/registration', [EmployeeController::class, 'completeRegistration'])->name('employee.complete-registration');
+});
+
+
+
+// Admin Route
 Route::group(['prefix' => 'admin', 'middleware' => ["auth:web", "superadmin"]], function(){
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
@@ -44,9 +54,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ["auth:web", "superadmin"]], 
     });
 
     Route::group(['prefix' => 'employee'], function(){
-        Route::get('/', [EmployeeController::class, 'index'])->name('admin.employee.all');
-        Route::get('/view', [EmployeeController::class, 'show'])->name('admin.employee.show');
-        Route::get('/availability', [EmployeeController::class, 'availability'])->name('admin.employee.availability');
+        Route::get('/', [AdminEmployeeController::class, 'index'])->name('admin.employee.all');
+        Route::post('/store', [AdminEmployeeController::class, 'store'])->name('admin.employee.store');
+        Route::get('/view', [AdminEmployeeController::class, 'show'])->name('admin.employee.show');
+        Route::get('/availability', [AdminEmployeeController::class, 'availability'])->name('admin.employee.availability');
     });
 
     Route::group(['prefix' => 'staff'], function(){
@@ -70,4 +81,5 @@ Route::group(['prefix' => 'admin', 'middleware' => ["auth:web", "superadmin"]], 
 
 
 });
+
 
