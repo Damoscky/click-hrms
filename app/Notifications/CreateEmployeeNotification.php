@@ -42,7 +42,7 @@ class CreateEmployeeNotification extends Notification
                 ->subject("Account Created!")
                 ->line("You are receiving this email because your onboarding process was initiated on ". env('APP_NAME'))
                 ->line('Click on the button below to complete your registration process and setup your account password.')
-                ->action('Complete Registration', url('/employee/complete/registration/'.$data['verification_code'].'?email='. $data['email']))
+                ->action('Complete Registration', url('auth/reset-password/'.$data['verification_code'].'?email='. $data['email']))
                 ->line('This link is valid for the next 24 hours.')
                 ->line('If you did not recognise this request from '. env('APP_NAME') .' kindly disregard this email.');
     }
