@@ -22,6 +22,31 @@ class User extends Authenticatable
 
     protected $with = ['roles'];
 
+    public function employeeRecord()
+    {
+        return $this->hasOne(EmployeeRecord::class);
+    }
+
+    public function bankInformation()
+    {
+        return $this->hasOne(BankInformation::class);
+    }
+
+    public function experience()
+    {
+        return $this->hasMany(Experience::class);
+    }
+
+    public function nextofkin()
+    {
+        return $this->hasMany(NextOfKin::class);
+    }
+
+    public function education()
+    {
+        return $this->hasMany(Education::class);
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *

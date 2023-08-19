@@ -80,7 +80,8 @@ class LoginController extends Controller
         toastr()->success("You're logged in successfully!");
         
         if (auth()->user()->roles[0]->slug == "employee") {
-            if(!auth()->user()->is_completed){
+            if(!auth()->user()->is_completed || !auth()->user()->is_verified){
+                toastr()->success("Your account is pending verification. Please complete your registration.");
                 return redirect()->route('employee.complete-registration');
             }
             return redirect()->route('employee.dashboard');

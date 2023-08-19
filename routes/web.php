@@ -39,6 +39,13 @@ Route::group(['prefix' => 'auth'], function (){
 //Employee Route
 Route::group(['prefix' => 'employee', 'middleware' => ["auth:web", "employee"]], function (){
     Route::get('/dashboard', [EmployeeController::class, 'dashboard'])->name('employee.dashboard');
+    Route::post('record/update', [EmployeeController::class, 'updatePersonalRecord'])->name('employee.record.update');
+    Route::post('address/update', [EmployeeController::class, 'updateAddress'])->name('employee.address.update');
+    Route::post('bank/details/update', [EmployeeController::class, 'updateBankDetails'])->name('employee.bankdetails.update');
+    Route::post('nextofkin/update', [EmployeeController::class, 'updateNextOfKin'])->name('employee.nextofkin.update');
+    Route::get('nextofkin/delete/{id}', [EmployeeController::class, 'deleteNextOfKin'])->name('employee.nextofkin.delete');
+    Route::get('experience/delete/{id}', [EmployeeController::class, 'deleteExperience'])->name('employee.experience.delete');
+    Route::post('experience/update', [EmployeeController::class, 'updateExperience'])->name('employee.experience.update');
     Route::get('/complete/registration', [EmployeeController::class, 'completeRegistration'])->name('employee.complete-registration');
 });
 

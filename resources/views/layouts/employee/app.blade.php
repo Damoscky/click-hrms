@@ -220,7 +220,7 @@
                                 <span>Main</span>
                             </li>
                             <li>
-                                <a href="{{ route('admin.dashboard') }}"><i class="la la-dashboard"></i> <span>
+                                <a href="{{ route('employee.dashboard') }}"><i class="la la-dashboard"></i> <span>
                                     Dashboard</span>
                                 </a>
                             </li>
