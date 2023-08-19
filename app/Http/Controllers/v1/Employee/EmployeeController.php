@@ -4,6 +4,7 @@ namespace App\Http\Controllers\v1\Employee;
 
 use App\Http\Controllers\Controller;
 use App\Models\BankInformation;
+use App\Models\Document;
 use App\Models\EmployeeRecord;
 use App\Models\Experience;
 use App\Models\NextOfKin;
@@ -222,7 +223,64 @@ class EmployeeController extends Controller
         }
     }
 
-     public function validateExperience($request)
+    public function uploadDocument(Request $request)
+    {
+        $validateRequest = $this->validateDocument($request);
+
+        if ($validateRequest->fails()) {
+            toastr()->warning($validateRequest->errors()->first());
+            return back();
+        }
+        DB::beginTransaction();
+
+        try {
+
+            $record = EmployeeRecord::where('user_id', auth()->user()->id)->first();
+
+            $image = $request->document_file;
+            $fileExt = $image->getClientOriginalExtension();
+            $uniqueId = bin2hex(openssl_random_pseudo_bytes(4));
+            $name = 'image_' . $record->employee_id . '_'. $request->document_type . '.' . $fileExt;
+            $fileUrl = config('app.url') . 'documents/' . $name;
+
+            $image->move(public_path('documents'), $fileUrl);
+
+            $record = Document::create([
+                'user_id' => auth()->user()->id,
+                'document_type' => $request->document_type,
+                'document_number' => $request->document_number,
+                'document_extension' => $fileExt,
+                'file_path' => $fileUrl,
+                'issued_date' => $request->issued_date,
+                'expiry_date' => $request->expiry_date,
+                'document_id' => $request->document_number,
+            ]);
+
+            DB::commit();
+
+            toastr()->success('Document Uploaded successfully');
+            return back();
+        } catch (\Throwable $error) {
+            toastr()->error($error->getMessage());
+            return back();
+        }
+    }
+
+    public function validateDocument($request)
+    {
+        $rules = [
+            'document_file' => 'required',
+            'document_number' => 'required',
+            'document_type' => 'required',
+            'issued_date' => 'required',
+            'expiry_date' => 'required',
+        ];
+
+        $validate = Validator::make($request->all(), $rules);
+        return $validate;
+    }
+
+    public function validateExperience($request)
     {
         $rules = [
             'employment_type' => 'required',

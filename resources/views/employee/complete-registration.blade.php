@@ -252,11 +252,13 @@
                                                 <tr>
                                                     <td>{{ $nextofkin->first_name }} {{ $nextofkin->last_name }}</td>
                                                     <td>{{ $nextofkin->relationship }}</td>
-                                                    <td>{{\Carbon\Carbon::parse($nextofkin->date_of_birth)->format('j F, Y')}}</td>
-                                                    <td>{{$nextofkin->phoneno}}</td>
-                                                    <td>{{$nextofkin->email}}</td>
+                                                    <td>{{ \Carbon\Carbon::parse($nextofkin->date_of_birth)->format('j F, Y') }}
+                                                    </td>
+                                                    <td>{{ $nextofkin->phoneno }}</td>
+                                                    <td>{{ $nextofkin->email }}</td>
                                                     <td>
-                                                        <a href="{{route('employee.nextofkin.delete', base64_encode($nextofkin->id))}}" class="delete-icon"><i
+                                                        <a href="{{ route('employee.nextofkin.delete', base64_encode($nextofkin->id)) }}"
+                                                            class="delete-icon"><i
                                                                 class="fa-regular fa-trash-can"></i></a>
                                                     </td>
                                                 </tr>
@@ -275,40 +277,36 @@
                     <div class="card profile-box flex-fill">
                         <div class="card-body">
                             <h3 class="card-title">
-                                Education
+                                Documents
                                 <a href="#" class="edit-icon" data-bs-toggle="modal"
-                                    data-bs-target="#education_info"><i class="fa-solid fa-pencil"></i></a>
+                                    data-bs-target="#document_info"><i class="fa-solid fa-pencil"></i></a>
                             </h3>
                             <div class="experience-box">
                                 <ul class="experience-list">
-                                    <li>
-                                        <div class="experience-user">
-                                            <div class="before-circle"></div>
-                                        </div>
-                                        <div class="experience-content">
-                                            <div class="timeline-content">
-                                                <a href="#/" class="name">International College of Arts and
-                                                    Science
-                                                    (UG)</a>
-                                                <div>Bsc Computer Science</div>
-                                                <span class="time">2000 - 2003</span>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="experience-user">
-                                            <div class="before-circle"></div>
-                                        </div>
-                                        <div class="experience-content">
-                                            <div class="timeline-content">
-                                                <a href="#/" class="name">International College of Arts and
-                                                    Science
-                                                    (PG)</a>
-                                                <div>Msc Computer Science</div>
-                                                <span class="time">2000 - 2003</span>
-                                            </div>
-                                        </div>
-                                    </li>
+                                    @if (count(auth()->user()->document) > 0)
+                                        @foreach (auth()->user()->document as $document)
+                                            <li>
+                                                <div class="experience-user">
+                                                    <div class="before-circle"></div>
+                                                </div>
+                                                <div class="experience-content">
+                                                    <div class="timeline-content">
+                                                        <a href="#/" class="name">College of Arts and
+                                                            Science
+                                                            (UG)
+                                                        </a>
+                                                        <a href="" class="delete-icon"><i
+                                                                class="fa-regular fa-trash-can"></i></a>
+                                                        <span
+                                                            class="time">{{ \Carbon\Carbon::parse($document->issued_date)->format('F, Y') }}
+                                                            -
+                                                            {{ \Carbon\Carbon::parse($document->expiry_date)->format('F, Y') }}
+                                                            (5 years 2 months)</span>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        @endforeach
+                                    @endif
                                 </ul>
                             </div>
                         </div>
@@ -331,15 +329,21 @@
                                             </div>
                                             <div class="experience-content">
                                                 <div class="timeline-content">
-                                                    <a href="#" class="name">{{$experience->job_title}} at {{$experience->company_name}}</a>
-                                                    <a href="{{route('employee.experience.delete', base64_encode($experience->id) )}}" class="delete-icon"><i
-                                                        class="fa-regular fa-trash-can"></i></a>
-                                                    <span class="time">{{\Carbon\Carbon::parse($experience->start_date)->format('F, Y')}} - {{\Carbon\Carbon::parse($experience->end_date)->format('F, Y')}} (5 years 2 months)</span>
+                                                    <a href="#" class="name">{{ $experience->job_title }} at
+                                                        {{ $experience->company_name }}</a>
+                                                    <a href="{{ route('employee.experience.delete', base64_encode($experience->id)) }}"
+                                                        class="delete-icon"><i class="fa-regular fa-trash-can"></i></a>
+                                                    <span
+                                                        class="time">{{ \Carbon\Carbon::parse($experience->start_date)->format('F, Y') }}
+                                                        -
+                                                        {{ \Carbon\Carbon::parse($experience->end_date)->format('F, Y') }}
+                                                        (5 years 2 months)
+                                                    </span>
                                                 </div>
                                             </div>
                                         </li>
                                     @endforeach
-                                    
+
                                 </ul>
                             </div>
                         </div>
@@ -493,6 +497,79 @@
                     </div>
                 </div>
             </div>
+            <div id="document_info" class="modal custom-modal fade" role="dialog">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Upload Documents</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form method="POST" enctype="multipart/form-data"
+                                action="{{ route('employee.document.upload') }}">
+                                {{ csrf_field() }}
+                                <div class="form-scroll">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="input-block mb-3">
+                                                        <select required class="select" required name="document_type">
+                                                            <option value="">Select Document Type</option>
+                                                            <option value="BRP">BRP</option>
+                                                            <option value="Passport">Passport</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="input-block mb-3 form-focus focused">
+                                                        <input type="text" value="" name="document_number"
+                                                            class="form-control floating" />
+                                                        <label class="focus-label">Document Number</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="input-block mb-3">
+                                                        <input type="file" required name="document_file" required
+                                                            value="" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="input-block mb-3 form-focus focused">
+                                                        <div class="cal-icon">
+                                                            <input type="text" value="" name="issued_date"
+                                                                class="form-control floating datetimepicker" />
+                                                        </div>
+                                                        <label class="focus-label">Issued Date</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="input-block mb-3 form-focus focused">
+                                                        <div class="cal-icon">
+                                                            <input type="text" value="" name="expiry_date"
+                                                                class="form-control floating datetimepicker" />
+                                                        </div>
+                                                        <label class="focus-label">Expiry Date</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {{-- <div class="add-more">
+                                                <a href="javascript:void(0);"><i class="fa-solid fa-plus-circle"></i> Add
+                                                    More</a>
+                                            </div> --}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="submit-section">
+                                    <button class="btn btn-primary submit-btn">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div id="education_info" class="modal custom-modal fade" role="dialog">
                 <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                     <div class="modal-content">
@@ -580,14 +657,14 @@
                 <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">Experience Informations</h5>
+                            <h5 class="modal-title">Work Experience</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form action="{{route('employee.experience.update')}}" method="POST">
-                                {{csrf_field()}}
+                            <form action="{{ route('employee.experience.update') }}" method="POST">
+                                {{ csrf_field() }}
                                 <div class="form-scroll">
                                     <div class="card">
                                         <div class="card-body">
@@ -595,15 +672,16 @@
                                                 <div class="col-md-6">
                                                     <div class="input-block mb-3 form-focus">
                                                         <input name="company_name" type="text"
-                                                            class="form-control floating"
-                                                            value="" required name="company_name" />
+                                                            class="form-control floating" value="" required
+                                                            name="company_name" />
                                                         <label class="focus-label">Company Name</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="input-block mb-3 form-focus">
                                                         <input name="location" required type="text"
-                                                            class="form-control floating" value="" name="location" />
+                                                            class="form-control floating" value=""
+                                                            name="location" />
                                                         <label class="focus-label">Location</label>
                                                     </div>
                                                 </div>
@@ -619,8 +697,8 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="input-block mb-3 form-focus">
-                                                        <input type="text" required name="job_title" class="form-control floating"
-                                                            value="" />
+                                                        <input type="text" required name="job_title"
+                                                            class="form-control floating" value="" />
                                                         <label class="focus-label">Job Title</label>
                                                     </div>
                                                 </div>

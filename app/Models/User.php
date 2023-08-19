@@ -42,6 +42,11 @@ class User extends Authenticatable
         return $this->hasMany(NextOfKin::class);
     }
 
+    public function document()
+    {
+        return $this->hasMany(Document::class);
+    }
+
     public function education()
     {
         return $this->hasMany(Education::class);

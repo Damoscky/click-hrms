@@ -46,6 +46,7 @@ Route::group(['prefix' => 'employee', 'middleware' => ["auth:web", "employee"]],
     Route::get('nextofkin/delete/{id}', [EmployeeController::class, 'deleteNextOfKin'])->name('employee.nextofkin.delete');
     Route::get('experience/delete/{id}', [EmployeeController::class, 'deleteExperience'])->name('employee.experience.delete');
     Route::post('experience/update', [EmployeeController::class, 'updateExperience'])->name('employee.experience.update');
+    Route::post('document/upload', [EmployeeController::class, 'uploadDocument'])->name('employee.document.upload');
     Route::get('/complete/registration', [EmployeeController::class, 'completeRegistration'])->name('employee.complete-registration');
 });
 
