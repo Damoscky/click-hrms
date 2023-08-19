@@ -26,6 +26,7 @@ class EmployeeController extends Controller
             toastr()->error("Access Denied :(");
             return back();
         }
+        // $record = User::whereHas('roles', function($query) use())
         $departments = Department::where('is_active', true)->get();
         return view('admin.employee.all-employees', ['departments' => $departments]);
     }
