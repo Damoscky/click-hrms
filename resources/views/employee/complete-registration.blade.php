@@ -452,6 +452,8 @@
                                                                 class="text-danger">*</span></label>
                                                         <select required class="select" required name="relationship">
                                                             <option value="">Select Relationship</option>
+                                                            <option value="Partner">Partner</option>
+                                                            <option value="Husband">Husband</option>
                                                             <option value="Brother">Brother</option>
                                                             <option value="Sister">Sister</option>
                                                             <option value="Father">Father</option>
@@ -520,6 +522,7 @@
                                                             <option value="">Select Document Type</option>
                                                             <option value="BRP">BRP</option>
                                                             <option value="Passport">Passport</option>
+                                                            <option value="Driving Licence">Driving Licence</option>
                                                         </select>
                                                     </div>
                                                 </div>
