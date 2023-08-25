@@ -41,7 +41,12 @@ class User extends Authenticatable
 
     public function nextofkin()
     {
-        return $this->hasMany(NextOfKin::class);
+        return $this->hasOne(NextOfKin::class);
+    }
+
+    public function employeeReference()
+    {
+        return $this->hasMany(EmployeeReference::class);
     }
 
     public function document()

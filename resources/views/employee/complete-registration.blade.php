@@ -9,7 +9,11 @@
                         <h3 class="page-title">Hello {{ auth()->user()->first_name }}!</h3>
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item">
-                                <a href="#">Please fill the form below to complete your registration</a>
+                                @if(!auth()->user()->sent_for_approval)
+                                    <a href="#">Please fill the form below to complete your registration</a>
+                                @else
+                                    <a href="#" class="btn btn-warning">Your application is currently under review.</a>
+                                @endif
                             </li>
                         </ul>
                     </div>
@@ -120,16 +124,45 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="input-block mb-3">
-                                    <label class="col-form-label">Profile Picture <span class="text-danger">*</span></label>
-                                    <input type="file" required name="picture" required
-                                        value="{{ auth()->user()->employeeRecord->image }}" class="form-control" />
+                                <div class="row">
+                                    @if (isset(auth()->user()->employeeRecord->image))
+                                        <div class="col-md-6">
+                                            <div class="profile-img-wrap">
+                                                <div class="profile-img">
+                                                    <a href="#"><img
+                                                            src="{{ auth()->user()->employeeRecord->image }}"
+                                                            alt="{{ auth()->user()->first_name }}" /></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @else
+                                        <div class="col-md-6">
+                                            <div class="input-block mb-3">
+                                                <label class="col-form-label">Profile Picture <span
+                                                        class="text-danger">*</span></label>
+                                                <input type="file" required name="picture" required
+                                                    value="{{ auth()->user()->employeeRecord->image }}"
+                                                    class="form-control" />
+                                            </div>
+                                        </div>
+                                    @endif
+                                    <div class="col-md-6">
+                                        <div class="input-block mb-3">
+                                            <label class="col-form-label">National Insurance (NI) <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="text" required name="national_insurance" required
+                                                value="{{ auth()->user()->employeeRecord->national_insurance }}"
+                                                class="form-control" />
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="text-end">
-                                    <button type="submit" class="btn btn-primary">
-                                        Submit
-                                    </button>
+                                    @if (!auth()->user()->sent_for_approval)
+                                        <button type="submit" class="btn btn-primary">
+                                            Submit
+                                        </button>
+                                    @endif
                                 </div>
                             </div>
                         </form>
@@ -143,29 +176,15 @@
                         <form action="{{ route('employee.address.update') }}" method="POST">
                             {{ csrf_field() }}
                             <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="input-block mb-3">
-                                            <label class="col-form-label">Address <span
-                                                    class="text-danger">*</span></label>
-                                            <input type="text" class="form-control" name="address" required
-                                                value="{{ auth()->user()->employeeRecord->address }}" />
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="input-block mb-3">
-                                            <label class="col-form-label">City <span class="text-danger">*</span></label>
-                                            <input type="text" required
-                                                value="{{ auth()->user()->employeeRecord->city }}" name="city"
-                                                class="form-control" />
-                                        </div>
-                                    </div>
+                                <div class="input-block mb-3">
+                                    <label class="col-form-label">Address <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="address" required
+                                        value="{{ auth()->user()->employeeRecord->address }}" />
                                 </div>
                                 <div class="input-block mb-3">
-                                    <label class="col-form-label">State <span class="text-danger">*</span></label>
-                                    <input type="text" required value="{{ auth()->user()->employeeRecord->state }}"
-                                        name="state" class="form-control" />
+                                    <label class="col-form-label">City <span class="text-danger">*</span></label>
+                                    <input type="text" required value="{{ auth()->user()->employeeRecord->city }}"
+                                        name="city" class="form-control" />
                                 </div>
                                 <div class="input-block mb-3">
                                     <label class="col-form-label">Postcode <span class="text-danger">*</span></label>
@@ -185,9 +204,11 @@
                                         name="country" class="form-control" />
                                 </div>
                                 <div class="text-end">
-                                    <button type="submit" class="btn btn-primary">
-                                        Submit
-                                    </button>
+                                    @if (!auth()->user()->sent_for_approval)
+                                        <button type="submit" class="btn btn-primary">
+                                            Submit
+                                        </button>
+                                    @endif
                                 </div>
                             </div>
                         </form>
@@ -199,8 +220,10 @@
                     <div class="card profile-box flex-fill">
                         <div class="card-body">
                             <h3 class="card-title">Bank information
-                                <a href="#" class="edit-icon" data-bs-toggle="modal"
-                                    data-bs-target="#bank_info_modal"><i class="fa-solid fa-pencil"></i></a>
+                                @if (!auth()->user()->sent_for_approval)
+                                    <a href="#" class="edit-icon" data-bs-toggle="modal"
+                                        data-bs-target="#bank_info_modal"><i class="fa-solid fa-pencil"></i></a>
+                                @endif
                             </h3>
                             @if (isset(auth()->user()->bankInformation))
                                 <ul class="personal-info">
@@ -231,11 +254,13 @@
                         <div class="card-body">
                             <h3 class="card-title">
                                 Next of Kin
-                                <a href="#" class="edit-icon" data-bs-toggle="modal"
-                                    data-bs-target="#family_info_modal"><i class="fa-solid fa-pencil"></i></a>
+                                @if (!auth()->user()->sent_for_approval)
+                                    <a href="#" class="edit-icon" data-bs-toggle="modal"
+                                        data-bs-target="#family_info_modal"><i class="fa-solid fa-plus"></i></a>
+                                @endif
                             </h3>
                             <div class="table-responsive">
-                                @if (count(auth()->user()->nextofkin) > 0)
+                                @if (isset(auth()->user()->nextofkin))
                                     <table class="table table-nowrap">
                                         <thead>
                                             <tr>
@@ -248,21 +273,22 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach (auth()->user()->nextofkin as $nextofkin)
-                                                <tr>
-                                                    <td>{{ $nextofkin->first_name }} {{ $nextofkin->last_name }}</td>
-                                                    <td>{{ $nextofkin->relationship }}</td>
-                                                    <td>{{ \Carbon\Carbon::parse($nextofkin->date_of_birth)->format('j F, Y') }}
-                                                    </td>
-                                                    <td>{{ $nextofkin->phoneno }}</td>
-                                                    <td>{{ $nextofkin->email }}</td>
-                                                    <td>
-                                                        <a href="{{ route('employee.nextofkin.delete', base64_encode($nextofkin->id)) }}"
+                                            <tr>
+                                                <td>{{ auth()->user()->nextofkin->first_name }}
+                                                    {{ auth()->user()->nextofkin->last_name }}</td>
+                                                <td>{{ auth()->user()->nextofkin->relationship }}</td>
+                                                <td>{{ \Carbon\Carbon::parse(auth()->user()->nextofkin->date_of_birth)->format('j F, Y') }}
+                                                </td>
+                                                <td>{{ auth()->user()->nextofkin->phoneno }}</td>
+                                                <td>{{ auth()->user()->nextofkin->email }}</td>
+                                                <td>
+                                                    @if (!auth()->user()->sent_for_approval)
+                                                        <a href="{{ route('employee.nextofkin.delete', base64_encode(auth()->user()->nextofkin->id)) }}"
                                                             class="delete-icon"><i
                                                                 class="fa-regular fa-trash-can"></i></a>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
+                                                    @endif
+                                                </td>
+                                            </tr>
 
                                         </tbody>
                                     </table>
@@ -273,52 +299,16 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6 d-flex">
-                    <div class="card profile-box flex-fill">
-                        <div class="card-body">
-                            <h3 class="card-title">
-                                Documents
-                                <a href="#" class="edit-icon" data-bs-toggle="modal"
-                                    data-bs-target="#document_info"><i class="fa-solid fa-pencil"></i></a>
-                            </h3>
-                            <div class="experience-box">
-                                <ul class="experience-list">
-                                    @if (count(auth()->user()->document) > 0)
-                                        @foreach (auth()->user()->document as $document)
-                                            <li>
-                                                <div class="experience-user">
-                                                    <div class="before-circle"></div>
-                                                </div>
-                                                <div class="experience-content">
-                                                    <div class="timeline-content">
-                                                        <a href="#/" class="name">College of Arts and
-                                                            Science
-                                                            (UG)
-                                                        </a>
-                                                        <a href="" class="delete-icon"><i
-                                                                class="fa-regular fa-trash-can"></i></a>
-                                                        <span
-                                                            class="time">{{ \Carbon\Carbon::parse($document->issued_date)->format('F, Y') }}
-                                                            -
-                                                            {{ \Carbon\Carbon::parse($document->expiry_date)->format('F, Y') }}
-                                                            (5 years 2 months)</span>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        @endforeach
-                                    @endif
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
                 <div class="col-md-6 d-flex">
                     <div class="card profile-box flex-fill">
                         <div class="card-body">
                             <h3 class="card-title">
                                 Experience
-                                <a href="#" class="edit-icon" data-bs-toggle="modal"
-                                    data-bs-target="#experience_info"><i class="fa-solid fa-pencil"></i></a>
+                                @if (!auth()->user()->sent_for_approval)
+                                    <a href="#" class="edit-icon" data-bs-toggle="modal"
+                                        data-bs-target="#experience_info"><i class="fa-solid fa-plus"></i></a>
+                                @endif
                             </h3>
                             <div class="experience-box">
                                 <ul class="experience-list">
@@ -331,13 +321,16 @@
                                                 <div class="timeline-content">
                                                     <a href="#" class="name">{{ $experience->job_title }} at
                                                         {{ $experience->company_name }}</a>
-                                                    <a href="{{ route('employee.experience.delete', base64_encode($experience->id)) }}"
-                                                        class="delete-icon"><i class="fa-regular fa-trash-can"></i></a>
+                                                    @if (!auth()->user()->sent_for_approval)
+                                                        <a href="{{ route('employee.experience.delete', base64_encode($experience->id)) }}"
+                                                            class="delete-icon"><i
+                                                                class="fa-regular fa-trash-can"></i></a>
+                                                    @endif
                                                     <span
                                                         class="time">{{ \Carbon\Carbon::parse($experience->start_date)->format('F, Y') }}
                                                         -
                                                         {{ \Carbon\Carbon::parse($experience->end_date)->format('F, Y') }}
-                                                        (5 years 2 months)
+                                                        ({{ Carbon\Carbon::parse($experience->end_date)->diffForHumans() }})
                                                     </span>
                                                 </div>
                                             </div>
@@ -346,6 +339,152 @@
 
                                 </ul>
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 d-flex">
+                    <div class="card profile-box flex-fill">
+                        <div class="card-body">
+                            <h3 class="card-title">
+                                References
+                                @if (!auth()->user()->sent_for_approval)
+                                    <a href="#" class="edit-icon" data-bs-toggle="modal"
+                                        data-bs-target="#reference_info_modal"><i class="fa-solid fa-plus"></i></a>
+                                @endif
+                            </h3>
+                            <div class="table-responsive">
+                                @if (count(auth()->user()->employeeReference) > 0)
+                                    <table class="table table-nowrap">
+                                        <thead>
+                                            <tr>
+                                                <th>Contact Name</th>
+                                                <th>Company Name</th>
+                                                <th>Start Date</th>
+                                                <th>End Date</th>
+                                                <th>Email</th>
+                                                <th>Phone No</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (auth()->user()->employeeReference as $reference)
+                                                <tr>
+                                                    <td>{{ $reference->contact_name }}</td>
+                                                    <td>{{ $reference->company_name }}</td>
+                                                    <td>{{ \Carbon\Carbon::parse($reference->start_date)->format('j F, Y') }}
+                                                    </td>
+                                                    <td>{{ \Carbon\Carbon::parse($reference->end_date)->format('j F, Y') }}
+                                                    </td>
+                                                    <td>{{ $reference->email }}</td>
+                                                    <td>{{ $reference->phoneno }}</td>
+                                                </tr>
+                                            @endforeach
+
+                                        </tbody>
+                                    </table>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card profile-box flex-fill">
+                        <div class="card-body">
+                            <div class="file-cont-inner">
+                                <div class="file-content">
+                                    <div class="file-body">
+                                        <div class="file-scroll">
+                                            <div class="file-content-inner">
+                                                <h4>Recents Documents
+                                                    @if (!auth()->user()->sent_for_approval)
+                                                        <a href="#" class="edit-icon" data-bs-toggle="modal"
+                                                            data-bs-target="#document_info"><i
+                                                                class="fa-solid fa-plus"></i></a>
+                                                    @endif
+                                                </h4>
+                                                <div class="row row-sm">
+                                                    @if (count(auth()->user()->document))
+                                                        @foreach (auth()->user()->document as $document)
+                                                            <div class="col-12 col-sm-4 col-md-3 col-lg-4 col-xl-3">
+                                                                <div class="card card-file">
+                                                                    <div class="dropdown-file">
+                                                                        <a href="#" class="dropdown-link"
+                                                                            data-bs-toggle="dropdown"><i
+                                                                                class="fa-solid fa-ellipsis-vertical"></i></a>
+                                                                        <div class="dropdown-menu dropdown-menu-right">
+
+                                                                            <a href="{{ $document->file_path }}"
+                                                                                target="_blank"
+                                                                                class="dropdown-item">Download</a>
+                                                                            @if (!auth()->user()->sent_for_approval)
+                                                                                <a href="{{ route('employee.document.delete', base64_encode($document->id)) }}"
+                                                                                    class="dropdown-item">Delete</a>
+                                                                            @endif
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="card-file-thumb">
+                                                                        @if ($document->document_extension == 'pdf')
+                                                                            <a href="{{ $document->file_path }}"
+                                                                                target="_blank"><i
+                                                                                    class="fa-regular fa-file-pdf"></i></a>
+                                                                        @elseif($document->document_extension == 'docx')
+                                                                            <a href="{{ $document->file_path }}"
+                                                                                target="_blank"><i
+                                                                                    class="fa-regular fa-file-word"></i></a>
+                                                                        @else
+                                                                            <a href="{{ $document->file_path }}"
+                                                                                target="_blank"><i
+                                                                                    class="fa-regular fa-file-image"></i></a>
+                                                                        @endif
+
+                                                                    </div>
+                                                                    <div class="card-body">
+                                                                        <h6><a
+                                                                                href="#">{{ $document->document_type }}.{{ $document->document_extension }}</a>
+                                                                        </h6>
+                                                                        <span>12mb</span>
+                                                                    </div>
+                                                                    <div class="card-footer">
+                                                                        {{ \Carbon\Carbon::parse($document->created_at)->format('j F') }},
+                                                                        {{ \Carbon\Carbon::parse($document->created_at)->format('H:i') }}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        @endforeach
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @if (!auth()->user()->sent_for_approval)
+                <a href="{{ route('employee.application.sendforapproval') }}" class="btn btn-success"
+                    data-bs-toggle="modal" data-bs-target="#confirm_approval_modal" class="btn btn-success">Submit for
+                    Approval</a>
+            @endif
+            <!--Submit for Approval Modal -->
+            <div class="modal fade" id="confirm_approval_modal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Submit Record for Approval</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to submit this application for approval?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <a href="{{ route('employee.application.sendforapproval') }}" type="button"
+                                class="btn btn-primary">Confirm</a>
                         </div>
                     </div>
                 </div>
@@ -434,16 +573,18 @@
                                                     <div class="input-block mb-3">
                                                         <label class="col-form-label">Firstname <span
                                                                 class="text-danger">*</span></label>
-                                                        <input name="first_name" required class="form-control"
-                                                            type="text" />
+                                                        <input name="first_name"
+                                                            value="{{ isset(auth()->user()->nextofkin) ? auth()->user()->nextofkin->first_name : '' }}"
+                                                            required class="form-control" type="text" />
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="input-block mb-3">
                                                         <label class="col-form-label">Lastname <span
                                                                 class="text-danger">*</span></label>
-                                                        <input name="last_name" required class="form-control"
-                                                            type="text" />
+                                                        <input name="last_name"
+                                                            value="{{ isset(auth()->user()->nextofkin) ? auth()->user()->nextofkin->last_name : '' }}"
+                                                            required class="form-control" type="text" />
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
@@ -451,7 +592,13 @@
                                                         <label class="col-form-label">Relationship <span
                                                                 class="text-danger">*</span></label>
                                                         <select required class="select" required name="relationship">
-                                                            <option value="">Select Relationship</option>
+                                                            @if (isset(auth()->user()->nextofkin->relationship))
+                                                                <option
+                                                                    value="{{ auth()->user()->nextofkin->relationship }}">
+                                                                    {{ auth()->user()->nextofkin->relationship }}</option>
+                                                            @else
+                                                                <option value="">Select Relationship</option>
+                                                            @endif
                                                             <option value="Partner">Partner</option>
                                                             <option value="Husband">Husband</option>
                                                             <option value="Brother">Brother</option>
@@ -467,16 +614,99 @@
                                                     <div class="input-block mb-3">
                                                         <label class="col-form-label">Date of birth
                                                             <span class="text-danger">*</span></label>
-                                                        <input name="date_of_birth" required
-                                                            class="form-control datetimepicker" type="text" />
+                                                        <input name="date_of_birth"
+                                                            value="{{ isset(auth()->user()->nextofkin) ? auth()->user()->nextofkin->date_of_birth : '' }}"
+                                                            required class="form-control datetimepicker" type="text" />
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="input-block mb-3">
                                                         <label class="col-form-label">Phone <span
                                                                 class="text-danger">*</span></label>
-                                                        <input name="phoneno" required class="form-control"
+                                                        <input name="phoneno"
+                                                            value="{{ isset(auth()->user()->nextofkin) ? auth()->user()->nextofkin->phoneno : '' }}"
+                                                            required class="form-control" type="text" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="input-block mb-3">
+                                                        <label class="col-form-label">Email <span
+                                                                class="text-danger">*</span></label>
+                                                        <input name="email"
+                                                            value="{{ isset(auth()->user()->nextofkin) ? auth()->user()->nextofkin->email : '' }}"
+                                                            required class="form-control" type="text" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="submit-section">
+                                    <button class="btn btn-primary submit-btn">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="reference_info_modal" class="modal custom-modal fade" role="dialog">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Reference</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="{{ route('employee.reference.update') }}" method="POST">
+                                {{ csrf_field() }}
+                                <div class="form-scroll">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="input-block mb-3">
+                                                        <label class="col-form-label">Contact Name <span
+                                                                class="text-danger">*</span></label>
+                                                        <input name="contact_name" required class="form-control"
                                                             type="text" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="input-block mb-3">
+                                                        <label class="col-form-label">Company Name <span
+                                                                class="text-danger">*</span></label>
+                                                        <input name="company_name" required class="form-control"
+                                                            type="text" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="input-block mb-3">
+                                                        <label class="col-form-label">Reference Type <span
+                                                                class="text-danger">*</span></label>
+                                                        <select class="select" required name="reference_type">
+                                                            <option>Please Select...</option>
+                                                            <option value="Company">Company</option>
+                                                            <option value="Character">Character</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="input-block mb-3">
+                                                        <label class="col-form-label">Start Date
+                                                            <span class="text-danger">*</span></label>
+                                                        <input name="start_date" required
+                                                            class="form-control datetimepicker" type="text" />
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-4">
+                                                    <div class="input-block mb-3">
+                                                        <label class="col-form-label">End Date
+                                                            <span class="text-danger">*</span></label>
+                                                        <input name="end_date" required
+                                                            class="form-control datetimepicker" type="text" />
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
@@ -484,6 +714,14 @@
                                                         <label class="col-form-label">Email <span
                                                                 class="text-danger">*</span></label>
                                                         <input name="email" required class="form-control"
+                                                            type="text" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="input-block mb-3">
+                                                        <label class="col-form-label">Phone No <span
+                                                                class="text-danger">*</span></label>
+                                                        <input name="phoneno" required class="form-control"
                                                             type="text" />
                                                     </div>
                                                 </div>
@@ -522,7 +760,12 @@
                                                             <option value="">Select Document Type</option>
                                                             <option value="BRP">BRP</option>
                                                             <option value="Passport">Passport</option>
+                                                            <option value="Right to Work">Right to Work</option>
+                                                            <option value="Training Certificate">Training Certificate
+                                                            </option>
                                                             <option value="Driving Licence">Driving Licence</option>
+                                                            <option value="Proof of Address">Proof of Address</option>
+                                                            <option value="CV">CV</option>
                                                         </select>
                                                     </div>
                                                 </div>

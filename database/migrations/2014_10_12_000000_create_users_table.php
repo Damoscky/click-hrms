@@ -23,6 +23,8 @@ return new class extends Migration
             $table->boolean('is_active')->default(false)->comment('True, False');
             $table->boolean('can_login')->default(false)->comment('True, False');
             $table->boolean('is_completed')->default(false)->comment('True, False');
+            $table->string('status')->default("Pending");
+            $table->boolean('sent_for_approval')->default(false)->comment('True, False');
             $table->boolean('2fa')->default(false)->comment('True, False');
             $table->rememberToken();
             $table->timestamps();

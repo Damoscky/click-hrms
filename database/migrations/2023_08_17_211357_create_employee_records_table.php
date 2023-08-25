@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->string('gender')->nullable();
             $table->string('address')->nullable();
+            $table->string('national_insurance')->nullable();
             $table->string('post_code')->nullable();
             $table->string('county')->nullable();
             $table->string('country')->nullable();

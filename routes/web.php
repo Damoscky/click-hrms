@@ -43,10 +43,13 @@ Route::group(['prefix' => 'employee', 'middleware' => ["auth:web", "employee"]],
     Route::post('address/update', [EmployeeController::class, 'updateAddress'])->name('employee.address.update');
     Route::post('bank/details/update', [EmployeeController::class, 'updateBankDetails'])->name('employee.bankdetails.update');
     Route::post('nextofkin/update', [EmployeeController::class, 'updateNextOfKin'])->name('employee.nextofkin.update');
+    Route::post('reference/update', [EmployeeController::class, 'updateEmployeeReference'])->name('employee.reference.update');
     Route::get('nextofkin/delete/{id}', [EmployeeController::class, 'deleteNextOfKin'])->name('employee.nextofkin.delete');
     Route::get('experience/delete/{id}', [EmployeeController::class, 'deleteExperience'])->name('employee.experience.delete');
     Route::post('experience/update', [EmployeeController::class, 'updateExperience'])->name('employee.experience.update');
     Route::post('document/upload', [EmployeeController::class, 'uploadDocument'])->name('employee.document.upload');
+    Route::get('document/delete/{id}', [EmployeeController::class, 'deleteDocument'])->name('employee.document.delete');
+    Route::get('application/sendforapproval', [EmployeeController::class, 'sendForApproval'])->name('employee.application.sendforapproval');
     Route::get('/complete/registration', [EmployeeController::class, 'completeRegistration'])->name('employee.complete-registration');
 });
 

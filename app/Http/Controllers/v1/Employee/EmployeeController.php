@@ -6,11 +6,16 @@ use App\Http\Controllers\Controller;
 use App\Models\BankInformation;
 use App\Models\Document;
 use App\Models\EmployeeRecord;
+use App\Models\EmployeeReference;
 use App\Models\Experience;
 use App\Models\NextOfKin;
+use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\ReferenceEmailNotification;
+use App\Notifications\SentForApprovallNotification;
 use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
@@ -53,16 +58,21 @@ class EmployeeController extends Controller
 
             DB::beginTransaction();
 
-            $image = $request->picture;
-            $fileExt = $image->getClientOriginalExtension();
-            $uniqueId = bin2hex(openssl_random_pseudo_bytes(4));
-            $name = 'image_' . $record->employee_id . '.' . $fileExt;
-            $fileUrl = config('app.url') . 'profile-pictures/' . $name;
+            if(isset($request->picture)){
+                $image = $request->picture;
+                $fileExt = $image->getClientOriginalExtension();
+                $uniqueId = bin2hex(openssl_random_pseudo_bytes(4));
+                $name = 'image_' . $record->employee_id . '.' . $fileExt;
+                $fileUrl = config('app.url') . 'profile-pictures/' . $name;
 
-            $image->move(public_path('profile-pictures'), $fileUrl);
+                $image->move(public_path('profile-pictures'), $fileUrl);
+            }else{
+                $fileUrl = $record->image;
+            }
 
             $record->update([
                 'date_of_birth' => $request->date_of_birth,
+                'national_insurance' => $request->national_insurance,
                 'religion' => $request->religion,
                 'nationality' => $request->nationality,
                 'marital_status' => $request->marital_status,
@@ -104,7 +114,7 @@ class EmployeeController extends Controller
                 'post_code' => $request->post_code,
                 'county' => $request->county,
                 'address' => $request->address,
-                'state' => $request->state,
+                'state' => $request->city,
             ]);
 
             DB::commit();
@@ -170,20 +180,84 @@ class EmployeeController extends Controller
         DB::beginTransaction();
 
         try {
+            $record = NextOfKin::where('user_id', auth()->user()->id)->first();
 
-            $record = NextOfKin::create([
-                'user_id' => auth()->user()->id,
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
-                'relationship' => $request->relationship,
-                'email' => $request->email,
-                'date_of_birth' => $request->date_of_birth,
-                'phoneno' => $request->phoneno,
-            ]);
+            if(is_null($record)){
+                $newRecord = NextOfKin::create([
+                    'user_id' => auth()->user()->id,
+                    'first_name' => $request->first_name,
+                    'last_name' => $request->last_name,
+                    'relationship' => $request->relationship,
+                    'email' => $request->email,
+                    'date_of_birth' => $request->date_of_birth,
+                    'phoneno' => $request->phoneno,
+                ]);
+            }else{
+                $record->update([
+                    'first_name' => $request->first_name,
+                    'last_name' => $request->last_name,
+                    'relationship' => $request->relationship,
+                    'email' => $request->email,
+                    'date_of_birth' => $request->date_of_birth,
+                    'phoneno' => $request->phoneno,
+                ]);
+            }
 
             DB::commit();
 
             toastr()->success('Next of Kin updated successfully');
+            return back();
+        } catch (\Throwable $error) {
+            toastr()->error($error->getMessage());
+            return back();
+        }
+    }
+
+    public function updateEmployeeReference(Request $request)
+    {
+        $validateRequest = $this->validateReference($request);
+
+        if ($validateRequest->fails()) {
+            toastr()->warning($validateRequest->errors()->first());
+            return back();
+        }
+        DB::beginTransaction();
+
+        try {
+
+            //check if reference is two
+            $record = EmployeeReference::where('user_id', auth()->user()->id)->count();
+
+            if($record > 1){
+                toastr()->warning("Maximum of 2 reference is required");
+                return back();
+            }
+            $verification_code = Str::random(30); 
+
+            $record = EmployeeReference::create([
+                'user_id' => auth()->user()->id,
+                'contact_name' => $request->contact_name,
+                'company_name' => $request->company_name,
+                'phoneno' => $request->phoneno,
+                'start_date' => $request->start_date,
+                'reference_type' => $request->reference_type,
+                'end_date' => $request->end_date,
+                'email' => $request->email,
+            ]);
+
+            $data = [
+                'contact_name' => $request->contact_name,
+                'reference_type' => $request->reference_type,
+                'email' => $request->email,
+                'token' => $verification_code
+            ];
+
+            //send email to the referees
+            Notification::route('mail', $request->email)->notify(new ReferenceEmailNotification($data));
+
+            DB::commit();
+
+            toastr()->success('Reference updated successfully');
             return back();
         } catch (\Throwable $error) {
             toastr()->error($error->getMessage());
@@ -250,6 +324,8 @@ class EmployeeController extends Controller
                 'document_type' => $request->document_type,
                 'document_number' => $request->document_number,
                 'document_extension' => $fileExt,
+                'document_extension' => $fileExt,
+                'size' => '',
                 'file_path' => $fileUrl,
                 'issued_date' => $request->issued_date,
                 'expiry_date' => $request->expiry_date,
@@ -295,6 +371,22 @@ class EmployeeController extends Controller
         return $validate;
     }
 
+    public function validateReference($request)
+    {
+        $rules = [
+            'contact_name' => 'required',
+            'company_name' => 'required',
+            'email' => 'required',
+            'start_date' => 'required',
+            'reference_type' => 'required',
+            'end_date' => 'required',
+            'phoneno' => 'required'
+        ];
+
+        $validate = Validator::make($request->all(), $rules);
+        return $validate;
+    }
+
 
     public function deleteNextOfKin($id)
     {
@@ -310,6 +402,49 @@ class EmployeeController extends Controller
 
         toastr()->success('Record deleted successfully!');
         return back();
+    }
+
+    public function deleteDocument($id)
+    {
+        $id = base64_decode($id);
+        $record = Document::where('id', $id)->where('user_id', auth()->user()->id)->first();
+
+        if(is_null($record)){
+            toastr()->warning('Record not found');
+            return back();
+        }
+
+        $record->delete();
+
+        toastr()->success('Record deleted successfully!');
+        return back();
+    }
+
+    public function sendForApproval()
+    {
+        try {
+            $record = User::find(auth()->user()->id);
+
+            $record->update([
+                'sent_for_approval' => true,
+                'status' => 'Review',
+            ]);
+
+            $adminRole = 'Super Admin';
+
+            $superAdmins = User::whereHas('roles', function ($roleTable) use ($adminRole) {
+                $roleTable->where('name', $adminRole);
+            })->pluck('email');
+
+             //send email to Admin
+             Notification::route('mail', $superAdmins)->notify(new SentForApprovallNotification($record));
+
+            toastr()->success('Application sent for approval successfully!');
+            return back();
+        } catch (\Throwable $th) {
+            toastr()->error('Error occured!');
+            return back();
+        }
     }
 
     public function deleteExperience($id)
@@ -362,7 +497,6 @@ class EmployeeController extends Controller
             'address' => 'required',
             'city' => 'required',
             'country' => 'required',
-            'state' => 'required',
             'post_code' => 'required'
         ];
 
@@ -379,7 +513,7 @@ class EmployeeController extends Controller
             'date_of_birth' => 'required',
             'nationality' => 'required',
             'marital_status' => 'required',
-            'picture' => 'required',
+            // 'picture' => 'required',
         ];
 
         $validate = Validator::make($request->all(), $rules);

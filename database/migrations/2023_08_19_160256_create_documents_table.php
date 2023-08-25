@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('document_type')->nullable();
             $table->string('document_name')->nullable();
             $table->string('document_extension')->nullable();
+            $table->string('size')->nullable();
             $table->string('document_mime')->nullable();
             $table->string('document_id')->nullable();
             $table->timestamp('issued_date')->nullable();
