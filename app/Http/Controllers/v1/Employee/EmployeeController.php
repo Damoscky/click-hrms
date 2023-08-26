@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\ReferenceEmailNotification;
 use App\Notifications\SentForApprovallNotification;
+use App\Notifications\EmployeeSentForApprovallNotification;
 use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
@@ -438,6 +439,7 @@ class EmployeeController extends Controller
 
              //send email to Admin
              Notification::route('mail', $superAdmins)->notify(new SentForApprovallNotification($record));
+             Notification::route('mail', $record->email)->notify(new EmployeeSentForApprovallNotification($record));
 
             toastr()->success('Application sent for approval successfully!');
             return back();

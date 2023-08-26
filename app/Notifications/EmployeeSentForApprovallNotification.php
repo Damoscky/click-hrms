@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class SentForApprovallNotification extends Notification
+class EmployeeSentForApprovallNotification extends Notification
 {
     use Queueable;
 
@@ -38,12 +38,10 @@ class SentForApprovallNotification extends Notification
     {
         $data = $this->data;
         return (new MailMessage)
-                ->greeting('Hello!')
-                ->subject("Application Completed - ". auth()->user()->first_name .' '. auth()->user()->last_name)
-                ->line(auth()->user()->first_name .' '. auth()->user()->last_name . " has just completed the application form and all documents have been submitted for approval")
-                ->line("Please click on the link below to view application details" )
-                ->action('Review Application', url('/admin/employee'))
-                ->line('If the above link does not work, please copy and paste the following URL into your browser');
+                ->greeting('Dear '. $data['first_name'].'!')
+                ->subject("Application Submitted - ". env('APP_NAME'))
+                ->line("Your application and documentation has been submitted for approval")
+                ->line("We are currently reviewing your application and one of our representative will be in touch as soon as possible." );
     }
 
     /**

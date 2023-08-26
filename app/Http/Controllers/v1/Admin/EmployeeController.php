@@ -36,10 +36,40 @@ class EmployeeController extends Controller
         return view('admin.employee.all-employees', ['departments' => $departments, 'totalCustomers' => $totalCustomers]);
     }
 
-
-    public function show()
+    public function pendingApproval()
     {
-        return view('admin.employee.view-employee');
+        if(!auth()->user()->hasPermission('view.employee')){
+
+            toastr()->error("Access Denied :(");
+            return back();
+        }
+        $employeeRole = 'employee';
+            // $recordSearchParam = $request->searchByDate;
+
+        $totalEmployees = User::whereHas('roles', function ($roleTable) use ($employeeRole) {
+            $roleTable->where('slug', $employeeRole);
+        })->where('status', 'Review')->where('sent_for_approval', true)->get();
+        $departments = Department::where('is_active', true)->get();
+        return view('admin.employee.pending-employees', ['departments' => $departments, 'totalEmployees' => $totalEmployees]);
+    }
+
+
+    public function show($id)
+    {
+        if(!auth()->user()->hasPermission('view.employee')){
+
+            toastr()->error("Access Denied :(");
+            return back();
+        }
+        $id = base64_decode($id);
+        $record = User::find($id);
+
+        if(is_null($record)){
+
+            toastr()->error("Record not found");
+            return back();
+        }
+        return view('admin.employee.view-employee', ['employee' => $record]);
     }
 
     public function availability()

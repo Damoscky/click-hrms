@@ -66,8 +66,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ["auth:web", "superadmin"]], 
 
     Route::group(['prefix' => 'employee'], function(){
         Route::get('/', [AdminEmployeeController::class, 'index'])->name('admin.employee.all');
+        Route::get('/pending', [AdminEmployeeController::class, 'pendingApproval'])->name('admin.employee.pending');
         Route::post('/store', [AdminEmployeeController::class, 'store'])->name('admin.employee.store');
-        Route::get('/view', [AdminEmployeeController::class, 'show'])->name('admin.employee.show');
+        Route::get('/view/{id}', [AdminEmployeeController::class, 'show'])->name('admin.employee.show');
         Route::get('/availability', [AdminEmployeeController::class, 'availability'])->name('admin.employee.availability');
     });
 

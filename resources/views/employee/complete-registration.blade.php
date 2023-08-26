@@ -465,7 +465,7 @@
             </div>
             @if (!auth()->user()->sent_for_approval)
                 <a href="{{ route('employee.application.sendforapproval') }}" class="btn btn-success"
-                    data-bs-toggle="modal" data-bs-target="#confirm_approval_modal" class="btn btn-success">Submit for
+                    data-bs-toggle="modal" data-bs-target="#confirm_approval_modal">Submit for
                     Approval</a>
             @endif
             <!--Submit for Approval Modal -->
@@ -479,7 +479,7 @@
                                 aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            Are you sure you want to submit this application for approval?
+                            Are you sure you want to submit this application for approval? This action cannot be undone.
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
