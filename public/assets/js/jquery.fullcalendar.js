@@ -134,6 +134,7 @@
         var form = '';
         var today = new Date($.now());
 
+        
         var defaultEvents =  [
             {
                 title: 'Available Name 4',
