@@ -134,8 +134,9 @@
         var form = '';
         var today = new Date($.now());
 
-        var defaultEvents =  [{
-                title: 'Event Name 4',
+        var defaultEvents =  [
+            {
+                title: 'Available Name 4',
                 start: new Date($.now() + 148000000),
                 className: 'bg-purple'
             },
@@ -154,7 +155,8 @@
                 title: 'Test Event 3',
                 start: new Date($.now() + 338000000),
                 className: 'bg-primary'
-            }];
+            }
+        ];
 
         var $this = this;
         $this.$calendarObj = $this.$calendar.fullCalendar({

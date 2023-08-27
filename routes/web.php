@@ -7,6 +7,7 @@ use App\Http\Controllers\v1\Admin\AdminController;
 use App\Http\Controllers\v1\Admin\DepartmentController;
 use App\Http\Controllers\v1\Admin\EmployeeController AS AdminEmployeeController;
 use App\Http\Controllers\v1\Employee\EmployeeController AS EmployeeController;
+use App\Http\Controllers\v1\Employee\TimesheetController AS EmployeeTimesheetController;
 use App\Http\Controllers\v1\Admin\ClientController;
 use App\Http\Controllers\v1\Admin\TimesheetController;
 use App\Http\Controllers\v1\Admin\StaffController;
@@ -51,6 +52,14 @@ Route::group(['prefix' => 'employee', 'middleware' => ["auth:web", "employee"]],
     Route::get('document/delete/{id}', [EmployeeController::class, 'deleteDocument'])->name('employee.document.delete');
     Route::get('application/sendforapproval', [EmployeeController::class, 'sendForApproval'])->name('employee.application.sendforapproval');
     Route::get('/complete/registration', [EmployeeController::class, 'completeRegistration'])->name('employee.complete-registration');
+
+    Route::group(['prefix' => 'timesheet'], function(){
+        Route::get('/', [EmployeeTimesheetController::class, 'index'])->name('employee.timesheet.all');
+    });
+
+    Route::group(['prefix' => 'availability'], function(){
+        Route::get('/', [EmployeeTimesheetController::class, 'availability'])->name('employee.availability.all');
+    });
 });
 
 
@@ -69,6 +78,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ["auth:web", "superadmin"]], 
         Route::get('/pending', [AdminEmployeeController::class, 'pendingApproval'])->name('admin.employee.pending');
         Route::post('/store', [AdminEmployeeController::class, 'store'])->name('admin.employee.store');
         Route::get('/view/{id}', [AdminEmployeeController::class, 'show'])->name('admin.employee.show');
+        Route::get('/approve/{id}', [AdminEmployeeController::class, 'approveEmployee'])->name('admin.employee.approve');
+        Route::post('/disapprove/{id}', [AdminEmployeeController::class, 'declineEmployee'])->name('admin.employee.disapprove');
         Route::get('/availability', [AdminEmployeeController::class, 'availability'])->name('admin.employee.availability');
     });
 

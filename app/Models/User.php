@@ -34,6 +34,16 @@ class User extends Authenticatable
         return $this->hasOne(BankInformation::class);
     }
 
+    public function employeeDisapproved()
+    {
+        return $this->hasMany(EmployeeDisapproval::class, 'employee_id');
+    }
+
+    public function disapprovedBy()
+    {
+        return $this->hasMany(EmployeeDisapproval::class, 'declined_by');
+    }
+
     public function experience()
     {
         return $this->hasMany(Experience::class);

@@ -31,9 +31,9 @@
     <link rel="stylesheet" href="{{ asset('assets') }}/css/bootstrap-datetimepicker.min.css" />
     <link rel="stylesheet" href="{{ asset('assets') }}/plugins/morris/morris.css" />
 
+    <link rel="stylesheet" href="{{ asset('assets') }}/css/fullcalendar.min.css" />
     <link rel="stylesheet" href="{{ asset('assets') }}/css/style.css" />
 
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
 
 </head>
 
@@ -67,7 +67,7 @@
 
             <ul class="nav user-menu">
 
-                <li class="nav-item dropdown">
+                {{-- <li class="nav-item dropdown">
                     <a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
                         <i class="fa-regular fa-bell"></i>
                         <span class="badge rounded-pill">3</span>
@@ -99,36 +99,16 @@
                                         </div>
                                     </a>
                                 </li>
-                                <li class="notification-message">
-                                    <a href="activities.html">
-                                        <div class="chat-block d-flex">
-                                            <span class="avatar flex-shrink-0">
-                                                <img src="{{ asset('assets') }}/img/profiles/avatar-03.jpg"
-                                                    alt="User Image" />
-                                            </span>
-                                            <div class="media-body flex-grow-1">
-                                                <p class="noti-details">
-                                                    <span class="noti-title">Tarah Shropshire</span>
-                                                    changed the task name
-                                                    <span class="noti-title">Appointment booking with payment
-                                                        gateway</span>
-                                                </p>
-                                                <p class="noti-time">
-                                                    <span class="notification-time">6 mins ago</span>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
+                                
                             </ul>
                         </div>
                         <div class="topnav-dropdown-footer">
                             <a href="activities.html">View all Notifications</a>
                         </div>
                     </div>
-                </li>
+                </li> --}}
 
-                <li class="nav-item dropdown">
+                {{-- <li class="nav-item dropdown">
                     <a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
                         <i class="fa-regular fa-comment"></i><span class="badge rounded-pill">8</span>
                     </a>
@@ -158,32 +138,14 @@
                                         </div>
                                     </a>
                                 </li>
-                                <li class="notification-message">
-                                    <a href="chat.html">
-                                        <div class="list-item">
-                                            <div class="list-left">
-                                                <span class="avatar">
-                                                    <img src="{{ asset('assets') }}/img/profiles/avatar-02.jpg"
-                                                        alt="User Image" />
-                                                </span>
-                                            </div>
-                                            <div class="list-body">
-                                                <span class="message-author">John Doe</span>
-                                                <span class="message-time">6 Mar</span>
-                                                <div class="clearfix"></div>
-                                                <span class="message-content">Lorem ipsum dolor sit amet, consectetur
-                                                    adipiscing</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
+                                
                             </ul>
                         </div>
                         <div class="topnav-dropdown-footer">
                             <a href="chat.html">View all Messages</a>
                         </div>
                     </div>
-                </li>
+                </li> --}}
 
                 <li class="nav-item dropdown has-arrow main-drop">
                     <a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
@@ -242,7 +204,7 @@
                         </li>
                         @role(['employee']) 
                             <li class="active">
-                                <a href="{{ route('admin.timesheet.all') }}"><i class="la la-clock-o"></i> <span> Timesheet</span></a>
+                                <a href="{{ route('employee.timesheet.all') }}"><i class="la la-clock-o"></i> <span> Timesheet</span></a>
                             </li>
                             <li class="submenu active">
                                 <a href="#"><i class="la la-calendar"></i> <span> Shifts & Schedule</span>
@@ -250,7 +212,7 @@
                                 <ul>
                                     <li><a href="{{ route('admin.shift.all') }}">All Shifts</a></li>
                                     <li><a href="{{ route('admin.shift.pending') }}">Pending Shifts</a></li>
-                                    <li><a href="{{ route('admin.employee.availability') }}">Employee Availablility</a></li>
+                                    <li><a href="{{ route('employee.availability.all') }}">Availablility</a></li>
                                 </ul>
                             </li>
                             <li>
@@ -292,11 +254,16 @@
     <script src="{{ asset('assets') }}/js/moment.min.js"></script>
     <script src="{{ asset('assets') }}/js/bootstrap-datetimepicker.min.js"></script>
 
+    <script src="{{ asset('assets') }}/js/jquery-ui.min.js"></script>
+    <script src="{{ asset('assets') }}/js/fullcalendar.min.js"></script>
+    <script src="{{ asset('assets') }}/js/jquery.fullcalendar.js"></script>
+
     <script src="{{ asset('assets') }}/js/layout.js"></script>
     <script src="{{ asset('assets') }}/js/theme-settings.js"></script>
     <script src="{{ asset('assets') }}/js/greedynav.js"></script>
 
     <script src="{{ asset('assets') }}/js/app.js"></script>
+
 
 </body>
 

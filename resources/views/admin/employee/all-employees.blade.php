@@ -39,7 +39,7 @@
                             <option>Select Department</option>
                             @if (count($departments) > 0)
                                 @foreach ($departments as $department)
-                                    <option value="{{$department->id}}">{{$department->name}}</option>
+                                    <option value="{{ $department->id }}">{{ $department->name }}</option>
                                 @endforeach
                             @endif
                         </select>
@@ -54,282 +54,43 @@
             </div>
 
             <div class="row staff-grid-row">
-                <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-                    <div class="profile-widget">
-                        <div class="profile-img">
-                            <a href="{{ route('admin.employee.show') }}" class="avatar"><img
-                                    src="{{ asset('assets') }}/img/profiles/avatar-02.jpg" alt="User Image" /></a>
-                        </div>
-                        <div class="dropdown profile-action">
-                            <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
-                                aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                    data-bs-target="#edit_employee"><i class="fa-solid fa-pencil m-r-5"></i> Edit</a>
-                                <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                    data-bs-target="#delete_employee"><i class="fa-regular fa-trash-can m-r-5"></i>
-                                    Delete</a>
+                @if (count($totalEmployees) > 0)
+                    @foreach ($totalEmployees as $employee)
+                        <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
+                            <div class="profile-widget">
+                                <div class="profile-img">
+                                    @if (isset($employee->employeeRecord->image))
+                                        <a href="{{ route('admin.employee.show', base64_encode($employee->id)) }}"
+                                            class="avatar"><img src="{{ $employee->employeeRecord->image }}"
+                                                alt="Profile Picture" /></a>
+                                    @else
+                                        <a href="{{ route('admin.employee.show') }}" class="avatar"><img
+                                                src="{{ asset('assets') }}/img/user.png" alt="User Image" /></a>
+                                    @endif
+                                </div>
+                                <div class="dropdown profile-action">
+                                    <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
+                                        aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                            data-bs-target="#"><i class="fa-solid fa-pencil m-r-5"></i>
+                                            Edit</a>
+                                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                            data-bs-target="#delete_employee"><i class="fa-regular fa-trash-can m-r-5"></i>
+                                            Delete</a>
+                                    </div>
+                                </div>
+                                <h4 class="user-name m-t-10 mb-0 text-ellipsis">
+                                    <a href="profile.html">{{ $employee->first_name }} {{ $employee->last_name }}</a>
+                                </h4>
+                                <div class="small text-muted">{{ $employee->employeeRecord->department->name }}</div>
                             </div>
                         </div>
-                        <h4 class="user-name m-t-10 mb-0 text-ellipsis">
-                            <a href="profile.html">John Doe</a>
-                        </h4>
-                        <div class="small text-muted">Web Designer</div>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-                    <div class="profile-widget">
-                        <div class="profile-img">
-                            <a href="profile.html" class="avatar"><img
-                                    src="{{ asset('assets') }}/img/profiles/avatar-09.jpg" alt="User Image" /></a>
-                        </div>
-                        <div class="dropdown profile-action">
-                            <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
-                                aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                    data-bs-target="#edit_employee"><i class="fa-solid fa-pencil m-r-5"></i> Edit</a>
-                                <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                    data-bs-target="#delete_employee"><i class="fa-regular fa-trash-can m-r-5"></i>
-                                    Delete</a>
-                            </div>
-                        </div>
-                        <h4 class="user-name m-t-10 mb-0 text-ellipsis">
-                            <a href="profile.html">Richard Miles</a>
-                        </h4>
-                        <div class="small text-muted">Support Worker</div>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-                    <div class="profile-widget">
-                        <div class="profile-img">
-                            <a href="profile.html" class="avatar"><img
-                                    src="{{ asset('assets') }}/img/profiles/avatar-10.jpg" alt="User Image" /></a>
-                        </div>
-                        <div class="dropdown profile-action">
-                            <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
-                                aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                    data-bs-target="#edit_employee"><i class="fa-solid fa-pencil m-r-5"></i> Edit</a>
-                                <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                    data-bs-target="#delete_employee"><i class="fa-regular fa-trash-can m-r-5"></i>
-                                    Delete</a>
-                            </div>
-                        </div>
-                        <h4 class="user-name m-t-10 mb-0 text-ellipsis">
-                            <a href="profile.html">John Smith</a>
-                        </h4>
-                        <div class="small text-muted">Android Developer</div>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-                    <div class="profile-widget">
-                        <div class="profile-img">
-                            <a href="profile.html" class="avatar"><img
-                                    src="{{ asset('assets') }}/img/profiles/avatar-05.jpg" alt="User Image" /></a>
-                        </div>
-                        <div class="dropdown profile-action">
-                            <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
-                                aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                    data-bs-target="#edit_employee"><i class="fa-solid fa-pencil m-r-5"></i> Edit</a>
-                                <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                    data-bs-target="#delete_employee"><i class="fa-regular fa-trash-can m-r-5"></i>
-                                    Delete</a>
-                            </div>
-                        </div>
-                        <h4 class="user-name m-t-10 mb-0 text-ellipsis">
-                            <a href="profile.html">Mike Litorus</a>
-                        </h4>
-                        <div class="small text-muted">IOS Developer</div>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-                    <div class="profile-widget">
-                        <div class="profile-img">
-                            <a href="profile.html" class="avatar"><img
-                                    src="{{ asset('assets') }}/img/profiles/avatar-11.jpg" alt="User Image" /></a>
-                        </div>
-                        <div class="dropdown profile-action">
-                            <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
-                                aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                    data-bs-target="#edit_employee"><i class="fa-solid fa-pencil m-r-5"></i> Edit</a>
-                                <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                    data-bs-target="#delete_employee"><i class="fa-regular fa-trash-can m-r-5"></i>
-                                    Delete</a>
-                            </div>
-                        </div>
-                        <h4 class="user-name m-t-10 mb-0 text-ellipsis">
-                            <a href="profile.html">Wilmer Deluna</a>
-                        </h4>
-                        <div class="small text-muted">Team Leader</div>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-                    <div class="profile-widget">
-                        <div class="profile-img">
-                            <a href="profile.html" class="avatar"><img
-                                    src="{{ asset('assets') }}/img/profiles/avatar-12.jpg" alt="User Image" /></a>
-                        </div>
-                        <div class="dropdown profile-action">
-                            <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
-                                aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                    data-bs-target="#edit_employee"><i class="fa-solid fa-pencil m-r-5"></i> Edit</a>
-                                <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                    data-bs-target="#delete_employee"><i class="fa-regular fa-trash-can m-r-5"></i>
-                                    Delete</a>
-                            </div>
-                        </div>
-                        <h4 class="user-name m-t-10 mb-0 text-ellipsis">
-                            <a href="profile.html">Jeffrey Warden</a>
-                        </h4>
-                        <div class="small text-muted">Support Worker</div>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-                    <div class="profile-widget">
-                        <div class="profile-img">
-                            <a href="profile.html" class="avatar"><img
-                                    src="{{ asset('assets') }}/img/profiles/avatar-13.jpg" alt="User Image" /></a>
-                        </div>
-                        <div class="dropdown profile-action">
-                            <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
-                                aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                    data-bs-target="#edit_employee"><i class="fa-solid fa-pencil m-r-5"></i> Edit</a>
-                                <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                    data-bs-target="#delete_employee"><i class="fa-regular fa-trash-can m-r-5"></i>
-                                    Delete</a>
-                            </div>
-                        </div>
-                        <h4 class="user-name m-t-10 mb-0 text-ellipsis">
-                            <a href="profile.html">Bernardo Galaviz</a>
-                        </h4>
-                        <div class="small text-muted">Support Worker</div>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-                    <div class="profile-widget">
-                        <div class="profile-img">
-                            <a href="profile.html" class="avatar"><img
-                                    src="{{ asset('assets') }}/img/profiles/avatar-01.jpg" alt="User Image" /></a>
-                        </div>
-                        <div class="dropdown profile-action">
-                            <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
-                                aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                    data-bs-target="#edit_employee"><i class="fa-solid fa-pencil m-r-5"></i> Edit</a>
-                                <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                    data-bs-target="#delete_employee"><i class="fa-regular fa-trash-can m-r-5"></i>
-                                    Delete</a>
-                            </div>
-                        </div>
-                        <h4 class="user-name m-t-10 mb-0 text-ellipsis">
-                            <a href="profile.html">Lesley Grauer</a>
-                        </h4>
-                        <div class="small text-muted">Team Leader</div>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-                    <div class="profile-widget">
-                        <div class="profile-img">
-                            <a href="profile.html" class="avatar"><img
-                                    src="{{ asset('assets') }}/img/profiles/avatar-16.jpg" alt="User Image" /></a>
-                        </div>
-                        <div class="dropdown profile-action">
-                            <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
-                                aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                    data-bs-target="#edit_employee"><i class="fa-solid fa-pencil m-r-5"></i> Edit</a>
-                                <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                    data-bs-target="#delete_employee"><i class="fa-regular fa-trash-can m-r-5"></i>
-                                    Delete</a>
-                            </div>
-                        </div>
-                        <h4 class="user-name m-t-10 mb-0 text-ellipsis">
-                            <a href="profile.html">Jeffery Lalor</a>
-                        </h4>
-                        <div class="small text-muted">Team Leader</div>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-                    <div class="profile-widget">
-                        <div class="profile-img">
-                            <a href="profile.html" class="avatar"><img
-                                    src="{{ asset('assets') }}/img/profiles/avatar-04.jpg" alt="User Image" /></a>
-                        </div>
-                        <div class="dropdown profile-action">
-                            <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
-                                aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                    data-bs-target="#edit_employee"><i class="fa-solid fa-pencil m-r-5"></i> Edit</a>
-                                <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                    data-bs-target="#delete_employee"><i class="fa-regular fa-trash-can m-r-5"></i>
-                                    Delete</a>
-                            </div>
-                        </div>
-                        <h4 class="user-name m-t-10 mb-0 text-ellipsis">
-                            <a href="profile.html">Loren Gatlin</a>
-                        </h4>
-                        <div class="small text-muted">Android Developer</div>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-                    <div class="profile-widget">
-                        <div class="profile-img">
-                            <a href="profile.html" class="avatar"><img
-                                    src="{{ asset('assets') }}/img/profiles/avatar-03.jpg" alt="User Image" /></a>
-                        </div>
-                        <div class="dropdown profile-action">
-                            <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
-                                aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                    data-bs-target="#edit_employee"><i class="fa-solid fa-pencil m-r-5"></i> Edit</a>
-                                <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                    data-bs-target="#delete_employee"><i class="fa-regular fa-trash-can m-r-5"></i>
-                                    Delete</a>
-                            </div>
-                        </div>
-                        <h4 class="user-name m-t-10 mb-0 text-ellipsis">
-                            <a href="profile.html">Tarah Shropshire</a>
-                        </h4>
-                        <div class="small text-muted">Android Developer</div>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-                    <div class="profile-widget">
-                        <div class="profile-img">
-                            <a href="profile.html" class="avatar"><img
-                                    src="{{ asset('assets') }}/img/profiles/avatar-08.jpg" alt="User Image" /></a>
-                        </div>
-                        <div class="dropdown profile-action">
-                            <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
-                                aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                    data-bs-target="#edit_employee"><i class="fa-solid fa-pencil m-r-5"></i> Edit</a>
-                                <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                    data-bs-target="#delete_employee"><i class="fa-regular fa-trash-can m-r-5"></i>
-                                    Delete</a>
-                            </div>
-                        </div>
-                        <h4 class="user-name m-t-10 mb-0 text-ellipsis">
-                            <a href="profile.html">Catherine Manseau</a>
-                        </h4>
-                        <div class="small text-muted">Android Developer</div>
-                    </div>
-                </div>
+                    @endforeach
+                @else
+                    <h4>No Record Found</h4>
+                @endif
+               
             </div>
         </div>
 
@@ -343,9 +104,9 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form action="{{route('admin.employee.store')}}" method="POST">
+                        <form action="{{ route('admin.employee.store') }}" method="POST">
 
-                            {{ csrf_field()}}
+                            {{ csrf_field() }}
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="input-block mb-3">
@@ -378,7 +139,8 @@
                                         <label class="col-form-label">Resumption Date
                                             <span class="text-danger">*</span></label>
                                         <div class="cal-icon">
-                                            <input class="form-control datetimepicker" name="resumption_date" type="text" />
+                                            <input class="form-control datetimepicker" name="resumption_date"
+                                                type="text" />
                                         </div>
                                     </div>
                                 </div>
@@ -405,7 +167,8 @@
                                             <option>Select Department</option>
                                             @if (count($departments) > 0)
                                                 @foreach ($departments as $department)
-                                                    <option value="{{$department->id}}">{{$department->name}}</option>
+                                                    <option value="{{ $department->id }}">{{ $department->name }}
+                                                    </option>
                                                 @endforeach
                                             @endif
                                         </select>
@@ -491,7 +254,8 @@
                                             <option>Select Department</option>
                                             @if (count($departments) > 0)
                                                 @foreach ($departments as $department)
-                                                    <option value="{{$department->id}}">{{$department->name}}</option>
+                                                    <option value="{{ $department->id }}">{{ $department->name }}
+                                                    </option>
                                                 @endforeach
                                             @endif
                                         </select>

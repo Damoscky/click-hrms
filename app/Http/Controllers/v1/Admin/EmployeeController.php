@@ -13,7 +13,10 @@ use Illuminate\Support\Facades\Validator;
 use jeremykenedy\LaravelRoles\Models\Role;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\CreateEmployeeNotification;
+use App\Notifications\ApproveEmployeeNotification;
+use App\Notifications\DeclineEmployeeNotification;
 use App\Helpers\ProcessAuditLog;
+use App\Models\EmployeeDisapproval;
 use Carbon\Carbon;
 use Auth, Hash;
 
@@ -28,12 +31,12 @@ class EmployeeController extends Controller
         }
         $userRole = 'employee';
             // $recordSearchParam = $request->searchByDate;
-
-        $totalCustomers = User::whereHas('roles', function ($roleTable) use ($userRole) {
-            $roleTable->where('name', $userRole);
-        })->get();
+        $employeeRole = 'employee';
+        $totalEmployees = User::whereHas('roles', function ($roleTable) use ($employeeRole) {
+            $roleTable->where('slug', $employeeRole);
+        })->where('status', 'Approved')->where('is_active', true)->get();
         $departments = Department::where('is_active', true)->get();
-        return view('admin.employee.all-employees', ['departments' => $departments, 'totalCustomers' => $totalCustomers]);
+        return view('admin.employee.all-employees', ['departments' => $departments, 'totalEmployees' => $totalEmployees]);
     }
 
     public function pendingApproval()
@@ -70,6 +73,67 @@ class EmployeeController extends Controller
             return back();
         }
         return view('admin.employee.view-employee', ['employee' => $record]);
+    }
+
+    public function approveEmployee($id)
+    {
+        if(!auth()->user()->hasPermission('edit.employee')){
+
+            toastr()->error("Access Denied :(");
+            return back();
+        }
+        $id = base64_decode($id);
+        $record = User::find($id);
+
+        if(is_null($record)){
+            toastr()->error("Record not found");
+            return back();
+        }
+        $record->update([
+            'status' => 'Approved',
+            'is_completed' => true,
+            'is_active' => true
+        ]);
+
+        //sendemail to notify employee
+        Notification::route('mail', $record->email)->notify(new ApproveEmployeeNotification($record));
+
+        toastr()->success("Employee activated succcessfully");
+        return back();
+    }
+
+    public function declineEmployee(Request $request, $id)
+    {
+        if(!auth()->user()->hasPermission('edit.employee')){
+
+            toastr()->error("Access Denied :(");
+            return back();
+        }
+        $id = base64_decode($id);
+        $record = User::find($id);
+
+        if(is_null($record)){
+            toastr()->error("Record not found");
+            return back();
+        }
+        $record->update([
+            'status' => 'Declined',
+            'is_completed' => false,
+            'is_active' => false,
+            'sent_for_approval' => false,
+        ]);
+
+        $reason = EmployeeDisapproval::create([
+            'declined_by' => auth()->user()->id,
+            'employee_id' => $record->id,
+            'reason' => $request->reason
+        ]);
+
+        //sendemail to notify employee
+        Notification::route('mail', $record->email)->notify(new DeclineEmployeeNotification($record));
+
+        toastr()->success("Employee disapproved succcessfully");
+        return back();
     }
 
     public function availability()

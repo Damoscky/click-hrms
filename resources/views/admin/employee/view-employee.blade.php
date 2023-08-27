@@ -55,7 +55,7 @@
                                                         <a class="btn btn-danger" data-bs-toggle="modal"
                                                             data-bs-target="#disapprove_modal">Disapprove</a>
                                                     @else
-                                                        <a class="btn btn-custom" href="chat.html">Send Message</a>
+                                                        {{-- <a class="btn btn-custom" href="#">Send Message</a> --}}
                                                     @endif
 
                                                 </div>
@@ -335,14 +335,16 @@
                                                         <div class="row row-sm">
                                                             @if (count($employee->document))
                                                                 @foreach ($employee->document as $document)
-                                                                    <div class="col-12 col-sm-4 col-md-3 col-lg-4 col-xl-3">
+                                                                    <div
+                                                                        class="col-12 col-sm-4 col-md-3 col-lg-4 col-xl-3">
                                                                         <div class="card card-file">
                                                                             <div class="dropdown-file">
                                                                                 <a href="#" class="dropdown-link"
                                                                                     data-bs-toggle="dropdown"><i
                                                                                         class="fa-solid fa-ellipsis-vertical"></i></a>
-                                                                                <div class="dropdown-menu dropdown-menu-right">
-        
+                                                                                <div
+                                                                                    class="dropdown-menu dropdown-menu-right">
+
                                                                                     <a href="{{ $document->file_path }}"
                                                                                         target="_blank"
                                                                                         class="dropdown-item">Download</a>
@@ -362,7 +364,7 @@
                                                                                         target="_blank"><i
                                                                                             class="fa-regular fa-file-image"></i></a>
                                                                                 @endif
-        
+
                                                                             </div>
                                                                             <div class="card-body">
                                                                                 <h6><a
@@ -371,10 +373,12 @@
                                                                                 <span>12mb</span>
                                                                             </div>
                                                                             <div class="card-footer">
-                                                                                Issued: {{ \Carbon\Carbon::parse($document->issued_date)->format('j F, Y') }},
+                                                                                Issued:
+                                                                                {{ \Carbon\Carbon::parse($document->issued_date)->format('j F, Y') }},
                                                                             </div>
                                                                             <div class="card-footer">
-                                                                                Expire: {{ \Carbon\Carbon::parse($document->expiry_date)->format('j F, Y') }}
+                                                                                Expire:
+                                                                                {{ \Carbon\Carbon::parse($document->expiry_date)->format('j F, Y') }}
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -392,55 +396,68 @@
                     </div>
                 </div>
 
-                <div class="modal fade" id="approve_modal" tabindex="-1" aria-labelledby="approveModalLabel"
-                    aria-hidden="true">
-                    <div class="modal-dialog">
+                <div class="modal custom-modal fade" id="approve_modal" role="dialog">
+                    <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Approve Employee
-                                    Record</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            </div>
                             <div class="modal-body">
-                                Hey! are you sure you want to approve employee? This action cannot
-                                be undone.
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                <a href="#" type="button" class="btn btn-primary">Confirm</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal fade" id="disapprove_modal" tabindex="-1" aria-labelledby="disapproveModalLabel"
-                    aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Disapprove Employee
-                                    Record</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            </div>
+                                <div class="form-header">
+                                    <h3>Approve Employee</h3>
+                                    <p>Are you sure you want to approve this employee? This action cannot
+                                        be undone.</p>
+                                </div>
+                                <div class="modal-btn delete-action">
+                                    <div class="row">
 
-                            <form action="#">
-                                <div class="modal-body">
-                                    <div class="input-block mb-3">
-                                        <label class="col-form-label">Reason
-                                            <span class="text-danger">*</span></label>
-                                        <textarea name="reason" required class="form-control" id="reason" cols="30" rows="10"></textarea>
+                                        <div class="col-6">
+                                            <a href="javascript:void(0);" data-bs-dismiss="modal"
+                                                class="btn btn-secondary cancel-btn">Cancel</a>
+                                        </div>
+                                        <div class="col-6">
+                                            <a href="{{ route('admin.employee.approve', base64_encode($employee->id)) }}"
+                                                class="btn btn-success continue-btn">Confirm</a>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Cancel</button>
-                                    <a href="#" type="button" class="btn btn-primary">Confirm</a>
-                                </div>
-                            </form>
+                            </div>
                         </div>
                     </div>
                 </div>
+
+                <div class="modal custom-modal fade" id="disapprove_modal" role="dialog">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <div class="form-header">
+                                    <h3>Disapprove Employee</h3>
+                                    <p>Are you sure you want to disapprove this employee? This action cannot
+                                        be undone.</p>
+                                </div>
+                                <div class="modal-btn delete-action">
+                                    <form action="{{route('admin.employee.disapprove', base64_encode($employee->id))}}" method="POST">
+                                        {{csrf_field()}}
+                                        <div class="row">
+                                            <div class="input-block mb-3">
+                                                <label class="col-form-label">Reason
+                                                    <span class="text-danger">*</span></label>
+                                                <textarea name="reason" required class="form-control" id="reason" cols="30" rows="10"></textarea>
+                                            </div>
+                                            <div class="col-6">
+                                                <a href="javascript:void(0);" data-bs-dismiss="modal"
+                                                    class="btn btn-secondary cancel-btn">Cancel</a>
+                                            </div>
+                                            <div class="col-6">
+                                                <button class="btn btn-primary submit-btn continue-btn">Confirm</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
                 <div class="tab-pane fade" id="emp_assets">
                     <div class="table-responsive table-newdatatable">
                         <table class="table table-new custom-table mb-0 datatable">

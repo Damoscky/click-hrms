@@ -9,10 +9,13 @@
                         <h3 class="page-title">Hello {{ auth()->user()->first_name }}!</h3>
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item">
-                                @if(!auth()->user()->sent_for_approval)
+                                @if(!auth()->user()->sent_for_approval && auth()->user()->status == "Pending")
                                     <a href="#">Please fill the form below to complete your registration</a>
-                                @else
+                                @elseif(auth()->user()->sent_for_approval && auth()->user()->status == "Review")
                                     <a href="#" class="btn btn-warning">Your application is currently under review.</a>
+                                @elseif(!auth()->user()->sent_for_approval && auth()->user()->status == "Declined")
+                                    <a href="#" class="btn btn-danger">Your application has been declined</a>
+                                    <a href="#"  data-bs-toggle="modal" data-bs-target="#reason_modal" class="btn btn-danger">View Reasons</a>
                                 @endif
                             </li>
                         </ul>
@@ -469,22 +472,68 @@
                     Approval</a>
             @endif
             <!--Submit for Approval Modal -->
-            <div class="modal fade" id="confirm_approval_modal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog">
+            <div class="modal custom-modal fade" id="confirm_approval_modal" role="dialog">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="form-header">
+                                <h3>Submit Record for Approval</h3>
+                                <p> Are you sure you want to submit this application for approval? This action cannot be undone.</p>
+                            </div>
+                            <div class="modal-btn delete-action">
+                                <div class="row">
+
+                                    <div class="col-6">
+                                        <a href="javascript:void(0);" data-bs-dismiss="modal"
+                                            class="btn btn-secondary cancel-btn">Cancel</a>
+                                    </div>
+                                    <div class="col-6">
+                                        <a href="{{ route('employee.application.sendforapproval') }}"
+                                            class="btn btn-success continue-btn">Confirm</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="reason_modal" class="modal custom-modal fade" role="dialog">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Submit Record for Approval</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
+                            <h5 class="modal-title">Reason for Disapproval</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
                         <div class="modal-body">
-                            Are you sure you want to submit this application for approval? This action cannot be undone.
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <a href="{{ route('employee.application.sendforapproval') }}" type="button"
-                                class="btn btn-primary">Confirm</a>
+                            <div class="table-responsive">
+                                @if (isset(auth()->user()->nextofkin))
+                                    <table class="table table-nowrap">
+                                        <thead>
+                                            <tr>
+                                                <th>Disapproved By</th>
+                                                <th class="text-center">Reason</th>
+                                                <th>Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (auth()->user()->employeeDisapproved as $disapproved)
+                                                
+                                            @endforeach
+                                            <tr>
+                                                <td>{{ $disapproved->declinedBy->first_name }}
+                                                    {{ $disapproved->declinedBy->last_name }}</td>
+                                                <td class="text-center">{{ $disapproved->reason }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($disapproved->created_at)->format('j F, Y') }}
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                @endif
+                            </div>
                         </div>
                     </div>
                 </div>
