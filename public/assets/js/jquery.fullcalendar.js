@@ -134,8 +134,30 @@
         var form = '';
         var today = new Date($.now());
 
-        
-        var defaultEvents =  [
+        // Example API endpoint
+        const apiUrl = 'https://jsonplaceholder.typicode.com/posts';
+
+        // Making a GET request using fetch
+        fetch(apiUrl)
+        .then(response => {
+            // Check if the response status is OK (200)
+            if (!response.ok) {
+            throw new Error(`Network response was not ok: ${response.status}`);
+            }
+            // Parse the response as JSON
+            return response.json();
+        })
+        .then(data => {
+            // Handle the JSON data
+            console.log('API response:', data);
+            var record = data;
+        })
+        .catch(error => {
+            // Handle errors
+            console.error('Fetch error:', error);
+        });
+
+        var $data = [
             {
                 title: 'Available Name 4',
                 start: new Date($.now() + 148000000),
@@ -158,6 +180,8 @@
                 className: 'bg-primary'
             }
         ];
+        console.log($data);
+        var defaultEvents =  $data;
 
         var $this = this;
         $this.$calendarObj = $this.$calendar.fullCalendar({

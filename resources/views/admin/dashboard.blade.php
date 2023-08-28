@@ -20,7 +20,7 @@
                         <div class="card-body">
                             <span class="dash-widget-icon"><i class="fa-solid fa-user"></i></span>
                             <div class="dash-widget-info">
-                                <h3>44</h3>
+                                <h3>0</h3>
                                 <span>Total Clients</span>
                             </div>
                         </div>
@@ -31,7 +31,7 @@
                         <div class="card-body">
                             <span class="dash-widget-icon"><i class="fa-regular fa-gem"></i></span>
                             <div class="dash-widget-info">
-                                <h3>37</h3>
+                                <h3>0</h3>
                                 <span>Total Shifts</span>
                             </div>
                         </div>
@@ -42,7 +42,7 @@
                         <div class="card-body">
                             <span class="dash-widget-icon"><i class="fa-solid fa-users"></i></span>
                             <div class="dash-widget-info">
-                                <h3>218</h3>
+                                <h3>2</h3>
                                 <span>Total Employees</span>
                             </div>
                         </div>
@@ -82,61 +82,40 @@
                                 <div class="row">
                                     <div class="col-md-6 col-6 text-center">
                                         <div class="stats-box mb-4">
-                                            <p>Shift Assigned</p>
-                                            <h3>35</h3>
+                                            <p>Pending Shifts</p>
+                                            <h3>0</h3>
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-6 text-center">
                                         <div class="stats-box mb-4">
-                                            <p>Pending Shift</p>
-                                            <h3>19</h3>
+                                            <p>Completed Shifts</p>
+                                            <h3>0</h3>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="progress mb-4">
-                                <div class="progress-bar bg-purple w-30" role="progressbar" aria-valuenow="30"
+                               
+                                <div class="progress-bar bg-warning w-50" role="progressbar" aria-valuenow="1850"
                                     aria-valuemin="0" aria-valuemax="100">
-                                    30%
+                                    50%
                                 </div>
-                                <div class="progress-bar bg-warning w-22" role="progressbar" aria-valuenow="18"
+                                <div class="progress-bar bg-success w-50" role="progressbar" aria-valuenow="50"
                                     aria-valuemin="0" aria-valuemax="100">
-                                    22%
+                                    50%
                                 </div>
-                                <div class="progress-bar bg-success w-24" role="progressbar" aria-valuenow="12"
-                                    aria-valuemin="0" aria-valuemax="100">
-                                    24%
-                                </div>
-                                <div class="progress-bar bg-danger w-21" role="progressbar" aria-valuenow="14"
-                                    aria-valuemin="0" aria-valuemax="100">
-                                    21%
-                                </div>
-                                <div class="progress-bar bg-info w-10" role="progressbar" aria-valuenow="14"
-                                    aria-valuemin="0" aria-valuemax="100">
-                                    10%
-                                </div>
+                                
                             </div>
                             <div>
                                 <p>
-                                    <i class="fa-regular fa-circle-dot text-purple me-2"></i>Completed Tasks <span
-                                        class="float-end">166</span>
+                                    <i class="fa-regular fa-circle-dot text-success me-2"></i>Completed Shifts <span
+                                        class="float-end">0</span>
                                 </p>
                                 <p>
-                                    <i class="fa-regular fa-circle-dot text-warning me-2"></i>Inprogress Tasks <span
-                                        class="float-end">115</span>
+                                    <i class="fa-regular fa-circle-dot text-warning me-2"></i>Pending Shifts <span
+                                        class="float-end">0</span>
                                 </p>
-                                <p>
-                                    <i class="fa-regular fa-circle-dot text-success me-2"></i>On Hold Tasks <span
-                                        class="float-end">31</span>
-                                </p>
-                                <p>
-                                    <i class="fa-regular fa-circle-dot text-danger me-2"></i>Pending Tasks <span
-                                        class="float-end">47</span>
-                                </p>
-                                <p class="mb-0">
-                                    <i class="fa-regular fa-circle-dot text-info me-2"></i>Review Tasks <span
-                                        class="float-end">5</span>
-                                </p>
+                               
                             </div>
                         </div>
                     </div>
@@ -145,20 +124,20 @@
                     <div class="card flex-fill">
                         <div class="card-body">
                             <h4 class="card-title">
-                                Available Shift
-                                <span class="badge bg-inverse-danger ms-2">5</span>
+                                Recent Timesheet
+                                {{-- <span class="badge bg-inverse-danger ms-2">5</span> --}}
                             </h4>
                             <div class="leave-info-box">
                                 <div class="media d-flex align-items-center">
-                                    <a href="profile.html" class="avatar"><img src="assets/img/user.jpg"
+                                    <a href="profile.html" class="avatar"><img src="{{asset('assets')}}/img/user.jpg"
                                             alt="User Image" /></a>
                                     <div class="media-body flex-grow-1">
-                                        <div class="text-sm my-0">Martin Lewis</div>
+                                        <div class="text-sm my-0">FirstHealth Care</div>
                                     </div>
                                 </div>
                                 <div class="row align-items-center mt-3">
                                     <div class="col-6">
-                                        <h6 class="mb-0">4 Sep 2019</h6>
+                                        <h6 class="mb-0">4 Sep 2023</h6>
                                         <span class="text-sm text-muted">Leave Date</span>
                                     </div>
                                     <div class="col-6 text-end">
@@ -168,7 +147,7 @@
                             </div>
                             <div class="leave-info-box">
                                 <div class="media d-flex align-items-center">
-                                    <a href="profile.html" class="avatar"><img src="assets/img/user.jpg"
+                                    <a href="profile.html" class="avatar"><img src="{{asset('assets')}}/img/user.jpg"
                                             alt="User Image" /></a>
                                     <div class="media-body flex-grow-1">
                                         <div class="text-sm my-0">Martin Lewis</div>

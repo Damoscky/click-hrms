@@ -509,7 +509,7 @@
                         </div>
                         <div class="modal-body">
                             <div class="table-responsive">
-                                @if (isset(auth()->user()->nextofkin))
+                                @if (count(auth()->user()->employeeDisapproved) > 0)
                                     <table class="table table-nowrap">
                                         <thead>
                                             <tr>
