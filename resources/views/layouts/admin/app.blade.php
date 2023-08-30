@@ -288,7 +288,7 @@
                                 <span class="menu-arrow"></span></a>
                             <ul>
                                 {{-- <li><a href="{{route('admin.department.create')}}">Create Department</a></li> --}}
-                                <li><a href="{{ route('admin.department.all') }}">All Departments</a></li>
+                                <li><a href="{{ route('admin.reports.employee') }}">Employee Reports </a></li>
 
                             </ul>
                         </li>

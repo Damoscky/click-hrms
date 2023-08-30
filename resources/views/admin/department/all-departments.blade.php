@@ -76,7 +76,7 @@
                                     <th>Name</th>
                                     <th>Date Created</th>
                                     <th>Status</th>
-                                    <th class="text-center">Actions</th>
+                                    <th class="text-center">Delete</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -91,20 +91,49 @@
                                             <td>{{ \Carbon\Carbon::parse($department->created_at)->format('j F, Y') }}</td>
                                             @if ($department->is_active)
                                             <td> 
-                                                Active
+                                                <a href="#" data-bs-toggle="modal"
+                                                    data-bs-target="#deactivate_department"
+                                                    class="btn btn-success mt-4 mb-3">Active
+                                                </a>
+                                                
                                             </td>
                                             @else
                                             <td> 
-                                                Inactive
+                                                <a href="#" data-bs-toggle="modal"
+                                                    data-bs-target="#activate_department"
+                                                    class="btn btn-warning mt-4 mb-3">Inactive
+                                                </a>
                                             
                                             </td>
                                             @endif
-                                            
                                             <td class="text-center">
-                                                <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                                        data-bs-target="#delete_approve"><i
+                                                <a class="btn btn-danger" href="#" data-bs-toggle="modal"
+                                                        data-bs-target="#delete_department{{$department->id}}"><i
                                                     class="fa-regular fa-trash-can m-r-5"></i>Delete</a>
                                             </td>
+                                            <div class="modal custom-modal fade" tabindex="-1" id="delete_department{{$department->id}}" role="dialog">
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content">
+                                                        <div class="modal-body">
+                                                            <div class="form-header">
+                                                                <h3>Delete {{$department->name}}</h3>
+                                                                <p>Are you sure want to delete this department?</p>
+                                                            </div>
+                                                            <div class="modal-btn delete-action">
+                                                                <div class="row">
+                                                                    <div class="col-6">
+                                                                        <a href="{{route('admin.department.delete', base64_encode($department->id))}}" class="btn btn-primary continue-btn" id="modal-item-id" >Delete </a>
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <a href="javascript:void(0);" data-bs-dismiss="modal"
+                                                                            class="btn btn-primary cancel-btn">Cancel</a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </tr>
                                     @endforeach
                                 @endif
@@ -126,11 +155,12 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form action="#" method="post">
+                        <form action="{{route('admin.department.create')}}" method="post">
+                            {{ csrf_field() }}
                             <div class="input-block mb-3">
                                 <label class="col-form-label">Name <span class="text-danger">*</span></label>
                                 <div>
-                                    <input class="form-control" type="text" />
+                                    <input class="form-control" required name="department_name" type="text" />
                                 </div>
                             </div>
 
@@ -196,29 +226,7 @@
             </div>
         </div>
 
-        <div class="modal custom-modal fade" id="delete_approve" role="dialog">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <div class="form-header">
-                            <h3>Delete Leave</h3>
-                            <p>Are you sure want to delete this leave?</p>
-                        </div>
-                        <div class="modal-btn delete-action">
-                            <div class="row">
-                                <div class="col-6">
-                                    <a href="javascript:void(0);" class="btn btn-primary continue-btn">Delete</a>
-                                </div>
-                                <div class="col-6">
-                                    <a href="javascript:void(0);" data-bs-dismiss="modal"
-                                        class="btn btn-primary cancel-btn">Cancel</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+       
     </div>
 
 @endsection

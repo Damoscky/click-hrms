@@ -12,6 +12,7 @@ use App\Http\Controllers\v1\Admin\ClientController;
 use App\Http\Controllers\v1\Admin\TimesheetController;
 use App\Http\Controllers\v1\Admin\StaffController;
 use App\Http\Controllers\v1\Admin\ShiftController;
+use App\Http\Controllers\v1\Admin\ReportController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -70,11 +71,19 @@ Route::group(['prefix' => 'admin', 'middleware' => ["auth:web", "superadmin"]], 
 
     Route::group(['prefix' => 'department'], function(){
         Route::get('/', [DepartmentController::class, 'index'])->name('admin.department.all');
-        Route::get('/create', [DepartmentController::class, 'create'])->name('admin.department.create');
+        Route::post('/create', [DepartmentController::class, 'create'])->name('admin.department.create');
+        Route::get('/delete/{id}', [DepartmentController::class, 'delete'])->name('admin.department.delete');
+    });
+
+    Route::group(['prefix' => 'reports'], function(){
+        Route::get('/employee', [ReportController::class, 'employeeReports'])->name('admin.reports.employee');
+        Route::post('/employee/generate', [ReportController::class, 'generateEmployeeReports'])->name('admin.reports.generate.employee');
+        Route::post('/employee/export', [ReportController::class, 'exportEmployeeReports'])->name('admin.reports.export.employee');
     });
 
     Route::group(['prefix' => 'employee'], function(){
         Route::get('/', [AdminEmployeeController::class, 'index'])->name('admin.employee.all');
+        Route::post('/search', [AdminEmployeeController::class, 'search'])->name('admin.employee.search');
         Route::get('/pending', [AdminEmployeeController::class, 'pendingApproval'])->name('admin.employee.pending');
         Route::post('/store', [AdminEmployeeController::class, 'store'])->name('admin.employee.store');
         Route::get('/view/{id}', [AdminEmployeeController::class, 'show'])->name('admin.employee.show');

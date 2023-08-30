@@ -9,12 +9,13 @@
                         <h3 class="page-title">Clients</h3>
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item">
-                                <a href="{{route('admin.client.all')}}">All Clients</a>
+                                <a href="{{ route('admin.client.all') }}">All Clients</a>
                             </li>
                         </ul>
                     </div>
                     <div class="col-auto float-end ms-auto">
-                        <a href="#" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_client"><i class="fa-solid fa-plus"></i> Add Client</a>
+                        <a href="#" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_client"><i
+                                class="fa-solid fa-plus"></i> Add Client</a>
                     </div>
                 </div>
             </div>
@@ -25,7 +26,7 @@
                         <div class="card-body">
                             <span class="dash-widget-icon"><i class="fa-solid fa-users"></i></span>
                             <div class="dash-widget-info">
-                                <h3>44</h3>
+                                <h3>{{ $data['totalClients']->count() }}</h3>
                                 <span>Total Clients</span>
                             </div>
                         </div>
@@ -36,7 +37,7 @@
                         <div class="card-body">
                             <span class="dash-widget-icon"><i class="fa-regular fa-arrow-down"></i></span>
                             <div class="dash-widget-info">
-                                <h3>37</h3>
+                                <h3>{{ $data['totalActiveClients']->count() }}</h3>
                                 <span>Active Clients</span>
                             </div>
                         </div>
@@ -47,7 +48,7 @@
                         <div class="card-body">
                             <span class="dash-widget-icon"><i class="fa-solid fa-users"></i></span>
                             <div class="dash-widget-info">
-                                <h3>218</h3>
+                                <h3>{{ $data['totalInactiveClients']->count() }}</h3>
                                 <span>Inactive Clients</span>
                             </div>
                         </div>
@@ -101,44 +102,39 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>
-                                        <h2 class="table-avatar">
-                                            <a href="client-profile.html" class="avatar"><img
-                                                    src="{{asset('assets')}}/img/profiles/avatar-28.jpg" alt="User Image" /></a>
-                                            <a href="client-profile.html">Mercury Software Inc</a>
-                                        </h2>
-                                    </td>
-                                    <td>CLT-0007</td>
-                                    <td>Amanda Warren</td>
-                                    <td>
-                                        <a href="https://smarthr.dreamguystech.com/cdn-cgi/l/email-protection"
-                                            class="__cf_email__"
-                                            data-cfemail="26474b4748424751475454434866435e474b564a430845494b">[email&#160;protected]</a>
-                                    </td>
-                                    <td>9876543210</td>
-                                    <td>
-                                        <div class="dropdown action-label">
-                                            <a href="#" class="btn btn-white btn-sm btn-rounded dropdown-toggle"
-                                                data-bs-toggle="dropdown" aria-expanded="false"><i
-                                                    class="fa-regular fa-circle-dot text-success"></i>
-                                                Active
-                                            </a>
-                                            <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="#"><i
-                                                        class="fa-regular fa-circle-dot text-success"></i>
-                                                    Active</a>
-                                                <a class="dropdown-item" href="#"><i
-                                                        class="fa-regular fa-circle-dot text-danger"></i>
-                                                    Inactive</a>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="text-end">
-                                        <a href="{{route('admin.client.show')}}" class="btn btn-secondary"> View </a>
-                                        <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit_client"> Edit </a>
-                                    </td>
-                                </tr>
+                                @if (count($data['totalClients']) > 0)
+                                    @foreach ($data['totalClients'] as $client)
+                                        <tr>
+                                            <td>
+                                                <h2 class="table-avatar">
+                                                    <a href="client-profile.html" class="avatar"><img
+                                                            src="{{ asset('assets') }}/img/profiles/avatar-28.jpg"
+                                                            alt="User Image" /></a>
+                                                    <a href="client-profile.html">Mercury Software Inc</a>
+                                                </h2>
+                                            </td>
+                                            <td>CLT-0007</td>
+                                            <td>Amanda Warren</td>
+                                            <td>
+                                                <a href="https://smarthr.dreamguystech.com/cdn-cgi/l/email-protection"
+                                                    class="__cf_email__"
+                                                    data-cfemail="26474b4748424751475454434866435e474b564a430845494b">[email&#160;protected]</a>
+                                            </td>
+                                            <td>9876543210</td>
+                                            <td>
+                                                <button class="btn btn-outline-success btn-sm">
+                                                    Active
+                                                </button>
+                                            </td>
+                                            <td class="text-end">
+                                                <a href="{{ route('admin.client.show') }}" class="btn btn-secondary"> View
+                                                </a>
+                                                <a href="#" class="btn btn-primary" data-bs-toggle="modal"
+                                                    data-bs-target="#edit_client"> Edit </a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
                             </tbody>
                         </table>
                     </div>
@@ -173,26 +169,29 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="input-block mb-3">
-                                        <label class="col-form-label">Confirm Email <span class="text-danger">*</span></label>
+                                        <label class="col-form-label">Confirm Email <span
+                                                class="text-danger">*</span></label>
                                         <input class="form-control floating" type="email" />
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="input-block mb-3">
-                                        <label class="col-form-label">Contact Number <span class="text-danger">*</span></label>
-                                        <input class="form-control" type="text" />
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="input-block mb-3">
-                                        <label class="col-form-label">Contact First Name <span class="text-danger">*</span><span
+                                        <label class="col-form-label">Contact Number <span
                                                 class="text-danger">*</span></label>
                                         <input class="form-control" type="text" />
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="input-block mb-3">
-                                        <label class="col-form-label">Contact Last Name <span class="text-danger">*</span></label>
+                                        <label class="col-form-label">Contact First Name <span
+                                                class="text-danger">*</span><span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text" />
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="input-block mb-3">
+                                        <label class="col-form-label">Contact Last Name <span
+                                                class="text-danger">*</span></label>
                                         <input class="form-control" type="text" />
                                     </div>
                                 </div>
@@ -251,26 +250,29 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="input-block mb-3">
-                                        <label class="col-form-label">Confirm Email <span class="text-danger">*</span></label>
+                                        <label class="col-form-label">Confirm Email <span
+                                                class="text-danger">*</span></label>
                                         <input class="form-control floating" type="email" />
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="input-block mb-3">
-                                        <label class="col-form-label">Contact Number <span class="text-danger">*</span></label>
-                                        <input class="form-control" type="text" />
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="input-block mb-3">
-                                        <label class="col-form-label">Contact First Name <span class="text-danger">*</span><span
+                                        <label class="col-form-label">Contact Number <span
                                                 class="text-danger">*</span></label>
                                         <input class="form-control" type="text" />
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="input-block mb-3">
-                                        <label class="col-form-label">Contact Last Name <span class="text-danger">*</span></label>
+                                        <label class="col-form-label">Contact First Name <span
+                                                class="text-danger">*</span><span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text" />
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="input-block mb-3">
+                                        <label class="col-form-label">Contact Last Name <span
+                                                class="text-danger">*</span></label>
                                         <input class="form-control" type="text" />
                                     </div>
                                 </div>

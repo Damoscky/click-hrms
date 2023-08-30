@@ -39,6 +39,42 @@ class EmployeeController extends Controller
         return view('admin.employee.all-employees', ['departments' => $departments, 'totalEmployees' => $totalEmployees]);
     }
 
+    public function search(Request $request)
+    {
+        $employeeRole = 'employee';
+        $departmentSearchParam = $request->department_id;
+        $employeeNameSearchParam = $request->employee_name;
+        $employeeIdSearchParam = $request->employee_id;
+        (!is_null($request->start_date) && !is_null($request->end_date)) ? $dateSearchParams = true : $dateSearchParams = false;
+
+        $records = User::whereHas('roles', function ($roleTable) use ($employeeRole) {
+            $roleTable->where('slug', $employeeRole);
+        })->when($departmentSearchParam, function ($query, $departmentSearchParam) use ($request) {
+            return $query->whereHas('employeeRecord', function($query) use ($departmentSearchParam){
+                return $query->where('department_id', $departmentSearchParam);
+            });
+        })->when($employeeNameSearchParam, function ($query, $employeeNameSearchParam) use ($request) {
+                return $query->where('first_name', 'LIKE', '%'. $employeeNameSearchParam .'%')
+                ->orWhere('last_name', 'LIKE', '%' .$employeeNameSearchParam. '%');
+        })->when($employeeIdSearchParam, function ($query, $employeeIdSearchParam) use ($request) {
+            return $query->whereHas('employeeRecord', function($query) use ($employeeIdSearchParam){
+                return $query->where('employee_id', $employeeIdSearchParam);
+            });
+        })->when($dateSearchParams, function($query, $dateSearchParams) use($request) {
+            $startDate = Carbon::parse($request->start_date);
+            $endDate = Carbon::parse($request->end_date);
+            return $query->whereBetween(DB::raw('DATE(created_at)'), [$startDate, $endDate]);
+        })
+        ->where('status', 'Approved')->where('is_active', true)->get();
+
+        $departments = Department::orderBy('name', 'DESC')->get();
+        return $records;
+
+        return view('admin.employee.all-employees', ['departments' => $departments, 'totalEmployees' => $records]);
+
+        
+    }
+
     public function pendingApproval()
     {
         if(!auth()->user()->hasPermission('view.employee')){
@@ -95,6 +131,18 @@ class EmployeeController extends Controller
             'is_active' => true
         ]);
 
+        $userInstance = auth()->user();
+
+        $dataToLog = [
+            'causer_id' => auth()->user()->id,
+            'action_id' => $record->id,
+            'action_type' => "Models\User",
+            'log_name' => "User application approved successfully",
+            'description' => "{$userInstance->first_name} {$userInstance->last_name} approved {$record->first_name} {$record->last_name} application successfully",
+        ];
+
+        ProcessAuditLog::storeAuditLog($dataToLog);
+
         //sendemail to notify employee
         Notification::route('mail', $record->email)->notify(new ApproveEmployeeNotification($record));
 
@@ -128,6 +176,18 @@ class EmployeeController extends Controller
             'employee_id' => $record->id,
             'reason' => $request->reason
         ]);
+
+        $userInstance = auth()->user();
+
+        $dataToLog = [
+            'causer_id' => auth()->user()->id,
+            'action_id' => $record->id,
+            'action_type' => "Models\User",
+            'log_name' => "User application declined successfully",
+            'description' => "{$userInstance->first_name} {$userInstance->last_name} declined {$record->first_name} {$record->last_name} application successfully",
+        ];
+
+        ProcessAuditLog::storeAuditLog($dataToLog);
 
         //sendemail to notify employee
         Notification::route('mail', $record->email)->notify(new DeclineEmployeeNotification($record));
@@ -224,6 +284,8 @@ class EmployeeController extends Controller
 
 
     }
+
+    
 
     public function validateEmployeeRequest($request)
     {

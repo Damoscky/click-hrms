@@ -20,38 +20,43 @@
                 </div>
             </div>
 
-            <div class="row filter-row">
-                <div class="col-sm-6 col-md-3">
-                    <div class="input-block mb-3 form-focus">
-                        <input type="text" class="form-control floating" />
-                        <label class="focus-label">Employee ID</label>
+            <form action="{{ route('admin.employee.search') }}" method="POST">
+                {{ csrf_field() }}
+
+                <div class="row filter-row">
+                    <div class="col-sm-6 col-md-3">
+                        <div class="input-block mb-3 form-focus">
+                            <input type="text" name="employee_id" class="form-control floating" />
+                            <label class="focus-label">Employee ID</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="input-block mb-3 form-focus">
+                            <input type="text" name="employee_name" class="form-control floating" />
+                            <label class="focus-label">Employee Name</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="input-block mb-3 form-focus select-focus">
+                            <select name="department_id" class="select floating">
+                                <option>Select Department</option>
+                                @if (count($departments) > 0)
+                                    @foreach ($departments as $department)
+                                        <option value="{{ $department->id }}">{{ $department->name }}</option>
+                                    @endforeach
+                                @endif
+                            </select>
+                            <label class="focus-label">Department</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-success"> Search </button>
+                        </div>
                     </div>
                 </div>
-                <div class="col-sm-6 col-md-3">
-                    <div class="input-block mb-3 form-focus">
-                        <input type="text" class="form-control floating" />
-                        <label class="focus-label">Employee Name</label>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-md-3">
-                    <div class="input-block mb-3 form-focus select-focus">
-                        <select class="select floating">
-                            <option>Select Department</option>
-                            @if (count($departments) > 0)
-                                @foreach ($departments as $department)
-                                    <option value="{{ $department->id }}">{{ $department->name }}</option>
-                                @endforeach
-                            @endif
-                        </select>
-                        <label class="focus-label">Designation</label>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-md-3">
-                    <div class="d-grid">
-                        <a href="#" class="btn btn-success w-100"> Search </a>
-                    </div>
-                </div>
-            </div>
+
+            </form>
 
             <div class="row staff-grid-row">
                 @if (count($totalEmployees) > 0)
@@ -72,8 +77,8 @@
                                     <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
                                         aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                     <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                            data-bs-target="#"><i class="fa-solid fa-pencil m-r-5"></i>
+                                        <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#"><i
+                                                class="fa-solid fa-pencil m-r-5"></i>
                                             Edit</a>
                                         <a class="dropdown-item" href="#" data-bs-toggle="modal"
                                             data-bs-target="#delete_employee"><i class="fa-regular fa-trash-can m-r-5"></i>
@@ -90,7 +95,7 @@
                 @else
                     <h4>No Record Found</h4>
                 @endif
-               
+
             </div>
         </div>
 
@@ -110,8 +115,7 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="input-block mb-3">
-                                        <label class="col-form-label">First Name <span
-                                                class="text-danger">*</span></label>
+                                        <label class="col-form-label">First Name <span class="text-danger">*</span></label>
                                         <input class="form-control" name="first_name" required type="text" />
                                     </div>
                                 </div>

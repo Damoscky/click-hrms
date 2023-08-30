@@ -239,6 +239,45 @@ class PermissionsTableSeeder extends Seeder
                 'description' => 'Staff Management',
                 'model'       => 'Permission',
             ],
+
+
+            [
+                'name'        => 'Can View Department',
+                'slug'        => 'view.department',
+                'description' => 'Department Management',
+                'model'       => 'Permission',
+            ],
+            [
+                'name'        => 'Can Create Department',
+                'slug'        => 'create.department',
+                'description' => 'Department Management',
+                'model'       => 'Permission',
+            ],
+            [
+                'name'        => 'Can Edit Department',
+                'slug'        => 'edit.department',
+                'description' => 'Department Management',
+                'model'       => 'Permission',
+            ],
+            [
+                'name'        => 'Can Delete Department',
+                'slug'        => 'delete.department',
+                'description' => 'Department Management',
+                'model'       => 'Permission',
+            ],
+
+            [
+                'name'        => 'Can View Reports',
+                'slug'        => 'edit.reports',
+                'description' => 'Reports Management',
+                'model'       => 'Permission',
+            ],
+            [
+                'name'        => 'Can Export Reports',
+                'slug'        => 'export.reports',
+                'description' => 'Reports Management',
+                'model'       => 'Permission',
+            ],
         ];
 
         /*
