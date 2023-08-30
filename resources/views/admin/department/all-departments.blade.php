@@ -93,7 +93,7 @@
                                             <td> 
                                                 <a href="#" data-bs-toggle="modal"
                                                     data-bs-target="#deactivate_department"
-                                                    class="btn btn-success mt-4 mb-3">Active
+                                                    class="btn btn-success mt-2 mb-2">Active
                                                 </a>
                                                 
                                             </td>
@@ -101,7 +101,7 @@
                                             <td> 
                                                 <a href="#" data-bs-toggle="modal"
                                                     data-bs-target="#activate_department"
-                                                    class="btn btn-warning mt-4 mb-3">Inactive
+                                                    class="btn btn-warning mt-2 mb-2">Inactive
                                                 </a>
                                             
                                             </td>

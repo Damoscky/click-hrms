@@ -127,9 +127,9 @@
                                                 </button>
                                             </td>
                                             <td class="text-end">
-                                                <a href="{{ route('admin.client.show') }}" class="btn btn-secondary"> View
+                                                <a href="{{ route('admin.client.show') }}" class="btn btn-outline-primary"> View
                                                 </a>
-                                                <a href="#" class="btn btn-primary" data-bs-toggle="modal"
+                                                <a href="#" class="btn btn-outline-warning" data-bs-toggle="modal"
                                                     data-bs-target="#edit_client"> Edit </a>
                                             </td>
                                         </tr>
@@ -152,65 +152,66 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form>
+                        <form action="{{route('admin.client.create')}}" method="POST">
+                            {{csrf_field()}}
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="input-block mb-3">
                                         <label class="col-form-label">Company Name <span
                                                 class="text-danger">*</span></label>
-                                        <input class="form-control" type="text" />
+                                        <input class="form-control" required name="company_name" type="text" />
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="input-block mb-3">
                                         <label class="col-form-label">Email <span class="text-danger">*</span></label>
-                                        <input class="form-control floating" type="email" />
+                                        <input class="form-control floating" required name="email" type="email" />
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="input-block mb-3">
                                         <label class="col-form-label">Confirm Email <span
                                                 class="text-danger">*</span></label>
-                                        <input class="form-control floating" type="email" />
+                                        <input class="form-control floating" required name="email_confirmation" type="email" />
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="input-block mb-3">
                                         <label class="col-form-label">Contact Number <span
                                                 class="text-danger">*</span></label>
-                                        <input class="form-control" type="text" />
+                                        <input class="form-control" required name="phone_number" type="text" />
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="input-block mb-3">
                                         <label class="col-form-label">Contact First Name <span
-                                                class="text-danger">*</span><span class="text-danger">*</span></label>
-                                        <input class="form-control" type="text" />
+                                                class="text-danger">*</span></label>
+                                        <input class="form-control" name="first_name" required type="text" />
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="input-block mb-3">
                                         <label class="col-form-label">Contact Last Name <span
                                                 class="text-danger">*</span></label>
-                                        <input class="form-control" type="text" />
+                                        <input class="form-control" name="last_name" required type="text" />
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="input-block mb-3">
                                         <label class="col-form-label">Address <span class="text-danger">*</span></label>
-                                        <input class="form-control" type="text" />
+                                        <input class="form-control" name="address" required type="text" />
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="input-block mb-3">
-                                        <label class="col-form-label">Region <span class="text-danger">*</span></label>
-                                        <input class="form-control" type="text" />
+                                        <label class="col-form-label">State <span class="text-danger">*</span></label>
+                                        <input class="form-control" name="state" required type="text" />
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="input-block mb-3">
                                         <label class="col-form-label">Postcode <span class="text-danger">*</span></label>
-                                        <input class="form-control" type="text" />
+                                        <input class="form-control" name="post_code" required type="text" />
                                     </div>
                                 </div>
                             </div>

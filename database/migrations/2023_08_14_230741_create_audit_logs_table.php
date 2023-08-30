@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('causer_id');
             $table->unsignedBigInteger('action_id');
             $table->mediumText('log_name')->nullable();
+            $table->mediumText('action')->nullable();
             $table->text('description')->nullable();
             $table->foreign('causer_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();

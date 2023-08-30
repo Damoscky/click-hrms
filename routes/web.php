@@ -97,6 +97,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ["auth:web", "superadmin"]], 
     });
 
     Route::group(['prefix' => 'clients'], function(){
+        Route::post('/create', [ClientController::class, 'store'])->name('admin.client.create');
         Route::get('/', [ClientController::class, 'index'])->name('admin.client.all');
         Route::get('/view', [ClientController::class, 'show'])->name('admin.client.show');
     });

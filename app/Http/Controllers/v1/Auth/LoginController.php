@@ -71,6 +71,7 @@ class LoginController extends Controller
             'action_id' => $user->id,
             'action_type' => "Models\User",
             'log_name' => "User logged in successfully",
+            'action' => 'updated',
             'description' => "{$user->first_name} {$user->last_name} logged in successfully",
         ];
 

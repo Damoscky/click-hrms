@@ -137,6 +137,7 @@ class EmployeeController extends Controller
             'causer_id' => auth()->user()->id,
             'action_id' => $record->id,
             'action_type' => "Models\User",
+            'action' => 'Edit',
             'log_name' => "User application approved successfully",
             'description' => "{$userInstance->first_name} {$userInstance->last_name} approved {$record->first_name} {$record->last_name} application successfully",
         ];
@@ -183,6 +184,7 @@ class EmployeeController extends Controller
             'causer_id' => auth()->user()->id,
             'action_id' => $record->id,
             'action_type' => "Models\User",
+            'action' => 'Edit',
             'log_name' => "User application declined successfully",
             'description' => "{$userInstance->first_name} {$userInstance->last_name} declined {$record->first_name} {$record->last_name} application successfully",
         ];
@@ -223,7 +225,6 @@ class EmployeeController extends Controller
                 'last_name' => $request->last_name,
                 'phoneno' => $request->phone_number,
                 'email' => $request->email,
-                'first_name' => $request->first_name,
             ]);
 
             $verification_code = Str::random(30); //Generate verification code
@@ -263,6 +264,7 @@ class EmployeeController extends Controller
                 'action_id' => $user->id,
                 'action_type' => "Models\User",
                 'log_name' => "Employee Created successfully",
+                'action' => 'Create',
                 'description' => "{$user->first_name} {$user->last_name} account created successfully",
             ];
     
