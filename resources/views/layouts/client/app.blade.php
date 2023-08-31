@@ -41,11 +41,11 @@
     <div class="main-wrapper">
         <div class="header">
             <div class="header-left">
-                <a href="{{ route('employee.dashboard') }}" class="logo">
+                <a href="{{ route('admin.dashboard') }}" class="logo">
                     <img src="{{ asset('assets') }}/img/clickhrm-logo.png" width="40" height="40"
                         alt="Logo" />
                 </a>
-                <a href="{{ route('employee.dashboard') }}" class="logo2">
+                <a href="admin-dashboard.html" class="logo2">
                     <img src="{{ asset('assets') }}/img/clickhrm-logo.png" width="40" height="40"
                         alt="Logo" />
                 </a>
@@ -66,86 +66,6 @@
             <a id="mobile_btn" class="mobile_btn" href="#sidebar"><i class="fa-solid fa-bars"></i></a>
 
             <ul class="nav user-menu">
-
-                {{-- <li class="nav-item dropdown">
-                    <a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
-                        <i class="fa-regular fa-bell"></i>
-                        <span class="badge rounded-pill">3</span>
-                    </a>
-                    <div class="dropdown-menu notifications">
-                        <div class="topnav-dropdown-header">
-                            <span class="notification-title">Notifications</span>
-                            <a href="javascript:void(0)" class="clear-noti"> Clear All </a>
-                        </div>
-                        <div class="noti-content">
-                            <ul class="notification-list">
-                                <li class="notification-message">
-                                    <a href="activities.html">
-                                        <div class="chat-block d-flex">
-                                            <span class="avatar flex-shrink-0">
-                                                <img src="{{ asset('assets') }}/img/profiles/avatar-02.jpg"
-                                                    alt="User Image" />
-                                            </span>
-                                            <div class="media-body flex-grow-1">
-                                                <p class="noti-details">
-                                                    <span class="noti-title">John Doe</span> added new
-                                                    task
-                                                    <span class="noti-title">Patient appointment booking</span>
-                                                </p>
-                                                <p class="noti-time">
-                                                    <span class="notification-time">4 mins ago</span>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                
-                            </ul>
-                        </div>
-                        <div class="topnav-dropdown-footer">
-                            <a href="activities.html">View all Notifications</a>
-                        </div>
-                    </div>
-                </li> --}}
-
-                {{-- <li class="nav-item dropdown">
-                    <a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
-                        <i class="fa-regular fa-comment"></i><span class="badge rounded-pill">8</span>
-                    </a>
-                    <div class="dropdown-menu notifications">
-                        <div class="topnav-dropdown-header">
-                            <span class="notification-title">Messages</span>
-                            <a href="javascript:void(0)" class="clear-noti"> Clear All </a>
-                        </div>
-                        <div class="noti-content">
-                            <ul class="notification-list">
-                                <li class="notification-message">
-                                    <a href="chat.html">
-                                        <div class="list-item">
-                                            <div class="list-left">
-                                                <span class="avatar">
-                                                    <img src="{{ asset('assets') }}/img/profiles/avatar-09.jpg"
-                                                        alt="User Image" />
-                                                </span>
-                                            </div>
-                                            <div class="list-body">
-                                                <span class="message-author">Richard Miles </span>
-                                                <span class="message-time">12:28 AM</span>
-                                                <div class="clearfix"></div>
-                                                <span class="message-content">Lorem ipsum dolor sit amet, consectetur
-                                                    adipiscing</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                
-                            </ul>
-                        </div>
-                        <div class="topnav-dropdown-footer">
-                            <a href="chat.html">View all Messages</a>
-                        </div>
-                    </div>
-                </li> --}}
 
                 <li class="nav-item dropdown has-arrow main-drop">
                     <a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
@@ -186,12 +106,12 @@
 
                     <ul class="sidebar-vertical">
                        
-                        @role(['employee'])  
+                        @role(['client'])  
                             <li class="menu-title">
                                 <span>Main</span>
                             </li>
-                            <li>
-                                <a href="{{ route('employee.dashboard') }}"><i class="la la-dashboard"></i> <span>
+                            <li class="@if(request()->is('client/dashboard')) active @endif">
+                                <a href="{{ route('client.dashboard') }}"><i class="la la-dashboard"></i> <span>
                                     Dashboard</span>
                                 </a>
                             </li>
@@ -202,7 +122,7 @@
                         <li class="menu-title">
                             <span>Menus</span>
                         </li>
-                        @role(['employee']) 
+                        @role(['client']) 
                             <li class="active">
                                 <a href="{{ route('employee.timesheet.all') }}"><i class="la la-clock-o"></i> <span> Timesheet</span></a>
                             </li>
@@ -210,13 +130,12 @@
                                 <a href="#"><i class="la la-calendar"></i> <span> Shifts & Schedule</span>
                                     <span class="menu-arrow"></span></a>
                                 <ul>
-                                    <li><a href="{{ route('admin.shift.all') }}">All Shifts</a></li>
+                                    <li><a href="{{ route('admin.shift.all') }}">Shifts</a></li>
                                     <li><a href="{{ route('admin.shift.pending') }}">Pending Shifts</a></li>
-                                    <li><a href="{{ route('employee.availability.all') }}">Availablility</a></li>
                                 </ul>
                             </li>
-                            <li>
-                                <a href="#"><i class="la la-briefcase"></i> <span> Leave</span></a>
+                            <li class="active">
+                                <a href="#"><i class="la la-briefcase"></i> <span> Invoices</span></a>
                             </li>
                         @endrole
                         

@@ -56,23 +56,23 @@
                         <div class="col-md-6 text-center">
                             <div class="card">
                                 <div class="card-body">
-                                    <h3 class="card-title">Total Revenue</h3>
-                                    <div id="bar-charts"></div>
+                                    <h3 class="card-title">Shift Overview</h3>
+                                    <canvas id="barChart" width="400" height="300"></canvas>
+
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6 text-center">
                             <div class="card">
                                 <div class="card-body">
-                                    <h3 class="card-title">Sales Overview</h3>
-                                    <div id="line-charts"></div>
+                                    <h3 class="card-title">Monthly Revenue</h3>
+                                    <canvas id="lineChart" width="400" height="300"></canvas>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
             <div class="row">
                 <div class="col-md-12 col-lg-6 col-xl-6 d-flex">
                     <div class="card flex-fill">

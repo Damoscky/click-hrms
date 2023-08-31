@@ -9,6 +9,7 @@ use App\Http\Controllers\v1\Admin\EmployeeController AS AdminEmployeeController;
 use App\Http\Controllers\v1\Employee\EmployeeController AS EmployeeController;
 use App\Http\Controllers\v1\Employee\TimesheetController AS EmployeeTimesheetController;
 use App\Http\Controllers\v1\Admin\ClientController;
+use App\Http\Controllers\v1\Client\ProfileController as ClientProfileController;
 use App\Http\Controllers\v1\Admin\TimesheetController;
 use App\Http\Controllers\v1\Admin\StaffController;
 use App\Http\Controllers\v1\Admin\ShiftController;
@@ -61,6 +62,13 @@ Route::group(['prefix' => 'employee', 'middleware' => ["auth:web", "employee"]],
     Route::group(['prefix' => 'availability'], function(){
         Route::get('/', [EmployeeTimesheetController::class, 'availability'])->name('employee.availability.all');
     });
+});
+
+//Client Route
+Route::group(['prefix' => 'client', 'middleware' => ["auth:web", "client"]], function (){
+    Route::get('/dashboard', [ClientProfileController::class, 'dashboard'])->name('client.dashboard');
+    Route::get('/complete/registration', [ClientProfileController::class, 'completeRegistration'])->name('client.complete-registration');
+
 });
 
 

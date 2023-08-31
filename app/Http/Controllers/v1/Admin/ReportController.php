@@ -4,6 +4,7 @@ namespace App\Http\Controllers\v1\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Department;
+use App\Models\EmployeeRecord;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -66,5 +67,41 @@ class ReportController extends Controller
     public function exportEmployeeReports(Request $request)
     {
         return $request;
+    }
+
+    public function salesOverview()
+    {
+        $months = range(1, 12);
+
+        $monthsData = array();
+        $shiftSalesData = array();
+        $revenueSalesData = array();
+
+        foreach ($months as $month) {
+            $presentYearShiftData = User::whereMonth('created_at', $month)
+                // ->whereHas('')
+                ->whereYear('created_at', Carbon::now()->year)
+                ->count();
+
+            $presentYearSalesData = EmployeeRecord::whereMonth('created_at', $month)
+                // ->whereHas('')
+                ->whereYear('created_at', Carbon::now()->year)
+                ->count();
+
+            array_push($monthsData, date('F', mktime(0, 0, 0, $month, 10)));
+            array_push($shiftSalesData, round($presentYearShiftData));
+            array_push($revenueSalesData, round($presentYearSalesData));
+        }
+
+        $data = [
+            "months" => $monthsData,
+            "shiftSalesData" => $shiftSalesData,
+            "revenueSalesData" => $revenueSalesData
+        ];
+        return response()->json([
+            'error' => false,
+            'data' => $data,
+
+        ]);
     }
 }

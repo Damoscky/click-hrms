@@ -196,22 +196,17 @@
                                         <input class="form-control" name="last_name" required type="text" />
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="input-block mb-3">
-                                        <label class="col-form-label">Address <span class="text-danger">*</span></label>
-                                        <input class="form-control" name="address" required type="text" />
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="input-block mb-3">
-                                        <label class="col-form-label">State <span class="text-danger">*</span></label>
-                                        <input class="form-control" name="state" required type="text" />
-                                    </div>
-                                </div>
+                               
                                 <div class="col-md-6">
                                     <div class="input-block mb-3">
                                         <label class="col-form-label">Postcode <span class="text-danger">*</span></label>
-                                        <input class="form-control" name="post_code" required type="text" />
+                                        <input class="form-control" id="postcode" onInput="getAddress()" name="postcode" required type="text" />
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="input-block mb-3">
+                                        <label class="col-form-label">Address <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text" id="address" name="address" placeholder="Address" readonly>
                                     </div>
                                 </div>
                             </div>

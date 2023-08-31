@@ -12,8 +12,9 @@ use Illuminate\Support\Facades\DB;
 use jeremykenedy\LaravelRoles\Models\Role;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Notification;
-use App\Notifications\CreateVendorNotification;
+use App\Notifications\CreateClientNotification;
 use App\Helpers\ProcessAuditLog;
+use PDF, Storage;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 
@@ -94,7 +95,7 @@ class ClientController extends Controller
             if(isset($user) && isset($role)){
                 $user->attachRole($role);
 
-                $location = $this->getLocationFromPostcode($request->post_code);
+                $location = $this->getLocationFromPostcode($request->postcode);
                 if(!isset($location)){
                     toastr()->error("Invalid Postcode");
                     return back();
@@ -104,7 +105,7 @@ class ClientController extends Controller
                 $longitude = $location['geometry']['bounds']['northeast']['lng'];
                 $state = $location['address_components'][3]['short_name'];
                 $county =  $location['address_components'][4]['short_name'];
-                return $country = $location['address_components'][5]['short_name'];
+                $country = $location['address_components'][5]['short_name'];
 
                 $rand_no = mt_rand(0000,99999);
                 $client_id = 'CLK-'. $rand_no  . '-C' .$request->company_name[0];
@@ -113,7 +114,7 @@ class ClientController extends Controller
                     'company_name' => $request->company_name,
                     'user_id' => $user->id,
                     'address' => $fullAddress,
-                    'post_code' => $request->post_code,
+                    'post_code' => $request->postcode,
                     'city' => $state,
                     'county' => $county,
                     'country' => $country,
@@ -124,6 +125,32 @@ class ClientController extends Controller
                     'location' => $latitude.','.$longitude
                 ]);
             }
+            $data = [
+                'clientRecord' => $clientRecord,
+                'user' => $user
+            ];
+
+             // Load the watermark view
+             $watermark = view('client.pdf.watermark');
+             
+
+            $clientContract = PDF::loadView('client.pdf.contract-document', $data)
+            ->setOptions(['isPhpEnabled' => true]) // Enable PHP for inline CSS
+            ->setOption('header-html', $watermark->render());
+
+            if(isset($clientContract)){
+                $fileExt = "pdf";
+                $name = 'contract_' . $client_id . '.' . $fileExt;
+                $fileUrl = config('app.url') . 'assets/client-document/' . $name;
+                Storage::disk('client-document')->put($name, $clientContract->output());
+            }else{
+                $fileUrl = null;
+            }
+            return $fileUrl;
+            
+            $clientRecord->update([
+                'contract_document' => $fileUrl
+            ]);
 
             $data = [
                 'name' => $request->first_name,
@@ -145,7 +172,7 @@ class ClientController extends Controller
             ProcessAuditLog::storeAuditLog($dataToLog);
 
             //send notification to client
-            Notification::route('mail', $user->email)->notify(new CreateVendorNotification($data));
+            Notification::route('mail', $user->email)->notify(new CreateClientNotification($data));
 
             DB::commit();
 
@@ -158,7 +185,6 @@ class ClientController extends Controller
             return back();
         }
 
-
     }
 
 
@@ -170,8 +196,7 @@ class ClientController extends Controller
             'last_name' => 'required',
             'phone_number' => 'required|unique:users,phoneno',
             'company_name' => 'required',
-            'address' => 'required',
-            'post_code' => 'required',
+            'postcode' => 'required',
         ];
 
         $validate = Validator::make($request->all(), $rules);

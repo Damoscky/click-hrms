@@ -32,6 +32,8 @@
     <link rel="stylesheet" href="{{ asset('assets') }}/plugins/morris/morris.css" />
 
     <link rel="stylesheet" href="{{ asset('assets') }}/css/style.css" />
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyApcI-eCy2vhDU9Fx4GmhKsysL8xoZ69oU&libraries=places"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </head>
 
@@ -225,7 +227,7 @@
                             <li class="menu-title">
                                 <span>Main</span>
                             </li>
-                            <li>
+                            <li class="@if(request()->is('admin/dashboard')) active @endif">
                                 <a href="{{ route('admin.dashboard') }}"><i class="la la-dashboard"></i> <span>
                                     Dashboard</span>
                                 </a>
@@ -238,21 +240,21 @@
                             <span>Management</span>
                         </li>
                         @role(['admin', 'superadmin']) 
-                            <li class="submenu">
+                            <li class="submenu @if(request()->is('admin/employee')) active @endif">
                                 <a href="#"><i class="la la-users"></i> <span> Employees</span>
                                     <span class="menu-arrow"></span></a>
                                 <ul>
-                                    <li><a href="{{ route('admin.employee.all') }}">All Employees</a></li>
-                                    <li><a href="{{ route('admin.employee.pending') }}">Pending Approval</a></li>
+                                    <li><a href="{{ route('admin.employee.all') }}" class="@if(request()->is('admin/employee')) active @endif">All Employees</a></li>
+                                    <li><a href="{{ route('admin.employee.pending') }}" class="@if(request()->is('admin/employee/pending')) active @endif">Pending Approval</a></li>
                                 </ul>
                             </li>
                         @endrole
                         @role(['admin', 'superadmin']) 
-                            <li class="submenu">
-                                <a href="#"><i class="la la-user-circle-o"></i> <span> Clients</span>
+                            <li class="submenu @if(request()->is('admin/clients')) active @endif">
+                                <a href="#" class="@if(request()->is('admin/clients')) active @endif"><i class="la la-user-circle-o"></i> <span> Clients</span>
                                     <span class="menu-arrow"></span></a>
                                 <ul>
-                                    <li><a href="{{ route('admin.client.all') }}">All Clients</a></li>
+                                    <li><a href="{{ route('admin.client.all') }}" class="@if(request()->is('admin/clients')) active @endif">All Clients</a></li>
                                     
                                 </ul>
                             </li>
@@ -265,16 +267,16 @@
                                 </ul>
                             </li>
                         @endrole
-                        <li class="active">
-                            <a href="{{ route('admin.timesheet.all') }}"><i class="la la-clock-o"></i> <span> Timesheet</span></a>
+                        <li class="@if(request()->is('admin/timesheet')) active @endif">
+                            <a href="{{ route('admin.timesheet.all') }}" class="@if(request()->is('admin/timesheet')) active @endif"><i class="la la-clock-o"></i> <span> Timesheet</span></a>
                         </li>
-                        <li class="submenu active">
+                        <li class="submenu @if(request()->is('admin/shifts')) active @endif">
                             <a href="#"><i class="la la-calendar"></i> <span> Shifts & Schedule</span>
                                 <span class="menu-arrow"></span></a>
                             <ul>
-                                <li><a href="{{ route('admin.shift.all') }}">All Shifts</a></li>
-                                <li><a href="{{ route('admin.shift.pending') }}">Pending Shifts</a></li>
-                                <li><a href="{{ route('admin.employee.availability') }}">Employee Availablility</a></li>
+                                <li><a href="{{ route('admin.shift.all') }}" class="@if(request()->is('admin/shifts')) active @endif">All Shifts</a></li>
+                                <li><a href="{{ route('admin.shift.pending') }}" class="@if(request()->is('admin/shifts/pending')) active @endif">Pending Shifts</a></li>
+                                <li><a href="{{ route('admin.employee.availability') }}" class="@if(request()->is('admin/employee/availability')) active @endif">Employee Availablility</a></li>
                             </ul>
                         </li>
                         <li>
@@ -283,24 +285,24 @@
                         <li class="menu-title">
                             <span>Reports</span>
                         </li>
-                        <li class="submenu">
+                        <li class="submenu @if(request()->is('admin/reports/employee')) active @endif">
                             <a href="#"><i class="la la-address-card"></i> <span> Reports</span>
                                 <span class="menu-arrow"></span></a>
                             <ul>
                                 {{-- <li><a href="{{route('admin.department.create')}}">Create Department</a></li> --}}
-                                <li><a href="{{ route('admin.reports.employee') }}">Employee Reports </a></li>
+                                <li><a href="{{ route('admin.reports.employee') }}" class="@if(request()->is('admin/reports/employee')) active @endif">Employee Reports </a></li>
 
                             </ul>
                         </li>
                         <li class="menu-title">
                             <span>Settings</span>
                         </li>
-                        <li class="submenu">
-                            <a href="#"><i class="la la-address-card"></i> <span> Departments</span>
+                        <li class="submenu @if(request()->is('admin/department')) active @endif">
+                            <a href="#" class="@if(request()->is('admin/department')) active @endif"><i class="la la-address-card"></i> <span> Departments</span>
                                 <span class="menu-arrow"></span></a>
                             <ul>
                                 {{-- <li><a href="{{route('admin.department.create')}}">Create Department</a></li> --}}
-                                <li><a href="{{ route('admin.department.all') }}">All Departments</a></li>
+                                <li><a href="{{ route('admin.department.all') }}" class="@if(request()->is('admin/department')) active @endif">All Departments</a></li>
 
                             </ul>
                         </li>
@@ -317,7 +319,34 @@
     </div>
 
 
+    <script>
+        function getAddress(){
+            const apiKey = 'AIzaSyApcI-eCy2vhDU9Fx4GmhKsysL8xoZ69oU';
+            const postcode = document.getElementById("postcode").value; // Replace with the desired postcode
+            
+            console.log(postcode.value);
 
+            const apiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${postcode}&key=${apiKey}`;
+
+            // Make a GET request to the API
+            fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'OK' && data.results.length > 0) {
+                const formattedAddress = data.results[0].formatted_address;
+                address.value = formattedAddress;
+                console.log(`Address for ${postcode}: ${formattedAddress}`);
+                } else {
+                console.log('Unable to retrieve address information.');
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+        }
+
+    </script>
+   <script src="{{asset('assets')}}/js/total-revenue-bar.js"></script>
     <script data-cfasync="false" src="../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
     <script src="{{ asset('assets') }}/js/jquery-3.7.0.min.js"></script>
 

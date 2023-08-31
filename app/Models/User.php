@@ -27,7 +27,10 @@ class User extends Authenticatable
         return $this->hasOne(EmployeeRecord::class);
     }
 
-
+    public function clientRecord()
+    {
+        return $this->hasOne(ClientRecord::class);
+    }
 
     public function bankInformation()
     {

@@ -87,6 +87,14 @@ class LoginController extends Controller
             }
             return redirect()->route('employee.dashboard');
         }
+
+        if (auth()->user()->roles[0]->slug == "client") {
+            if(!auth()->user()->is_completed || !auth()->user()->is_verified){
+                // toastr()->success("Your account is pending verification. Please complete your registration.");
+                return redirect()->route('client.complete-registration');
+            }
+            return redirect()->route('employee.dashboard');
+        }
         if (auth()->user()->roles[0]->slug == "superadmin") {
             $employeeRole = 'employee';
             $totalEmployeeCount = User::whereHas('roles', function ($roleTable) use ($employeeRole) {
@@ -268,6 +276,7 @@ class LoginController extends Controller
                 'action_id' => auth()->user()->id,
                 'action_type' => "Models\User",
                 'log_name' => "User logged out successfully",
+                'action' => 'Update',
                 'description' => "{$currentUserInstance->lastname} {$currentUserInstance->firstname} Logged out successfully",
             ];
     
