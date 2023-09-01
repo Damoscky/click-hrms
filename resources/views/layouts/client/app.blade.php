@@ -82,8 +82,6 @@
                         <span>{{auth()->user()->first_name}}</span>
                     </a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="profile.html">My Profile</a>
-                        <a class="dropdown-item" href="settings.html">Settings</a>
                         <a class="dropdown-item" href="{{route('auth.logout')}}">Logout</a>
                     </div>
                 </li>
@@ -93,8 +91,6 @@
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
                     aria-expanded="false"><i class="fa-solid fa-ellipsis-vertical"></i></a>
                 <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item" href="profile.html">My Profile</a>
-                    <a class="dropdown-item" href="settings.html">Settings</a>
                     <a class="dropdown-item" href="{{route('auth.logout')}}">Logout</a>
                 </div>
             </div>
@@ -137,7 +133,11 @@
                             <li class="active">
                                 <a href="#"><i class="la la-briefcase"></i> <span> Invoices</span></a>
                             </li>
+                            <li class="active">
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#logout_modal"><i class="la la-lock"></i> <span> Logout</span></a>
+                            </li>
                         @endrole
+
                         
                         
                     </ul>
@@ -146,6 +146,29 @@
         </div>
 
 
+        <div class="modal custom-modal fade" id="logout_modal" role="dialog">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="form-header">
+                            <h3>Logout</h3>
+                            <p>Are you sure you want to logout ?</p>
+                        </div>
+                        <div class="modal-btn delete-action">
+                            <div class="row">
+                                <div class="col-6">
+                                    <a href="javascript:void(0);" data-bs-dismiss="modal"
+                                        class="btn btn-secondary cancel-btn">Cancel</a>
+                                </div>
+                                <div class="col-6">
+                                    <a href="{{route('auth.logout')}}" class="btn btn-primary submit-btn continue-btn">Logout</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         @yield('content')
 

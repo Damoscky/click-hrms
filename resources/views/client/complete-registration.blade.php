@@ -6,7 +6,7 @@
             <div class="page-header">
                 <div class="row">
                     <div class="col">
-                        <h3 class="page-title">Hello {{ auth()->user()->first_name }}!</h3>
+                        <h3 class="page-title">Hello!</h3>
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item">
                                 @if(!auth()->user()->sent_for_approval && auth()->user()->status == "Pending")
@@ -28,7 +28,7 @@
                         <div class="card-header">
                             <h4 class="card-title mb-0">Basic Information</h4>
                         </div>
-                        <form action="{{ route('employee.record.update') }}" enctype="multipart/form-data" method="POST">
+                        <form action="{{ route('client.record.update') }}" enctype="multipart/form-data" method="POST">
                             {{ csrf_field() }}
                             <div class="card-body">
                                 <div class="row">
@@ -75,7 +75,7 @@
                                                 <div class="profile-img">
                                                     <a href="#"><img
                                                             src="{{ auth()->user()->clientRecord->image }}"
-                                                            alt="{{ auth()->user()->first_name }}" /></a>
+                                                            alt="{{ auth()->user()->company_name }}" /></a>
                                                 </div>
                                             </div>
                                         </div>
@@ -117,7 +117,7 @@
                         <div class="card-header">
                             <h4 class="card-title mb-0">Address Form</h4>
                         </div>
-                        <form action="{{ route('employee.address.update') }}" method="POST">
+                        <form action="{{ route('client.record.address.update') }}" method="POST">
                             {{ csrf_field() }}
                             <div class="card-body">
                                 <div class="row">
@@ -257,41 +257,67 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="input-block mb-3">
-                                                <label class="col-form-label">HCA Rate </label>
-                                                    <input type="text" required name="current_standard_hca" readonly value="{{isset($companySetting) ? $companySetting->standard_hca : ''}}" class="form-control" />
+                                                <label class="col-form-label">HCA </label>
+                                                    <input type="text" required name="current_standard_hca" readonly value=" {{isset($companySetting) ? $companySetting->currency : '£'}}{{isset($companySetting) ? $companySetting->standard_hca : ''}}/h" class="form-control" />
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="input-block mb-3">
                                                 <label class="col-form-label">Negotiating Rate
                                                     <span class="text-danger">*</span></label>
-                                                    <input type="text" required name="negotiating_standard_hca" value="" class="form-control" />                                            
+                                                    <input type="number" step="0.01" required name="negotiating_standard_hca" value="" class="form-control" />                                            
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="input-block mb-3">
-                                                <label class="col-form-label">Senior HCA Rate </label>
-                                                    <input type="text" required name="current_standard_hca" readonly value="{{isset($companySetting) ? $companySetting->senior_hca : ''}}" class="form-control" />
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="input-block mb-3">
-                                                <label class="col-form-label">Negotiating Rate
-                                                    <span class="text-danger">*</span></label>
-                                                    <input type="text" required name="negotiating_senior_hca" value="" class="form-control" />                                          
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="input-block mb-3">
-                                                <label class="col-form-label">RGN Rate </label>
-                                                    <input type="text" required name="current_rgn" readonly value="{{isset($companySetting) ? $companySetting->senior_hca : ''}}" class="form-control" />
+                                                <label class="col-form-label">Senior HCA </label>
+                                                    <input type="test" required name="current_standard_hca" readonly value="{{isset($companySetting) ? $companySetting->currency : '£'}}{{isset($companySetting) ? $companySetting->senior_hca : ''}}/h" class="form-control" />
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="input-block mb-3">
                                                 <label class="col-form-label">Negotiating Rate
                                                     <span class="text-danger">*</span></label>
-                                                    <input type="text" required name="negotiating_rgn" value="" class="form-control" />                                          
+                                                    <input type="number" step="0.01" required name="negotiating_senior_hca" value="" class="form-control" />                                          
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="input-block mb-3">
+                                                <label class="col-form-label">RGN  </label>
+                                                    <input type="text" required name="current_rgn" readonly value="{{isset($companySetting) ? $companySetting->currency : '£'}}{{isset($companySetting) ? $companySetting->rgn : ''}}/h" class="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="input-block mb-3">
+                                                <label class="col-form-label">Negotiating Rate
+                                                    <span class="text-danger">*</span></label>
+                                                    <input type="number" step="0.01" required name="negotiating_rgn" value="" class="form-control" />                                          
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="input-block mb-3">
+                                                <label class="col-form-label">Kitchen Assistant </label>
+                                                    <input type="text" required name="current_kitchen_assistant" readonly value="{{isset($companySetting) ? $companySetting->currency : '£'}}{{isset($companySetting) ? $companySetting->kitchen_assistant : ''}}/h" class="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="input-block mb-3">
+                                                <label class="col-form-label">Negotiating Rate
+                                                    <span class="text-danger">*</span></label>
+                                                    <input type="number" step="0.01" required name="negotiating_kitchen_assistant" value="" class="form-control" />                                          
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="input-block mb-3">
+                                                <label class="col-form-label">Laundary / Domestic </label>
+                                                    <input type="text" required name="current_laundry" readonly value="{{isset($companySetting) ? $companySetting->currency : '£'}}{{isset($companySetting) ? $companySetting->laundry : ''}}/h" class="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="input-block mb-3">
+                                                <label class="col-form-label">Negotiating Rate
+                                                    <span class="text-danger">*</span></label>
+                                                    <input type="number" step="0.01" required name="negotiating_laundry" value="" class="form-control" />                                          
                                             </div>
                                         </div>
                                         <div class="col-6">

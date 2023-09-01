@@ -45,6 +45,10 @@ return [
             'driver' => 'local',
             'root'   => public_path() . '/assets/documents',
         ],
+        'client' => [
+            'driver' => 'local',
+            'root'   => public_path() . '/assets/client',
+        ],
         'client-document' => [
             'driver' => 'local',
             'root'   => public_path() . '/assets/client-document',

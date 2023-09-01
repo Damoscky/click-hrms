@@ -3,51 +3,175 @@
 @section('content')
     <div class="page-wrapper">
         <div class="content container-fluid">
-            <div class="page-header">
-                <div class="row">
-                    <div class="col-sm-12">
-                        <h3 class="page-title">Welcome {{auth()->user()->first_name}}!</h3>
-                        <ul class="breadcrumb">
-                            <li class="breadcrumb-item active">Dashboard</li>
-                        </ul>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="welcome-box">
+                        <div class="welcome-img">
+                            @if (isset(auth()->user()->employeeRecord->image))
+                                <img src="{{ auth()->user()->employeeRecord->image }}"
+                                    alt="{{ auth()->user()->first_name }}" />
+                            @else
+                                <img src="{{ asset('assets') }}/img/user.jpg" alt="{{ auth()->user()->first_name }}" />
+                            @endif
+                        </div>
+                        <div class="welcome-det">
+                            <h3>Welcome, {{ auth()->user()->first_name }} {{ auth()->user()->last_name }}</h3>
+                            <p> {{ \Carbon\Carbon::parse(\Carbon\Carbon::now())->format('l, j F Y') }}</p>
+                        </div>
                     </div>
                 </div>
             </div>
-
             <div class="row">
-                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-4">
-                    <div class="card dash-widget">
-                        <div class="card-body">
-                            <span class="dash-widget-icon"><i class="fa-solid fa-user"></i></span>
-                            <div class="dash-widget-info">
-                                <h3>0</h3>
-                                <span>Total Shift Covered</span>
+                <div class="col-lg-8 col-md-8">
+                    <section class="dash-section">
+                        <h1 class="dash-sec-title">Upcoming Shifts</h1>
+                        <div class="dash-sec-content">
+                            <div class="dash-info-list">
+                                <a href="#" class="dash-card">
+                                    <div class="dash-card-container">
+                                        <div class="dash-card-icon">
+                                            <i class="fa-regular fa-building"></i>
+                                        </div>
+                                        <div class="dash-card-content">
+                                            <p>Day Shift at Three Valley Care Home</p>
+                                        </div>
+                                        <div class="dash-card-avatars">
+                                            <div class="e-avatar">
+                                                <img src="{{ asset('assets') }}/img/user.jpg" alt="User Image" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="dash-info-list">
+                                <a href="#" class="dash-card">
+                                    <div class="dash-card-container">
+                                        <div class="dash-card-icon">
+                                            <i class="fa-regular fa-building"></i>
+                                        </div>
+                                        <div class="dash-card-content">
+                                            <p>Day Shift at Three Valley Care Home</p>
+                                        </div>
+                                        <div class="dash-card-avatars">
+                                            <div class="e-avatar">
+                                                <img src="{{ asset('assets') }}/img/user.jpg" alt="User Image" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="dash-info-list">
+                                <a href="#" class="dash-card">
+                                    <div class="dash-card-container">
+                                        <div class="dash-card-icon">
+                                            <i class="fa-regular fa-building"></i>
+                                        </div>
+                                        <div class="dash-card-content">
+                                            <p>Day Shift at Three Valley Care Home</p>
+                                        </div>
+                                        <div class="dash-card-avatars">
+                                            <div class="e-avatar">
+                                                <img src="{{ asset('assets') }}/img/user.jpg" alt="User Image" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="dash-info-list">
+                                <a href="#" class="dash-card">
+                                    <div class="dash-card-container">
+                                        <div class="dash-card-icon">
+                                            <i class="fa-regular fa-building"></i>
+                                        </div>
+                                        <div class="dash-card-content">
+                                            <p>Day Shift at Three Valley Care Home</p>
+                                        </div>
+                                        <div class="dash-card-avatars">
+                                            <div class="e-avatar">
+                                                <img src="{{ asset('assets') }}/img/user.jpg" alt="User Image" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="dash-info-list">
+                                <a href="#" class="dash-card">
+                                    <div class="dash-card-container">
+                                        <div class="dash-card-icon">
+                                            <i class="fa-regular fa-building"></i>
+                                        </div>
+                                        <div class="dash-card-content">
+                                            <p>Day Shift at Three Valley Care Home</p>
+                                        </div>
+                                        <div class="dash-card-avatars">
+                                            <div class="e-avatar">
+                                                <img src="{{ asset('assets') }}/img/user.jpg" alt="User Image" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
                             </div>
                         </div>
-                    </div>
+                    </section>
                 </div>
-                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-4">
-                    <div class="card dash-widget">
-                        <div class="card-body">
-                            <span class="dash-widget-icon"><i class="fa-regular fa-gem"></i></span>
-                            <div class="dash-widget-info">
-                                <h3>0</h3>
-                                <span>Total Strike</span>
+                <div class="col-lg-4 col-md-4">
+                    <div class="dash-sidebar">
+                        <section>
+                            {{-- <h5 class="dash-title">Shifts</h5> --}}
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="time-list">
+                                        <div class="dash-stats-list">
+                                            <h4>3</h4>
+                                            <p>Upcoming Shifts</p>
+                                        </div>
+                                        <div class="dash-stats-list">
+                                            <h4>5</h4>
+                                            <p>Completed Shifts</p>
+                                        </div>
+                                    </div>
+                                    <div class="request-btn">
+                                        <div class="dash-stats-list">
+                                            <span class="dash-widget-icon"><i class="fa-solid fa-cubes"></i></span>
+                                            <h4>9</h4>
+                                            <p>Total Shifts</p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-4">
-                    <div class="card dash-widget">
-                        <div class="card-body">
-                            <span class="dash-widget-icon"><i class="fa-regular fa-gem"></i></span>
-                            <div class="dash-widget-info">
-                                <h3>0</h3>
-                                <span>Click HRM Token</span>
+                        </section>
+                        <section>
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="time-list">
+                                        <div class="dash-stats-list">
+                                            <span class="dash-widget-icon"><i class="fa-solid fa-user"></i></span>
+                                            <h4>1</h4>
+                                            <p>Total Strike</p>
+                                        </div>
+                                        <div class="dash-stats-list">
+                                            <span class="dash-widget-icon"><i class="fa-solid fa-gem"></i></span>
+                                            <h4>26</h4>
+                                            <p>ClickHRM Token</p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        </section>
+                        <section>
+                            <h5 class="dash-title">Upcoming Bank Holiday</h5>
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <h4 class="holiday-title mb-0">
+                                        {{ \Carbon\Carbon::parse('2023-12-25')->format('l, j F Y') }} - Christmas Day
+                                    </h4>
+                                </div>
+                            </div>
+                        </section>
                     </div>
                 </div>
+
+
             </div>
 
             <div class="row">
@@ -72,7 +196,7 @@
                                 </div>
                             </div>
                             <div class="progress mb-4">
-                               
+
                                 <div class="progress-bar bg-warning w-50" role="progressbar" aria-valuenow="1850"
                                     aria-valuemin="0" aria-valuemax="100">
                                     50%
@@ -81,7 +205,7 @@
                                     aria-valuemin="0" aria-valuemax="100">
                                     50%
                                 </div>
-                                
+
                             </div>
                             <div>
                                 <p>
@@ -92,7 +216,7 @@
                                     <i class="fa-regular fa-circle-dot text-warning me-2"></i>Pending Shifts <span
                                         class="float-end">0</span>
                                 </p>
-                               
+
                             </div>
                         </div>
                     </div>
@@ -106,7 +230,7 @@
                             </h4>
                             <div class="leave-info-box">
                                 <div class="media d-flex align-items-center">
-                                    <a href="profile.html" class="avatar"><img src="{{asset('assets')}}/img/user.jpg"
+                                    <a href="profile.html" class="avatar"><img src="{{ asset('assets') }}/img/user.jpg"
                                             alt="User Image" /></a>
                                     <div class="media-body flex-grow-1">
                                         <div class="text-sm my-0">FirstHealth Care</div>
@@ -124,7 +248,7 @@
                             </div>
                             <div class="leave-info-box">
                                 <div class="media d-flex align-items-center">
-                                    <a href="profile.html" class="avatar"><img src="{{asset('assets')}}/img/user.jpg"
+                                    <a href="profile.html" class="avatar"><img src="{{ asset('assets') }}/img/user.jpg"
                                             alt="User Image" /></a>
                                     <div class="media-body flex-grow-1">
                                         <div class="text-sm my-0">Martin Lewis</div>
@@ -147,467 +271,7 @@
                     </div>
                 </div>
             </div>
-
-            <div class="row">
-                <div class="col-md-6 d-flex">
-                    <div class="card card-table flex-fill">
-                        <div class="card-header">
-                            <h3 class="card-title mb-0">Most Frequent Clients Covered</h3>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table custom-table mb-0">
-                                    <thead>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Email</th>
-                                            <th>Status</th>
-                                            <th class="text-end">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <h2 class="table-avatar">
-                                                    <a href="#" class="avatar"><img
-                                                            src="{{asset('assets')}}/img/profiles/avatar-19.jpg"
-                                                            alt="User Image" /></a>
-                                                    <a href="client-profile.html">Barry Cuda <span>CEO</span></a>
-                                                </h2>
-                                            </td>
-                                            <td>
-                                                <a href="https://smarthr.dreamguystech.com/cdn-cgi/l/email-protection"
-                                                    class="__cf_email__"
-                                                    data-cfemail="1e7c7f6c6c677d6b7a7f5e7b667f736e727b307d7173">[email&#160;protected]</a>
-                                            </td>
-                                            <td>
-                                                <div class="dropdown action-label">
-                                                    <a class="btn btn-white btn-sm btn-rounded dropdown-toggle"
-                                                        href="#" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        <i class="fa-regular fa-circle-dot text-success"></i>
-                                                        Active
-                                                    </a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="#"><i
-                                                                class="fa-regular fa-circle-dot text-success"></i>
-                                                            Active</a>
-                                                        <a class="dropdown-item" href="#"><i
-                                                                class="fa-regular fa-circle-dot text-danger"></i>
-                                                            Inactive</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="text-end">
-                                                <div class="dropdown dropdown-action">
-                                                    <a href="#" class="action-icon dropdown-toggle"
-                                                        data-bs-toggle="dropdown" aria-expanded="false"><i
-                                                            class="material-icons">more_vert</i></a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="javascript:void(0)"><i
-                                                                class="fa-solid fa-pencil m-r-5"></i>
-                                                            Edit</a>
-                                                        <a class="dropdown-item" href="javascript:void(0)"><i
-                                                                class="fa-regular fa-trash-can m-r-5"></i>
-                                                            Delete</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <h2 class="table-avatar">
-                                                    <a href="#" class="avatar"><img
-                                                            src="{{asset('assets')}}/img/profiles/avatar-19.jpg"
-                                                            alt="User Image" /></a>
-                                                    <a href="client-profile.html">Tressa Wexler <span>Manager</span></a>
-                                                </h2>
-                                            </td>
-                                            <td>
-                                                <a href="https://smarthr.dreamguystech.com/cdn-cgi/l/email-protection"
-                                                    class="__cf_email__"
-                                                    data-cfemail="1460667167677563716c78716654716c75796478713a777b79">[email&#160;protected]</a>
-                                            </td>
-                                            <td>
-                                                <div class="dropdown action-label">
-                                                    <a class="btn btn-white btn-sm btn-rounded dropdown-toggle"
-                                                        href="#" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        <i class="fa-regular fa-circle-dot text-danger"></i>
-                                                        Inactive
-                                                    </a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="#"><i
-                                                                class="fa-regular fa-circle-dot text-success"></i>
-                                                            Active</a>
-                                                        <a class="dropdown-item" href="#"><i
-                                                                class="fa-regular fa-circle-dot text-danger"></i>
-                                                            Inactive</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="text-end">
-                                                <div class="dropdown dropdown-action">
-                                                    <a href="#" class="action-icon dropdown-toggle"
-                                                        data-bs-toggle="dropdown" aria-expanded="false"><i
-                                                            class="material-icons">more_vert</i></a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="javascript:void(0)"><i
-                                                                class="fa-solid fa-pencil m-r-5"></i>
-                                                            Edit</a>
-                                                        <a class="dropdown-item" href="javascript:void(0)"><i
-                                                                class="fa-regular fa-trash-can m-r-5"></i>
-                                                            Delete</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <h2 class="table-avatar">
-                                                    <a href="client-profile.html" class="avatar"><img
-                                                            src="{{asset('assets')}}/img/profiles/avatar-07.jpg"
-                                                            alt="User Image" /></a>
-                                                    <a href="client-profile.html">Ruby Bartlett <span>CEO</span></a>
-                                                </h2>
-                                            </td>
-                                            <td>
-                                                <a href="https://smarthr.dreamguystech.com/cdn-cgi/l/email-protection"
-                                                    class="__cf_email__"
-                                                    data-cfemail="067473647f646774726a63727246637e676b766a632865696b">[email&#160;protected]</a>
-                                            </td>
-                                            <td>
-                                                <div class="dropdown action-label">
-                                                    <a class="btn btn-white btn-sm btn-rounded dropdown-toggle"
-                                                        href="#" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        <i class="fa-regular fa-circle-dot text-danger"></i>
-                                                        Inactive
-                                                    </a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="#"><i
-                                                                class="fa-regular fa-circle-dot text-success"></i>
-                                                            Active</a>
-                                                        <a class="dropdown-item" href="#"><i
-                                                                class="fa-regular fa-circle-dot text-danger"></i>
-                                                            Inactive</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="text-end">
-                                                <div class="dropdown dropdown-action">
-                                                    <a href="#" class="action-icon dropdown-toggle"
-                                                        data-bs-toggle="dropdown" aria-expanded="false"><i
-                                                            class="material-icons">more_vert</i></a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="javascript:void(0)"><i
-                                                                class="fa-solid fa-pencil m-r-5"></i>
-                                                            Edit</a>
-                                                        <a class="dropdown-item" href="javascript:void(0)"><i
-                                                                class="fa-regular fa-trash-can m-r-5"></i>
-                                                            Delete</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <h2 class="table-avatar">
-                                                    <a href="client-profile.html" class="avatar"><img
-                                                            src="{{asset('assets')}}/img/profiles/avatar-06.jpg"
-                                                            alt="User Image" /></a>
-                                                    <a href="client-profile.html">
-                                                        Misty Tison <span>CEO</span></a>
-                                                </h2>
-                                            </td>
-                                            <td>
-                                                <a href="https://smarthr.dreamguystech.com/cdn-cgi/l/email-protection"
-                                                    class="__cf_email__"
-                                                    data-cfemail="7815110b0c010c110b1716381d00191508141d561b1715">[email&#160;protected]</a>
-                                            </td>
-                                            <td>
-                                                <div class="dropdown action-label">
-                                                    <a class="btn btn-white btn-sm btn-rounded dropdown-toggle"
-                                                        href="#" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        <i class="fa-regular fa-circle-dot text-success"></i>
-                                                        Active
-                                                    </a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="#"><i
-                                                                class="fa-regular fa-circle-dot text-success"></i>
-                                                            Active</a>
-                                                        <a class="dropdown-item" href="#"><i
-                                                                class="fa-regular fa-circle-dot text-danger"></i>
-                                                            Inactive</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="text-end">
-                                                <div class="dropdown dropdown-action">
-                                                    <a href="#" class="action-icon dropdown-toggle"
-                                                        data-bs-toggle="dropdown" aria-expanded="false"><i
-                                                            class="material-icons">more_vert</i></a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="javascript:void(0)"><i
-                                                                class="fa-solid fa-pencil m-r-5"></i>
-                                                            Edit</a>
-                                                        <a class="dropdown-item" href="javascript:void(0)"><i
-                                                                class="fa-regular fa-trash-can m-r-5"></i>
-                                                            Delete</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <h2 class="table-avatar">
-                                                    <a href="client-profile.html" class="avatar"><img
-                                                            src="{{asset('assets')}}/img/profiles/avatar-14.jpg"
-                                                            alt="User Image" /></a>
-                                                    <a href="client-profile.html">
-                                                        Daniel Deacon <span>CEO</span></a>
-                                                </h2>
-                                            </td>
-                                            <td>
-                                                <a href="https://smarthr.dreamguystech.com/cdn-cgi/l/email-protection"
-                                                    class="__cf_email__"
-                                                    data-cfemail="2e4a4f40474b424a4b4f4d41406e4b564f435e424b004d4143">[email&#160;protected]</a>
-                                            </td>
-                                            <td>
-                                                <div class="dropdown action-label">
-                                                    <a class="btn btn-white btn-sm btn-rounded dropdown-toggle"
-                                                        href="#" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        <i class="fa-regular fa-circle-dot text-danger"></i>
-                                                        Inactive
-                                                    </a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="#"><i
-                                                                class="fa-regular fa-circle-dot text-success"></i>
-                                                            Active</a>
-                                                        <a class="dropdown-item" href="#"><i
-                                                                class="fa-regular fa-circle-dot text-danger"></i>
-                                                            Inactive</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="text-end">
-                                                <div class="dropdown dropdown-action">
-                                                    <a href="#" class="action-icon dropdown-toggle"
-                                                        data-bs-toggle="dropdown" aria-expanded="false"><i
-                                                            class="material-icons">more_vert</i></a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="javascript:void(0)"><i
-                                                                class="fa-solid fa-pencil m-r-5"></i>
-                                                            Edit</a>
-                                                        <a class="dropdown-item" href="javascript:void(0)"><i
-                                                                class="fa-regular fa-trash-can m-r-5"></i>
-                                                            Delete</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div class="card-footer">
-                            <a href="clients.html">View all clients</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 d-flex">
-                    <div class="card card-table flex-fill">
-                        <div class="card-header">
-                            <h3 class="card-title mb-0">Client Rating</h3>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table custom-table mb-0">
-                                    <thead>
-                                        <tr>
-                                            <th>Project Name</th>
-                                            <th>Progress</th>
-                                            <th class="text-end">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <h2>
-                                                    <a href="project-view.html">Office Management</a>
-                                                </h2>
-                                                <small class="block text-ellipsis">
-                                                    <span>1</span>
-                                                    <span class="text-muted">open tasks, </span>
-                                                    <span>9</span>
-                                                    <span class="text-muted">tasks completed</span>
-                                                </small>
-                                            </td>
-                                            <td>
-                                                <div class="progress progress-xs progress-striped">
-                                                    <div class="progress-bar w-65" role="progressbar"
-                                                        data-bs-toggle="tooltip" title="65%"></div>
-                                                </div>
-                                            </td>
-                                            <td class="text-end">
-                                                <div class="dropdown dropdown-action">
-                                                    <a href="#" class="action-icon dropdown-toggle"
-                                                        data-bs-toggle="dropdown" aria-expanded="false"><i
-                                                            class="material-icons">more_vert</i></a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="javascript:void(0)"><i
-                                                                class="fa-solid fa-pencil m-r-5"></i>
-                                                            Edit</a>
-                                                        <a class="dropdown-item" href="javascript:void(0)"><i
-                                                                class="fa-regular fa-trash-can m-r-5"></i>
-                                                            Delete</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <h2>
-                                                    <a href="project-view.html">Project Management</a>
-                                                </h2>
-                                                <small class="block text-ellipsis">
-                                                    <span>2</span>
-                                                    <span class="text-muted">open tasks, </span>
-                                                    <span>5</span>
-                                                    <span class="text-muted">tasks completed</span>
-                                                </small>
-                                            </td>
-                                            <td>
-                                                <div class="progress progress-xs progress-striped">
-                                                    <div class="progress-bar w-15" role="progressbar"
-                                                        data-bs-toggle="tooltip" title="15%"></div>
-                                                </div>
-                                            </td>
-                                            <td class="text-end">
-                                                <div class="dropdown dropdown-action">
-                                                    <a href="#" class="action-icon dropdown-toggle"
-                                                        data-bs-toggle="dropdown" aria-expanded="false"><i
-                                                            class="material-icons">more_vert</i></a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="javascript:void(0)"><i
-                                                                class="fa-solid fa-pencil m-r-5"></i>
-                                                            Edit</a>
-                                                        <a class="dropdown-item" href="javascript:void(0)"><i
-                                                                class="fa-regular fa-trash-can m-r-5"></i>
-                                                            Delete</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <h2>
-                                                    <a href="project-view.html">Video Calling App</a>
-                                                </h2>
-                                                <small class="block text-ellipsis">
-                                                    <span>3</span>
-                                                    <span class="text-muted">open tasks, </span>
-                                                    <span>3</span>
-                                                    <span class="text-muted">tasks completed</span>
-                                                </small>
-                                            </td>
-                                            <td>
-                                                <div class="progress progress-xs progress-striped">
-                                                    <div class="progress-bar w-50" role="progressbar"
-                                                        data-bs-toggle="tooltip" title="50%"></div>
-                                                </div>
-                                            </td>
-                                            <td class="text-end">
-                                                <div class="dropdown dropdown-action">
-                                                    <a href="#" class="action-icon dropdown-toggle"
-                                                        data-bs-toggle="dropdown" aria-expanded="false"><i
-                                                            class="material-icons">more_vert</i></a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="javascript:void(0)"><i
-                                                                class="fa-solid fa-pencil m-r-5"></i>
-                                                            Edit</a>
-                                                        <a class="dropdown-item" href="javascript:void(0)"><i
-                                                                class="fa-regular fa-trash-can m-r-5"></i>
-                                                            Delete</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <h2>
-                                                    <a href="project-view.html">Hospital Administration</a>
-                                                </h2>
-                                                <small class="block text-ellipsis">
-                                                    <span>12</span>
-                                                    <span class="text-muted">open tasks, </span>
-                                                    <span>4</span>
-                                                    <span class="text-muted">tasks completed</span>
-                                                </small>
-                                            </td>
-                                            <td>
-                                                <div class="progress progress-xs progress-striped">
-                                                    <div class="progress-bar w-88" role="progressbar"
-                                                        data-bs-toggle="tooltip" title="88%"></div>
-                                                </div>
-                                            </td>
-                                            <td class="text-end">
-                                                <div class="dropdown dropdown-action">
-                                                    <a href="#" class="action-icon dropdown-toggle"
-                                                        data-bs-toggle="dropdown" aria-expanded="false"><i
-                                                            class="material-icons">more_vert</i></a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="javascript:void(0)"><i
-                                                                class="fa-solid fa-pencil m-r-5"></i>
-                                                            Edit</a>
-                                                        <a class="dropdown-item" href="javascript:void(0)"><i
-                                                                class="fa-regular fa-trash-can m-r-5"></i>
-                                                            Delete</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <h2>
-                                                    <a href="project-view.html">Digital Marketplace</a>
-                                                </h2>
-                                                <small class="block text-ellipsis">
-                                                    <span>7</span>
-                                                    <span class="text-muted">open tasks, </span>
-                                                    <span>14</span>
-                                                    <span class="text-muted">tasks completed</span>
-                                                </small>
-                                            </td>
-                                            <td>
-                                                <div class="progress progress-xs progress-striped">
-                                                    <div class="progress-bar w-100" role="progressbar"
-                                                        data-bs-toggle="tooltip" title="100%"></div>
-                                                </div>
-                                            </td>
-                                            <td class="text-end">
-                                                <div class="dropdown dropdown-action">
-                                                    <a href="#" class="action-icon dropdown-toggle"
-                                                        data-bs-toggle="dropdown" aria-expanded="false"><i
-                                                            class="material-icons">more_vert</i></a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="javascript:void(0)"><i
-                                                                class="fa-solid fa-pencil m-r-5"></i>
-                                                            Edit</a>
-                                                        <a class="dropdown-item" href="javascript:void(0)"><i
-                                                                class="fa-regular fa-trash-can m-r-5"></i>
-                                                            Delete</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div class="card-footer">
-                            <a href="projects.html">View all projects</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
+
 @endsection
