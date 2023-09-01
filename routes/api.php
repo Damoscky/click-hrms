@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\v1\Admin\ReportController;
+use App\Http\Controllers\v1\Admin\ClientController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,3 +23,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::group(['prefix' => 'reports'], function(){
     Route::get('/sales/overview', [ReportController::class, 'salesOverview'])->name('api.admin.reports.salesOverview');
 });
+
+Route::get('/client/location/{id}', [ClientController::class, 'getClientLocation'])->name('api.admin.client.location');

@@ -96,16 +96,8 @@ class LoginController extends Controller
             return redirect()->route('employee.dashboard');
         }
         if (auth()->user()->roles[0]->slug == "superadmin") {
-            $employeeRole = 'employee';
-            $totalEmployeeCount = User::whereHas('roles', function ($roleTable) use ($employeeRole) {
-                $roleTable->where('slug', $employeeRole);
-            })->count();   
-
-            $clientRole = 'clients';
-            $totalClientCount = User::whereHas('roles', function ($roleTable) use ($clientRole) {
-                $roleTable->where('slug', $clientRole);
-            })->get();   
-            return redirect()->route('admin.dashboard', ['totalEmployeeCount' => $totalEmployeeCount, 'totalClientCount' => $totalClientCount]);
+              
+            return redirect()->route('admin.dashboard');
         }
         
 

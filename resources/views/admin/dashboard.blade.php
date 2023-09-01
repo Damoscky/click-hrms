@@ -20,7 +20,7 @@
                         <div class="card-body">
                             <span class="dash-widget-icon"><i class="fa-solid fa-user"></i></span>
                             <div class="dash-widget-info">
-                                <h3>0</h3>
+                                <h3>{{$totalClient->count()}}</h3>
                                 <span>Total Clients</span>
                             </div>
                         </div>
@@ -42,7 +42,7 @@
                         <div class="card-body">
                             <span class="dash-widget-icon"><i class="fa-solid fa-users"></i></span>
                             <div class="dash-widget-info">
-                                <h3>2</h3>
+                                <h3>{{$totalEmployee->count()}}</h3>
                                 <span>Total Employees</span>
                             </div>
                         </div>

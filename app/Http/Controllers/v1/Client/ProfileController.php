@@ -10,11 +10,13 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Notification;
 use App\Helpers\ProcessAuditLog;
+use App\Models\CompanySetting;
 use App\Notifications\SentForApprovallNotification;
 use App\Notifications\ClientNegotiateNotification;
 use App\Notifications\AdminNegotiateNotification;
 use App\Models\User;
 use GuzzleHttp\Client;
+use PDF, Storage;
 
 class ProfileController extends Controller
 {
@@ -219,6 +221,28 @@ class ProfileController extends Controller
                 'kitchen_assistant' => $request->negotiating_kitchen_assistant,
                 'laundry' => $request->negotiating_laundry,
                 'status' => 'Review'
+            ]);
+            $companySetting = CompanySetting::first();
+
+            $data = [
+                'clientRecord' => $record,
+                'user' => $currentInstantUser,
+                'companySetting' => $companySetting
+            ];
+
+            $clientContract = PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])->loadView('client.pdf.contract-document', $data);
+
+            if(isset($clientContract)){
+                $fileExt = "pdf";
+                $name = 'contract_' . $record->client_id . '.' . $fileExt;
+                $fileUrl = config('app.url') . 'assets/client-document/' . $name;
+                Storage::disk('client-document')->put($name, $clientContract->output());
+            }else{
+                $fileUrl = $record->fileUrl;
+            }
+            
+            $record->update([
+                'contract_document' => $fileUrl
             ]);
 
             $currentInstantUser->update([

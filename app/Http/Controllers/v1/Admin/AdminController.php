@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\v1\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -14,11 +15,23 @@ class AdminController extends Controller
 
     public function dashboard()
     {
-        if(auth()->user()->hasPermission('view.dashboard')){
-            return view('admin.dashboard');
+        if(!auth()->user()->hasPermission('view.dashboard')){
+            toastr()->error("Access Denied :(");
+            return back();
         }
-        toastr()->error("Access Denied :(");
-        return back();
+
+        $employeeRole = 'employee';
+        $totalEmployee = User::whereHas('roles', function ($roleTable) use ($employeeRole) {
+            $roleTable->where('slug', $employeeRole);
+        })->get();   
+
+        $clientRole = 'client';
+        $totalClient = User::whereHas('roles', function ($roleTable) use ($clientRole) {
+            $roleTable->where('slug', $clientRole);
+        })->get(); 
+
+
+        return view('admin.dashboard', ['totalEmployee' => $totalEmployee, 'totalClient' => $totalClient]);
             
 
     }

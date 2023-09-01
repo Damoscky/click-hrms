@@ -157,7 +157,6 @@ class ClientController extends Controller
             }else{
                 $fileUrl = null;
             }
-
             
             $clientRecord->update([
                 'contract_document' => $fileUrl
@@ -234,5 +233,17 @@ class ClientController extends Controller
         } else {
             return response()->json(['error' => 'Location not found'], 404);
         }
+    }
+
+    public function getClientLocation($clientId)
+    {
+        $record = ClientRecord::where('id', $clientId)->first();
+
+        if(!is_null($record)){
+            return response()->json([
+                'data' => $record
+            ]);
+        }
+
     }
 }

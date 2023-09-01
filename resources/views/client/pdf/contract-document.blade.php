@@ -108,11 +108,11 @@
 
     <p>
         <ul>
-            <li>HCA - {{$companySetting['currency']}}{{$companySetting['standard_hca']}}/h</li>
-            <li>Senior HCA - {{$companySetting['currency']}}{{$companySetting['senior_hca']}}/h</li>
-            <li>RGN - {{$companySetting['currency']}}{{$companySetting['rgn']}}/h</li>
-            <li>Kitchen Assistant / Chef - {{$companySetting['currency']}}{{$companySetting['kitchen_assistant']}}/h</li>
-            <li>Laundary / Domestic - {{$companySetting['currency']}}{{$companySetting['laundry']}}/h</li>
+            <li>HCA - {{$companySetting['currency']}}{{$clientRecord['standard_hca']}}/h</li>
+            <li>Senior HCA - {{$companySetting['currency']}}{{$clientRecord['senior_hca']}}/h</li>
+            <li>RGN - {{$companySetting['currency']}}{{$clientRecord['rgn']}}/h</li>
+            <li>Kitchen Assistant / Chef - {{$companySetting['currency']}}{{$clientRecord['kitchen_assistant']}}/h</li>
+            <li>Laundary / Domestic - {{$companySetting['currency']}}{{$clientRecord['laundry']}}/h</li>
             <li>Bank Holiday double pay as applicable</li>
         </ul>
     </p>
@@ -271,11 +271,12 @@
         <div class="col-sm-6" style="float: left;">
             <h4><strong> Click Operations (UK) Limited </strong></h4>
             <p>
-                Signed by: <strong> Olalekan Ayuba </strong> <br>
-                <img src="{{ public_path("assets/img/clickhrm-logo.png") }}" alt="" style="width: 140px; height: 70px;">
+                To be Signed by: <strong> Olalekan Ayuba </strong> <br>
+                {{-- <img src="{{ public_path("assets/img/clickhrm-logo.png") }}" alt="" style="width: 140px; height: 70px;"> --}}
             </p>
             <p>
-                Date: {{ \Carbon\Carbon::parse($clientRecord['created_at'])->format('j F, Y') }} <br>
+                {{-- {{ \Carbon\Carbon::parse($clientRecord['created_at'])->format('j F, Y') }}  --}}
+                Date: ______________<br>
                 Position: <strong>Director</strong>
             </p>
             <p>
