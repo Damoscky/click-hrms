@@ -31,7 +31,7 @@ class ClientController extends Controller
         $clientRole = 'client';
         $totalClients = User::whereHas('roles', function ($roleTable) use ($clientRole) {
             $roleTable->where('slug', $clientRole);
-        })->where('is_active', true)->get();
+        })->get();
         $totalActiveClients = User::whereHas('roles', function ($roleTable) use ($clientRole) {
             $roleTable->where('slug', $clientRole);
         })->where('is_active', true)->get();
@@ -50,13 +50,17 @@ class ClientController extends Controller
         
     }
 
-    public function show()
+    public function show($id)
     {
         if(!auth()->user()->hasPermission('view.client')){
             toastr()->error("Access Denied :(");
             return back();
         }
-        return view('admin.client.view-client');
+        $id = base64_decode($id);
+
+        $record = ClientRecord::find($id);
+
+        return view('admin.client.view-client', ['client' => $record]);
     }
 
     public function store(Request $request)
@@ -81,6 +85,7 @@ class ClientController extends Controller
                 'last_name' => $request->last_name,
                 'phoneno' => $request->phone_number,
                 'email' => $request->email,
+                'status' => 'Pending'
             ]);
 
             $verification_code = Str::random(30); //Generate verification code
@@ -104,9 +109,9 @@ class ClientController extends Controller
                 $fullAddress = $location['formatted_address'];
                 $latitude = $location['geometry']['bounds']['northeast']['lat'];
                 $longitude = $location['geometry']['bounds']['northeast']['lng'];
-                $state = $location['address_components'][3]['short_name'];
-                $county =  $location['address_components'][4]['short_name'];
-                $country = $location['address_components'][5]['short_name'];
+                $state = $location['address_components'][2]['short_name'];
+                $county =  $location['address_components'][3]['short_name'];
+                $country = $location['address_components'][4]['short_name'];
 
                 $rand_no = mt_rand(0000,99999);
                 $client_id = 'CLK-'. $rand_no  . '-C' .$request->company_name[0];
@@ -123,7 +128,7 @@ class ClientController extends Controller
                     'client_id' => $client_id,
                     'latitude' => $latitude,
                     'longitude' => $longitude,
-                    'location' => $latitude.','.$longitude
+                    'location' => $latitude.','.$longitude,
                 ]);
             }
             $companySetting = CompanySetting::first();
@@ -131,7 +136,16 @@ class ClientController extends Controller
                 'clientRecord' => $clientRecord,
                 'user' => $user,
                 'companySetting' => $companySetting
-            ];   
+            ];
+            if(isset($companySetting)){
+                $clientRecord->update([
+                    'standard_hca' => $companySetting->standard_hca,
+                    'senior_hca' => $companySetting->senior_hca,
+                    'rgn' => $companySetting->rgn,
+                    'kitchen_assistant' => $companySetting->kitchen_assistant,
+                    'laundry' => $companySetting->laundry,
+                ]);
+            }   
 
             $clientContract = PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])->loadView('client.pdf.contract-document', $data);
 

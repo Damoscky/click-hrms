@@ -11,7 +11,7 @@ class DashboardController extends Controller
     public function dashboard()
     {
         if (!auth()->user()->is_completed) {
-            toastr()->warning("Please complete your registration!");
+            toastr()->warning("Please complete contract documentation!");
             return redirect()->route('client.complete-registration');
         }
         return view('client.dashboard');

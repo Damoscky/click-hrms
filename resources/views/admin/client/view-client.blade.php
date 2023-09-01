@@ -6,10 +6,10 @@
             <div class="page-header">
                 <div class="row">
                     <div class="col-sm-12">
-                        <h3 class="page-title">Profile</h3>
+                        <h3 class="page-title">Client Profile</h3>
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item">
-                                <a href="admin-dashboard.html">Dashboard</a>
+                                <a href="{{route('admin.dashboard')}}">Dashboard</a>
                             </li>
                             <li class="breadcrumb-item active">Profile</li>
                         </ul>
@@ -24,15 +24,20 @@
                             <div class="profile-view">
                                 <div class="profile-img-wrap">
                                     <div class="profile-img">
-                                        <a href="#"><img src="{{ asset('assets') }}/img/profiles/avatar-02.jpg"
-                                                alt="User Image" /></a>
+                                        @if (isset($client->image))
+                                            <a href="#"><img src="{{ $client->image }}"
+                                                    alt="Profile Picture" /></a>
+                                        @else
+                                            <a href="#"><img
+                                                    src="{{ asset('assets') }}/img/user.png" alt="Client Logo" /></a>
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="profile-basic">
                                     <div class="row">
                                         <div class="col-md-5">
                                             <div class="profile-info-left">
-                                                <h3 class="user-name m-t-0 mb-0">John Doe</h3>
+                                                <h3 class="user-name m-t-0 mb-0">{{$client->company_name}}</h3>
                                                 <h6 class="text-muted">UI/UX Design Team</h6>
                                                 <small class="text-muted">Web Designer</small>
                                                 <div class="staff-id">Employee ID : FT-0001</div>

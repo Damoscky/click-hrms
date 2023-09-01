@@ -35,7 +35,7 @@
                 <div class="col-md-6 col-sm-6 col-lg-6 col-xl-4">
                     <div class="card dash-widget">
                         <div class="card-body">
-                            <span class="dash-widget-icon"><i class="fa-regular fa-arrow-down"></i></span>
+                            <span class="dash-widget-icon"><i class="fa-solid fa-gem"></i></span>
                             <div class="dash-widget-info">
                                 <h3>{{ $data['totalActiveClients']->count() }}</h3>
                                 <span>Active Clients</span>
@@ -46,7 +46,7 @@
                 <div class="col-md-6 col-sm-6 col-lg-6 col-xl-4">
                     <div class="card dash-widget">
                         <div class="card-body">
-                            <span class="dash-widget-icon"><i class="fa-solid fa-users"></i></span>
+                            <span class="dash-widget-icon"><i class="fa-solid fa-user"></i></span>
                             <div class="dash-widget-info">
                                 <h3>{{ $data['totalInactiveClients']->count() }}</h3>
                                 <span>Inactive Clients</span>
@@ -107,27 +107,46 @@
                                         <tr>
                                             <td>
                                                 <h2 class="table-avatar">
-                                                    <a href="client-profile.html" class="avatar"><img
-                                                            src="{{ asset('assets') }}/img/profiles/avatar-28.jpg"
-                                                            alt="User Image" /></a>
-                                                    <a href="client-profile.html">Mercury Software Inc</a>
+                                                    @if (isset($client->clientRecord->image))
+                                                        <a href="{{ route('admin.client.show', base64_encode($client->clientRecord->id)) }}"
+                                                            class="avatar"><img src="{{ $client->clientRecord->image }}"
+                                                                alt="Profile Picture" /></a>
+                                                    @else
+                                                        <a href="{{ route('admin.client.show', base64_encode($client->clientRecord->id)) }}" class="avatar"><img
+                                                                src="{{ asset('assets') }}/img/user.png" alt="Client Logo" /></a>
+                                                    @endif
+                                                    <a href="{{ route('admin.client.show', base64_encode($client->clientRecord->id)) }}">{{isset($client->clientRecord) ? $client->clientRecord->company_name : ''}}</a>
                                                 </h2>
                                             </td>
-                                            <td>CLT-0007</td>
-                                            <td>Amanda Warren</td>
+                                            <td>{{isset($client->clientRecord) ? $client->clientRecord->client_id : ''}}</td>
+                                            <td>{{isset($client->clientRecord) ? $client->clientRecord->user->first_name : ''}} {{isset($client->clientRecord) ? $client->clientRecord->user->last_name : ''}}</td>
                                             <td>
-                                                <a href="https://smarthr.dreamguystech.com/cdn-cgi/l/email-protection"
+                                                <a href="#"
                                                     class="__cf_email__"
-                                                    data-cfemail="26474b4748424751475454434866435e474b564a430845494b">[email&#160;protected]</a>
+                                                    data-cfemail="26474b4748424751475454434866435e474b564a430845494b">{{isset($client->clientRecord) ? $client->clientRecord->user->email : ''}}</a>
                                             </td>
-                                            <td>9876543210</td>
+                                            <td>{{isset($client->clientRecord) ? $client->clientRecord->user->phoneno : ''}}</td>
                                             <td>
-                                                <button class="btn btn-outline-success btn-sm">
-                                                    Active
-                                                </button>
+                                                @if (isset($client->clientRecord) && $client->clientRecord->user->status == 'Pending')
+                                                    <button class="btn btn-outline-secondary btn-sm">
+                                                        Pending
+                                                    </button>
+                                                @elseif(isset($client->clientRecord) && $client->clientRecord->user->status == 'Approved')
+                                                    <button class="btn btn-outline-success btn-sm">
+                                                        Active
+                                                    </button>
+                                                @elseif(isset($client->clientRecord) && $client->clientRecord->user->status == 'Review')
+                                                    <button class="btn btn-outline-warning btn-sm">
+                                                        Review
+                                                    </button>
+                                                @elseif(isset($client->clientRecord) && $client->clientRecord->user->status == 'Inactive')
+                                                    <button class="btn btn-outline-danger btn-sm">
+                                                        Inactive
+                                                    </button>
+                                                @endif
                                             </td>
                                             <td class="text-end">
-                                                <a href="{{ route('admin.client.show') }}" class="btn btn-outline-primary"> View
+                                                <a href="{{ route('admin.client.show', base64_encode($client->clientRecord->id)) }}" class="btn btn-outline-primary"> View
                                                 </a>
                                                 <a href="#" class="btn btn-outline-warning" data-bs-toggle="modal"
                                                     data-bs-target="#edit_client"> Edit </a>

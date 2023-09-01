@@ -12,9 +12,9 @@
                                 @if(!auth()->user()->sent_for_approval && auth()->user()->status == "Pending")
                                     <a href="#">Please fill the form below to complete your registration</a>
                                 @elseif(auth()->user()->sent_for_approval && auth()->user()->status == "Review")
-                                    <a href="#" class="btn btn-warning">Your application is currently under review.</a>
+                                    <a href="#" class="btn btn-warning">Your Request is currently under review.</a>
                                 @elseif(!auth()->user()->sent_for_approval && auth()->user()->status == "Declined")
-                                    <a href="#" class="btn btn-danger">Your application has been declined</a>
+                                    <a href="#" class="btn btn-danger">Your Request has been declined</a>
                                     <a href="#"  data-bs-toggle="modal" data-bs-target="#reason_modal" class="btn btn-danger">View Reasons</a>
                                 @endif
                             </li>
@@ -252,7 +252,7 @@
                                 @endphp
                             </div>
                             <div class="modal-btn delete-action">
-                                <form action="#" method="POST">
+                                <form action="{{route('client.negotiate.contract')}}" method="POST">
                                     {{csrf_field()}}
                                     <div class="row">
                                         <div class="col-md-6">

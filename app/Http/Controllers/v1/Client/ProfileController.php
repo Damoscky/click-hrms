@@ -8,7 +8,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Notification;
 use App\Helpers\ProcessAuditLog;
+use App\Notifications\SentForApprovallNotification;
+use App\Notifications\ClientNegotiateNotification;
+use App\Notifications\AdminNegotiateNotification;
+use App\Models\User;
 use GuzzleHttp\Client;
 
 class ProfileController extends Controller
@@ -186,5 +191,70 @@ class ProfileController extends Controller
         } else {
             return response()->json(['error' => 'Location not found'], 404);
         }
+    }
+
+    public function negotiateContract(Request $request)
+    {
+        $validateRequest = $this->validateRateRequest($request);
+
+        if ($validateRequest->fails()) {
+            toastr()->warning($validateRequest->errors()->first());
+            return back();
+        }
+
+        try {
+            $currentInstantUser = auth()->user();
+
+            $record = ClientRecord::where('user_id', auth()->user()->id)->first();
+
+            if (is_null($record)) {
+                toastr()->error('Error occured. Please refresh and try again');
+                return back();
+            }
+
+            $record->update([
+                'standard_hca' => $request->negotiating_standard_hca,
+                'senior_hca' => $request->negotiating_senior_hca,
+                'rgn' => $request->negotiating_rgn,
+                'kitchen_assistant' => $request->negotiating_kitchen_assistant,
+                'laundry' => $request->negotiating_laundry,
+                'status' => 'Review'
+            ]);
+
+            $currentInstantUser->update([
+                'sent_for_approval' => true,
+                'status' => 'Review',
+            ]);
+
+            $adminRole = 'Super Admin';
+
+            $superAdmins = User::whereHas('roles', function ($roleTable) use ($adminRole) {
+                $roleTable->where('name', $adminRole);
+            })->pluck('email');
+
+             //send email to Admin
+             Notification::route('mail', $superAdmins)->notify(new AdminNegotiateNotification($record));
+             Notification::route('mail', $currentInstantUser->email)->notify(new ClientNegotiateNotification($record));
+
+             toastr()->success('Record sent for review successfully');
+             return back();
+        } catch (\Throwable $error) {
+            toastr()->error($error->getMessage());
+            return back();
+        }
+    }
+
+    public function validateRateRequest($request)
+    {
+        $rules = [
+            'negotiating_standard_hca' => 'required',
+            'negotiating_senior_hca' => 'required',
+            'negotiating_rgn' => 'required',
+            'negotiating_kitchen_assistant' => 'required',
+            'negotiating_laundry' => 'required',
+        ];
+
+        $validate = Validator::make($request->all(), $rules);
+        return $validate;
     }
 }

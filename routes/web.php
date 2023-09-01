@@ -70,8 +70,9 @@ Route::group(['prefix' => 'employee', 'middleware' => ["auth:web", "employee"]],
 Route::group(['prefix' => 'client', 'middleware' => ["auth:web", "client"]], function (){
     Route::get('/dashboard', [ClientDashboardController::class, 'dashboard'])->name('client.dashboard');
     Route::get('/complete/registration', [ClientProfileController::class, 'completeRegistration'])->name('client.complete-registration');
-    Route::post('/company/update', [ClientProfileController::class, 'updateBasicRecord'])->name('client.record.update');
-    Route::post('/company/update/address', [ClientProfileController::class, 'updateAddress'])->name('client.record.address.update');
+    Route::post('/update', [ClientProfileController::class, 'updateBasicRecord'])->name('client.record.update');
+    Route::post('/update/address', [ClientProfileController::class, 'updateAddress'])->name('client.record.address.update');
+    Route::post('/negotiate/contract', [ClientProfileController::class, 'negotiateContract'])->name('client.negotiate.contract');
 
 });
 
@@ -115,7 +116,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ["auth:web", "superadmin"]], 
     Route::group(['prefix' => 'clients'], function(){
         Route::post('/create', [ClientController::class, 'store'])->name('admin.client.create');
         Route::get('/', [ClientController::class, 'index'])->name('admin.client.all');
-        Route::get('/view', [ClientController::class, 'show'])->name('admin.client.show');
+        Route::get('/view/{id}', [ClientController::class, 'show'])->name('admin.client.show');
     });
 
     Route::group(['prefix' => 'timesheet'], function(){

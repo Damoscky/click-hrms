@@ -29,6 +29,11 @@ return new class extends Migration
             $table->string('company_name')->nullable();
             $table->string('contract_document')->nullable();
             $table->string('status')->nullable();
+            $table->decimal('standard_hca', 15, 2)->nullable();
+            $table->decimal('senior_hca', 15, 2)->nullable();
+            $table->decimal('rgn', 15, 2)->nullable();
+            $table->decimal('kitchen_assistant', 15, 2)->nullable();
+            $table->decimal('laundry', 15, 2)->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
