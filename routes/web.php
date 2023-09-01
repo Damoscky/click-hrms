@@ -14,6 +14,7 @@ use App\Http\Controllers\v1\Admin\TimesheetController;
 use App\Http\Controllers\v1\Admin\StaffController;
 use App\Http\Controllers\v1\Admin\ShiftController;
 use App\Http\Controllers\v1\Admin\ReportController;
+use App\Http\Controllers\v1\Admin\SettingController as AdminSettingController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -81,6 +82,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ["auth:web", "superadmin"]], 
         Route::get('/', [DepartmentController::class, 'index'])->name('admin.department.all');
         Route::post('/create', [DepartmentController::class, 'create'])->name('admin.department.create');
         Route::get('/delete/{id}', [DepartmentController::class, 'delete'])->name('admin.department.delete');
+    });
+    Route::group(['prefix' => 'settings'], function(){
+        Route::get('/company', [AdminSettingController::class, 'index'])->name('admin.settings.company');
+        Route::post('/company/update', [AdminSettingController::class, 'updateCompanySetting'])->name('admin.settings.company.update');
     });
 
     Route::group(['prefix' => 'reports'], function(){

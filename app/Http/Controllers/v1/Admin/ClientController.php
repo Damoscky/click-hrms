@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\CreateClientNotification;
 use App\Helpers\ProcessAuditLog;
+use App\Models\CompanySetting;
 use PDF, Storage;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
@@ -125,18 +126,14 @@ class ClientController extends Controller
                     'location' => $latitude.','.$longitude
                 ]);
             }
+            $companySetting = CompanySetting::first();
             $data = [
                 'clientRecord' => $clientRecord,
-                'user' => $user
-            ];
+                'user' => $user,
+                'companySetting' => $companySetting
+            ];   
 
-             // Load the watermark view
-             $watermark = view('client.pdf.watermark');
-             
-
-            $clientContract = PDF::loadView('client.pdf.contract-document', $data)
-            ->setOptions(['isPhpEnabled' => true]) // Enable PHP for inline CSS
-            ->setOption('header-html', $watermark->render());
+            $clientContract = PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])->loadView('client.pdf.contract-document', $data);
 
             if(isset($clientContract)){
                 $fileExt = "pdf";
@@ -146,7 +143,7 @@ class ClientController extends Controller
             }else{
                 $fileUrl = null;
             }
-            return $fileUrl;
+
             
             $clientRecord->update([
                 'contract_document' => $fileUrl

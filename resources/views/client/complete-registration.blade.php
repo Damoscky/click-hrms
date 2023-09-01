@@ -181,9 +181,9 @@
                                     <div class="file-body">
                                         <div class="file-scroll">
                                             <div class="file-content-inner">
-                                                <h4>Contract Document
+                                                <h4>Contract Document - {{auth()->user()->clientRecord->company_name}}
                                                 </h4>
-                                                <object data="https://media.geeksforgeeks.org/wp-content/cdn-uploads/20210101201653/PDF.pdf" 
+                                                <object data="{{isset(auth()->user()->clientRecord) ? auth()->user()->clientRecord->contract_document : ''}}" 
                                                     width="100%"
                                                     height="1000">
                                                 </object>
@@ -199,30 +199,110 @@
 
             @if (!auth()->user()->sent_for_approval)
                 <a href="{{ route('employee.application.sendforapproval') }}" class="btn btn-success"
-                    data-bs-toggle="modal" data-bs-target="#confirm_approval_modal">Submit for
-                    Approval</a>
+                    data-bs-toggle="modal" data-bs-target="#confirm_agreement_modal">Confirm Aggrement
+                </a>
+                <a href="{{ route('employee.application.sendforapproval') }}" class="btn btn-warning"
+                    data-bs-toggle="modal" data-bs-target="#negotiate_modal">Negotiate
+                </a>
             @endif
             <!--Submit for Approval Modal -->
-            <div class="modal custom-modal fade" id="confirm_approval_modal" role="dialog">
+            <div class="modal custom-modal fade" id="confirm_agreement_modal" role="dialog">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-body">
                             <div class="form-header">
-                                <h3>Submit Record for Approval</h3>
-                                <p> Are you sure you want to submit this application for approval? This action cannot be undone.</p>
+                                <h3>Confirm Contract Agreement?</h3>
+                                <p>Are you sure you want to confirm this agreement ? This action cannot be undone.</p>
                             </div>
                             <div class="modal-btn delete-action">
                                 <div class="row">
-
-                                    <div class="col-6">
-                                        <a href="javascript:void(0);" data-bs-dismiss="modal"
-                                            class="btn btn-secondary cancel-btn">Cancel</a>
-                                    </div>
-                                    <div class="col-6">
-                                        <a href="{{ route('employee.application.sendforapproval') }}"
-                                            class="btn btn-success continue-btn">Confirm</a>
-                                    </div>
+                                    <form action="#" method="POST">
+                                        {{csrf_field()}}
+                                        <div class="row">
+                                            <div class="input-block mb-3">
+                                                <label class="col-form-label">Signed Aggrement <span
+                                                        class="text-danger">*</span></label>
+                                                <input type="file" required name="signed_aggrement" required
+                                                    value=""
+                                                    class="form-control" />
+                                            </div>
+                                            <div class="col-6">
+                                                <a href="javascript:void(0);" data-bs-dismiss="modal"
+                                                    class="btn btn-secondary cancel-btn">Cancel</a>
+                                            </div>
+                                            <div class="col-6">
+                                                <button class="btn btn-primary submit-btn continue-btn">Confirm</button>
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal custom-modal fade" id="negotiate_modal" role="dialog">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="form-header">
+                                <h3>Negotiate Current Agreement</h3>
+                                @php
+                                    $companySetting = App\Models\CompanySetting::first();
+                                @endphp
+                            </div>
+                            <div class="modal-btn delete-action">
+                                <form action="#" method="POST">
+                                    {{csrf_field()}}
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="input-block mb-3">
+                                                <label class="col-form-label">HCA Rate </label>
+                                                    <input type="text" required name="current_standard_hca" readonly value="{{isset($companySetting) ? $companySetting->standard_hca : ''}}" class="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="input-block mb-3">
+                                                <label class="col-form-label">Negotiating Rate
+                                                    <span class="text-danger">*</span></label>
+                                                    <input type="text" required name="negotiating_standard_hca" value="" class="form-control" />                                            
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="input-block mb-3">
+                                                <label class="col-form-label">Senior HCA Rate </label>
+                                                    <input type="text" required name="current_standard_hca" readonly value="{{isset($companySetting) ? $companySetting->senior_hca : ''}}" class="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="input-block mb-3">
+                                                <label class="col-form-label">Negotiating Rate
+                                                    <span class="text-danger">*</span></label>
+                                                    <input type="text" required name="negotiating_senior_hca" value="" class="form-control" />                                          
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="input-block mb-3">
+                                                <label class="col-form-label">RGN Rate </label>
+                                                    <input type="text" required name="current_rgn" readonly value="{{isset($companySetting) ? $companySetting->senior_hca : ''}}" class="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="input-block mb-3">
+                                                <label class="col-form-label">Negotiating Rate
+                                                    <span class="text-danger">*</span></label>
+                                                    <input type="text" required name="negotiating_rgn" value="" class="form-control" />                                          
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <a href="javascript:void(0);" data-bs-dismiss="modal"
+                                                class="btn btn-secondary cancel-btn">Cancel</a>
+                                        </div>
+                                        <div class="col-6">
+                                            <button class="btn btn-primary submit-btn continue-btn">Confirm</button>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>

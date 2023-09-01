@@ -5,9 +5,9 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Smarthr - Bootstrap Admin Template" />
+    <meta name="description" content="" />
     <meta name="keywords"
-        content="admin, estimates, bootstrap, business, corporate, creative, management, minimal, modern, accounts, invoice, html5, responsive, CRM, Projects" />
+        content="" />
     <meta name="author" content="Dreamguys - Bootstrap Admin Template" />
     <title>Dashboard || {{ env('APP_NAME') }}</title>
 
@@ -266,46 +266,52 @@
                                     
                                 </ul>
                             </li>
+                            <li class="@if(request()->is('admin/timesheet')) active @endif">
+                                <a href="{{ route('admin.timesheet.all') }}" class="@if(request()->is('admin/timesheet')) active @endif"><i class="la la-clock-o"></i> <span> Timesheet</span></a>
+                            </li>
+                            <li class="submenu @if(request()->is('admin/shifts')) active @endif">
+                                <a href="#"><i class="la la-calendar"></i> <span> Shifts & Schedule</span>
+                                    <span class="menu-arrow"></span></a>
+                                <ul>
+                                    <li><a href="{{ route('admin.shift.all') }}" class="@if(request()->is('admin/shifts')) active @endif">All Shifts</a></li>
+                                    <li><a href="{{ route('admin.shift.pending') }}" class="@if(request()->is('admin/shifts/pending')) active @endif">Pending Shifts</a></li>
+                                    <li><a href="{{ route('admin.employee.availability') }}" class="@if(request()->is('admin/employee/availability')) active @endif">Employee Availablility</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#"><i class="la la-briefcase"></i> <span> Leave</span></a>
+                            </li>
+                            <li class="menu-title">
+                                <span>Reports</span>
+                            </li>
+                            <li class="submenu @if(request()->is('admin/reports/employee')) active @endif">
+                                <a href="#"><i class="la la-address-card"></i> <span> Reports</span>
+                                    <span class="menu-arrow"></span></a>
+                                <ul>
+                                    {{-- <li><a href="{{route('admin.department.create')}}">Create Department</a></li> --}}
+                                    <li><a href="{{ route('admin.reports.employee') }}" class="@if(request()->is('admin/reports/employee')) active @endif">Employee Reports </a></li>
+
+                                </ul>
+                            </li>
+                            <li class="menu-title">
+                                <span>Settings</span>
+                            </li>
+                            <li class="submenu @if(request()->is('admin/department')) active @endif">
+                                <a href="#" class="@if(request()->is('admin/department')) active @endif"><i class="la la-address-card"></i> <span> Departments</span>
+                                    <span class="menu-arrow"></span></a>
+                                <ul>
+                                    <li><a href="{{ route('admin.department.all') }}" class="@if(request()->is('admin/department')) active @endif">All Departments</a></li>
+                                </ul>
+                            </li>
+                            <li class="submenu @if(request()->is('admin/settings/company')) active @endif">
+                                <a href="#" class="@if(request()->is('admin/settings/company')) active @endif"><i class="la la-asl-interpreting"></i> <span> Company</span>
+                                    <span class="menu-arrow"></span></a>
+                                <ul>
+                                    <li><a href="{{ route('admin.settings.company') }}" class="@if(request()->is('admin/settings/company')) active @endif">Company Setup</a></li>
+                                </ul>
+                            </li>
+
                         @endrole
-                        <li class="@if(request()->is('admin/timesheet')) active @endif">
-                            <a href="{{ route('admin.timesheet.all') }}" class="@if(request()->is('admin/timesheet')) active @endif"><i class="la la-clock-o"></i> <span> Timesheet</span></a>
-                        </li>
-                        <li class="submenu @if(request()->is('admin/shifts')) active @endif">
-                            <a href="#"><i class="la la-calendar"></i> <span> Shifts & Schedule</span>
-                                <span class="menu-arrow"></span></a>
-                            <ul>
-                                <li><a href="{{ route('admin.shift.all') }}" class="@if(request()->is('admin/shifts')) active @endif">All Shifts</a></li>
-                                <li><a href="{{ route('admin.shift.pending') }}" class="@if(request()->is('admin/shifts/pending')) active @endif">Pending Shifts</a></li>
-                                <li><a href="{{ route('admin.employee.availability') }}" class="@if(request()->is('admin/employee/availability')) active @endif">Employee Availablility</a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="#"><i class="la la-briefcase"></i> <span> Leave</span></a>
-                        </li>
-                        <li class="menu-title">
-                            <span>Reports</span>
-                        </li>
-                        <li class="submenu @if(request()->is('admin/reports/employee')) active @endif">
-                            <a href="#"><i class="la la-address-card"></i> <span> Reports</span>
-                                <span class="menu-arrow"></span></a>
-                            <ul>
-                                {{-- <li><a href="{{route('admin.department.create')}}">Create Department</a></li> --}}
-                                <li><a href="{{ route('admin.reports.employee') }}" class="@if(request()->is('admin/reports/employee')) active @endif">Employee Reports </a></li>
-
-                            </ul>
-                        </li>
-                        <li class="menu-title">
-                            <span>Settings</span>
-                        </li>
-                        <li class="submenu @if(request()->is('admin/department')) active @endif">
-                            <a href="#" class="@if(request()->is('admin/department')) active @endif"><i class="la la-address-card"></i> <span> Departments</span>
-                                <span class="menu-arrow"></span></a>
-                            <ul>
-                                {{-- <li><a href="{{route('admin.department.create')}}">Create Department</a></li> --}}
-                                <li><a href="{{ route('admin.department.all') }}" class="@if(request()->is('admin/department')) active @endif">All Departments</a></li>
-
-                            </ul>
-                        </li>
                     </ul>
                 </div>
             </div>

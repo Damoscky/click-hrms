@@ -278,6 +278,12 @@ class PermissionsTableSeeder extends Seeder
                 'description' => 'Reports Management',
                 'model'       => 'Permission',
             ],
+            [
+                'name'        => 'Can Manage Settings',
+                'slug'        => 'manage.settings',
+                'description' => 'Settings Management',
+                'model'       => 'Permission',
+            ],
         ];
 
         /*
