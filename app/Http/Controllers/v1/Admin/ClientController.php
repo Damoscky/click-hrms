@@ -13,8 +13,11 @@ use jeremykenedy\LaravelRoles\Models\Role;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\CreateClientNotification;
+use App\Notifications\DeclineClientNotification;
+use App\Models\EmployeeDisapproval;
 use App\Helpers\ProcessAuditLog;
 use App\Models\CompanySetting;
+use App\Notifications\ApproveClientNotification;
 use PDF, Storage;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
@@ -245,5 +248,95 @@ class ClientController extends Controller
             ]);
         }
 
+    }
+
+    public function declineClient(Request $request, $id)
+    {
+        if(!auth()->user()->hasPermission('edit.client')){
+
+            toastr()->error("Access Denied :(");
+            return back();
+        }
+        $id = base64_decode($id);
+        $record = User::find($id);
+
+        if(is_null($record)){
+            toastr()->error("Record not found");
+            return back();
+        }
+        $record->update([
+            'status' => 'Declined',
+            'is_completed' => false,
+            'is_active' => false,
+            'sent_for_approval' => false,
+        ]);
+
+        $reason = EmployeeDisapproval::create([
+            'declined_by' => auth()->user()->id,
+            'employee_id' => $record->id,
+            'reason' => $request->reason
+        ]);
+
+        $userInstance = auth()->user();
+
+        $dataToLog = [
+            'causer_id' => auth()->user()->id,
+            'action_id' => $record->id,
+            'action_type' => "Models\User",
+            'action' => 'Edit',
+            'log_name' => "Client application declined successfully",
+            'description' => "{$userInstance->first_name} {$userInstance->last_name} declined {$record->first_name} {$record->last_name} application successfully",
+        ];
+
+        ProcessAuditLog::storeAuditLog($dataToLog);
+
+        //sendemail to notify employee
+        Notification::route('mail', $record->email)->notify(new DeclineClientNotification($record));
+
+        toastr()->success("Client request disapproved succcessfully");
+        return back();
+    }
+
+    public function approveClient($id)
+    {
+        if(!auth()->user()->hasPermission('edit.client')){
+
+            toastr()->error("Access Denied :(");
+            return back();
+        }
+        $id = base64_decode($id);
+        $record = User::find($id);
+
+        if(is_null($record)){
+            toastr()->error("Record not found");
+            return back();
+        }
+        $record->update([
+            'status' => 'Approved',
+            'is_completed' => true,
+            'is_active' => true
+        ]);
+        $record->clientRecord->update([
+            'status' => 'Approved'
+        ]);
+
+        $userInstance = auth()->user();
+
+        $dataToLog = [
+            'causer_id' => auth()->user()->id,
+            'action_id' => $record->id,
+            'action_type' => "Models\User",
+            'action' => 'Edit',
+            'log_name' => "Client contract approved successfully",
+            'description' => "{$userInstance->first_name} {$userInstance->last_name} approved {$record->clientRecord->company_name} contract successfully",
+        ];
+
+        ProcessAuditLog::storeAuditLog($dataToLog);
+
+        //sendemail to notify employee
+        Notification::route('mail', $record->email)->notify(new ApproveClientNotification($record->clientRecord));
+
+        toastr()->success("Client contract approved succcessfully");
+        return back();
     }
 }

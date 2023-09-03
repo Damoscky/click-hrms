@@ -284,6 +284,8 @@ class PermissionsTableSeeder extends Seeder
                 'description' => 'Settings Management',
                 'model'       => 'Permission',
             ],
+
+            
         ];
 
         /*

@@ -41,11 +41,11 @@
     <div class="main-wrapper">
         <div class="header">
             <div class="header-left">
-                <a href="{{ route('admin.dashboard') }}" class="logo">
+                <a href="{{ route('client.dashboard') }}" class="logo">
                     <img src="{{ asset('assets') }}/img/clickhrm-logo.png" width="40" height="40"
                         alt="Logo" />
                 </a>
-                <a href="admin-dashboard.html" class="logo2">
+                <a href="{{ route('client.dashboard') }}" class="logo2">
                     <img src="{{ asset('assets') }}/img/clickhrm-logo.png" width="40" height="40"
                         alt="Logo" />
                 </a>
@@ -126,8 +126,8 @@
                                 <a href="#"><i class="la la-calendar"></i> <span> Shifts & Schedule</span>
                                     <span class="menu-arrow"></span></a>
                                 <ul>
-                                    <li><a href="{{ route('admin.shift.all') }}">Shifts</a></li>
-                                    <li><a href="{{ route('admin.shift.pending') }}">Pending Shifts</a></li>
+                                    <li><a href="{{ route('client.shift.all') }}">Shifts</a></li>
+                                    <li><a href="{{ route('client.shift.pending') }}">Pending Shifts</a></li>
                                 </ul>
                             </li>
                             <li class="active">
@@ -176,7 +176,9 @@
     </div>
 
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+    <script src="{{ asset('assets') }}/js/add-more-shift.js"></script>
     <script src="{{ asset('assets') }}/js/jquery-3.7.0.min.js"></script>
 
     <script src="{{ asset('assets') }}/js/bootstrap.bundle.min.js"></script>

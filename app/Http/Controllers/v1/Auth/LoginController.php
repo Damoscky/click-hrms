@@ -93,8 +93,9 @@ class LoginController extends Controller
                 // toastr()->success("Your account is pending verification. Please complete your registration.");
                 return redirect()->route('client.complete-registration');
             }
-            return redirect()->route('employee.dashboard');
+            return redirect()->route('client.dashboard');
         }
+        
         if (auth()->user()->roles[0]->slug == "superadmin") {
               
             return redirect()->route('admin.dashboard');

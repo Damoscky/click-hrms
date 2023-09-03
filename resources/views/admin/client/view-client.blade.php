@@ -429,6 +429,63 @@
                 </div>
             </div>
         </div>
+        <div class="modal custom-modal fade" id="disapprove_modal" role="dialog">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="form-header">
+                            <h3>Disapprove Request?</h3>
+                            <p>This action cannot be undone.</p>
+                        </div>
+                        <div class="modal-btn delete-action">
+                            <form action="{{route('admin.client.disapprove', base64_encode($client->user->id))}}" method="POST">
+                                {{csrf_field()}}
+                                <div class="row">
+                                    <div class="input-block mb-3">
+                                        <label class="col-form-label">Reason
+                                            <span class="text-danger">*</span></label>
+                                        <textarea name="reason" required class="form-control" id="reason" cols="30" rows="10"></textarea>
+                                    </div>
+                                    <div class="col-6">
+                                        <a href="javascript:void(0);" data-bs-dismiss="modal"
+                                            class="btn btn-secondary cancel-btn">Cancel</a>
+                                    </div>
+                                    <div class="col-6">
+                                        <button class="btn btn-primary submit-btn continue-btn">Confirm</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal custom-modal fade" id="approve_modal" role="dialog">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="form-header">
+                            <h3>Approve Client</h3>
+                            <p>Are you sure you want to approve client? This action cannot
+                                be undone.</p>
+                        </div>
+                        <div class="modal-btn delete-action">
+                            <div class="row">
+
+                                <div class="col-6">
+                                    <a href="javascript:void(0);" data-bs-dismiss="modal"
+                                        class="btn btn-secondary cancel-btn">Cancel</a>
+                                </div>
+                                <div class="col-6">
+                                    <a href="{{ route('admin.client.approve', base64_encode($client->user->id)) }}"
+                                        class="btn btn-success continue-btn">Confirm</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
        
     </div>

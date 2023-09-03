@@ -198,10 +198,10 @@
             </div>
 
             @if (!auth()->user()->sent_for_approval)
-                <a href="{{ route('employee.application.sendforapproval') }}" class="btn btn-success"
-                    data-bs-toggle="modal" data-bs-target="#confirm_agreement_modal">Confirm Aggrement
+                <a href="#" class="btn btn-success"
+                    data-bs-toggle="modal" data-bs-target="#confirm_agreement_modal">Confirm
                 </a>
-                <a href="{{ route('employee.application.sendforapproval') }}" class="btn btn-warning"
+                <a href="#" class="btn btn-warning"
                     data-bs-toggle="modal" data-bs-target="#negotiate_modal">Negotiate
                 </a>
             @endif
@@ -216,7 +216,7 @@
                             </div>
                             <div class="modal-btn delete-action">
                                 <div class="row">
-                                    <form action="#" method="POST">
+                                    <form action="{{route('client.contract.accept')}}" enctype="multipart/form-data" method="POST">
                                         {{csrf_field()}}
                                         <div class="row">
                                             <div class="input-block mb-3">
@@ -265,7 +265,7 @@
                                             <div class="input-block mb-3">
                                                 <label class="col-form-label">Negotiating Rate
                                                     <span class="text-danger">*</span></label>
-                                                    <input type="number" step="0.01" required name="negotiating_standard_hca" value="" class="form-control" />                                            
+                                                    <input type="number" step="0.01" required name="negotiating_standard_hca" value="{{isset(auth()->user()->clientRecord) ? auth()->user()->clientRecord->standard_hca : ''}}" class="form-control" />                                            
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -278,7 +278,7 @@
                                             <div class="input-block mb-3">
                                                 <label class="col-form-label">Negotiating Rate
                                                     <span class="text-danger">*</span></label>
-                                                    <input type="number" step="0.01" required name="negotiating_senior_hca" value="" class="form-control" />                                          
+                                                    <input type="number" step="0.01" required name="negotiating_senior_hca" value="{{isset(auth()->user()->clientRecord) ? auth()->user()->clientRecord->senior_hca : ''}}" class="form-control" />                                          
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -291,7 +291,7 @@
                                             <div class="input-block mb-3">
                                                 <label class="col-form-label">Negotiating Rate
                                                     <span class="text-danger">*</span></label>
-                                                    <input type="number" step="0.01" required name="negotiating_rgn" value="" class="form-control" />                                          
+                                                    <input type="number" step="0.01" required name="negotiating_rgn" value="{{isset(auth()->user()->clientRecord) ? auth()->user()->clientRecord->rgn : ''}}" class="form-control" />                                          
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -304,7 +304,7 @@
                                             <div class="input-block mb-3">
                                                 <label class="col-form-label">Negotiating Rate
                                                     <span class="text-danger">*</span></label>
-                                                    <input type="number" step="0.01" required name="negotiating_kitchen_assistant" value="" class="form-control" />                                          
+                                                    <input type="number" step="0.01" required name="negotiating_kitchen_assistant" value="{{isset(auth()->user()->clientRecord) ? auth()->user()->clientRecord->kitchen_assistant : ''}}" class="form-control" />                                          
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -317,7 +317,7 @@
                                             <div class="input-block mb-3">
                                                 <label class="col-form-label">Negotiating Rate
                                                     <span class="text-danger">*</span></label>
-                                                    <input type="number" step="0.01" required name="negotiating_laundry" value="" class="form-control" />                                          
+                                                    <input type="number" step="0.01" required name="negotiating_laundry" value="{{isset(auth()->user()->clientRecord) ? auth()->user()->clientRecord->laundry : ''}}" class="form-control" />                                          
                                             </div>
                                         </div>
                                         <div class="col-6">
@@ -329,6 +329,47 @@
                                         </div>
                                     </div>
                                 </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="reason_modal" class="modal custom-modal fade" role="dialog">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Reason for Disapproval</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="table-responsive">
+                                @if (count(auth()->user()->employeeDisapproved) > 0)
+                                    <table class="table table-nowrap">
+                                        <thead>
+                                            <tr>
+                                                <th>Disapproved By</th>
+                                                <th class="text-center">Reason</th>
+                                                <th>Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (auth()->user()->employeeDisapproved as $disapproved)
+                                                
+                                            @endforeach
+                                            <tr>
+                                                <td>{{ $disapproved->declinedBy->first_name }}
+                                                    {{ $disapproved->declinedBy->last_name }}</td>
+                                                <td class="text-center">{{ $disapproved->reason }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($disapproved->created_at)->format('j F, Y') }}
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                @endif
                             </div>
                         </div>
                     </div>

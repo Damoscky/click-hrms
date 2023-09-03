@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class ClientNegotiateNotification extends Notification
+class NewShiftNotification extends Notification
 {
     use Queueable;
 
@@ -38,10 +38,12 @@ class ClientNegotiateNotification extends Notification
     {
         $data = $this->data;
         return (new MailMessage)
-                ->greeting('Dear '. $data['company_name'].'!')
-                ->subject("Request Submitted - ". env('APP_NAME'))
-                ->line("Your request has been sent to " . env('APP_NAME') ." for approval")
-                ->line("We are currently reviewing your request and one of our representative will be in touch as soon as possible." );
+                ->greeting('Hello!')
+                ->subject("New Shift Request")
+                ->line($data['company_name'] . " has just made a request to cover some shift")
+                ->line("Please click on the link below to review request" )
+                ->action('View Shift Request', url('/admin/shifts'))
+                ->line('If the above link does not work, please copy and paste the following URL into your browser');
     }
 
     /**

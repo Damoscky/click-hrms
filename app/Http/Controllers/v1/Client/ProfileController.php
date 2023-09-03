@@ -260,6 +260,17 @@ class ProfileController extends Controller
              Notification::route('mail', $superAdmins)->notify(new AdminNegotiateNotification($record));
              Notification::route('mail', $currentInstantUser->email)->notify(new ClientNegotiateNotification($record));
 
+             $dataToLog = [
+                'causer_id' => auth()->user()->id,
+                'action_id' => $record->id,
+                'action_type' => "Models\ClientRecord",
+                'log_name' => "Client Negotiation send successfully",
+                'action' => 'Update',
+                'description' => "{$currentInstantUser->first_name} {$currentInstantUser->last_name} submit {$record->company_name} request successfully",
+            ];
+    
+            ProcessAuditLog::storeAuditLog($dataToLog);
+
              toastr()->success('Record sent for review successfully');
              return back();
         } catch (\Throwable $error) {
@@ -280,5 +291,62 @@ class ProfileController extends Controller
 
         $validate = Validator::make($request->all(), $rules);
         return $validate;
+    }
+
+    public function sendForApproval(Request $request)
+    {
+        try {
+            $record = User::find(auth()->user()->id);
+
+            $currentInstantUser = auth()->user();
+
+            if(isset($request->signed_aggrement)){
+                $file = $request->signed_aggrement;
+                $fileExt = $file->getClientOriginalExtension();
+                $uniqueId = bin2hex(openssl_random_pseudo_bytes(4));
+                $name = 'contract_' . $record->clientRecord->client_id . '.' . $fileExt;
+                $fileUrl = config('app.url') . 'assets/client-document/' . $name;
+                
+                $file->move(public_path('assets/client-document/'), $fileUrl);
+            }else{
+                $fileUrl = $record->clientRecord->contract_document;
+            }
+
+            $record->update([
+                'sent_for_approval' => true,
+                'status' => 'Review',
+            ]);
+
+            $record->clientRecord->update([
+                'contract_document' => $fileUrl
+            ]);
+
+            $adminRole = 'Super Admin';
+
+            $superAdmins = User::whereHas('roles', function ($roleTable) use ($adminRole) {
+                $roleTable->where('name', $adminRole);
+            })->pluck('email');
+
+            //send email to Admin
+            Notification::route('mail', $superAdmins)->notify(new AdminNegotiateNotification($record->clientRecord));
+            Notification::route('mail', $currentInstantUser->email)->notify(new ClientNegotiateNotification($record->clientRecord));
+
+            $dataToLog = [
+                'causer_id' => auth()->user()->id,
+                'action_id' => $record->id,
+                'action_type' => "Models\ClientRecord",
+                'log_name' => "Client Accept agreement successfully",
+                'action' => 'Update',
+                'description' => "{$currentInstantUser->first_name} {$currentInstantUser->last_name} accept {$record->company_name} aggrement successfully",
+            ];
+    
+            ProcessAuditLog::storeAuditLog($dataToLog);
+
+            toastr()->success('Agreement sent for approval successfully!');
+            return back();
+        } catch (\Throwable $th) {
+            toastr()->error($th->getMessage());
+            return back();
+        }
     }
 }

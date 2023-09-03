@@ -14,6 +14,7 @@ use App\Http\Controllers\v1\Client\DashboardController as ClientDashboardControl
 use App\Http\Controllers\v1\Admin\TimesheetController;
 use App\Http\Controllers\v1\Admin\StaffController;
 use App\Http\Controllers\v1\Admin\ShiftController;
+use App\Http\Controllers\v1\Client\ShiftController as ClientShiftController;
 use App\Http\Controllers\v1\Admin\ReportController;
 use App\Http\Controllers\v1\Admin\SettingController as AdminSettingController;
 use Illuminate\Support\Facades\Route;
@@ -73,6 +74,15 @@ Route::group(['prefix' => 'client', 'middleware' => ["auth:web", "client"]], fun
     Route::post('/update', [ClientProfileController::class, 'updateBasicRecord'])->name('client.record.update');
     Route::post('/update/address', [ClientProfileController::class, 'updateAddress'])->name('client.record.address.update');
     Route::post('/negotiate/contract', [ClientProfileController::class, 'negotiateContract'])->name('client.negotiate.contract');
+    Route::post('/accept/contract', [ClientProfileController::class, 'sendForApproval'])->name('client.contract.accept');
+
+    Route::group(['prefix' => 'shifts'], function(){
+        Route::get('/', [ClientShiftController::class, 'index'])->name('client.shift.all');
+        Route::post('/request', [ClientShiftController::class, 'requestShift'])->name('client.shift.request');
+        Route::post('/update/{id}', [ClientShiftController::class, 'updateShift'])->name('client.shift.update');
+        Route::get('/pending', [ClientShiftController::class, 'pendingShifts'])->name('client.shift.pending');
+        Route::get('/assigned', [ClientShiftController::class, 'assignedShifts'])->name('client.shift.assigned');
+    });
 
 });
 
@@ -117,6 +127,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ["auth:web", "superadmin"]], 
         Route::post('/create', [ClientController::class, 'store'])->name('admin.client.create');
         Route::get('/', [ClientController::class, 'index'])->name('admin.client.all');
         Route::get('/view/{id}', [ClientController::class, 'show'])->name('admin.client.show');
+        Route::post('/disapprove/{id}', [ClientController::class, 'declineClient'])->name('admin.client.disapprove');
+        Route::get('/approve/{id}', [ClientController::class, 'approveClient'])->name('admin.client.approve');
     });
 
     Route::group(['prefix' => 'timesheet'], function(){

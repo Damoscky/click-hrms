@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class ClientNegotiateNotification extends Notification
+class ApproveClientNotification extends Notification
 {
     use Queueable;
 
@@ -38,10 +38,11 @@ class ClientNegotiateNotification extends Notification
     {
         $data = $this->data;
         return (new MailMessage)
-                ->greeting('Dear '. $data['company_name'].'!')
-                ->subject("Request Submitted - ". env('APP_NAME'))
-                ->line("Your request has been sent to " . env('APP_NAME') ." for approval")
-                ->line("We are currently reviewing your request and one of our representative will be in touch as soon as possible." );
+                ->greeting('Hello '. $data['company_name'].'!')
+                ->subject("Contract Approved - ". env('APP_NAME'))
+                ->line("Your contract has been approved on ". env('APP_NAME'))
+                ->line("We're happy to have you as our potential client. Get more content from Stephen")
+                ->line("Once again, Congratulations on being part of our dynamic client!" );
     }
 
     /**

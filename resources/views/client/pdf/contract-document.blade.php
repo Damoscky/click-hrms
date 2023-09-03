@@ -272,10 +272,10 @@
             <h4><strong> Click Operations (UK) Limited </strong></h4>
             <p>
                 To be Signed by: <strong> Olalekan Ayuba </strong> <br>
-                {{-- <img src="{{ public_path("assets/img/clickhrm-logo.png") }}" alt="" style="width: 140px; height: 70px;"> --}}
+                <img src="{{ public_path("assets/img/clickhrm-logo.png") }}" alt="" style="width: 140px; height: 70px;">
             </p>
             <p>
-                {{-- {{ \Carbon\Carbon::parse($clientRecord['created_at'])->format('j F, Y') }}  --}}
+                {{ \Carbon\Carbon::parse($clientRecord['created_at'])->format('j F, Y') }} 
                 Date: ______________<br>
                 Position: <strong>Director</strong>
             </p>
