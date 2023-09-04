@@ -84,11 +84,15 @@
                                                 <td>
                                                     <a href="#" class="btn btn-outline-primary btn-sm"> In Progress </a>
                                                 </td>
+                                            @elseif($shift->status == "Cancelled")
+                                                <td>
+                                                    <a href="#" class="btn btn-outline-danger btn-sm"> Cancelled </a>
+                                                </td>
                                             @endif
                                             <td>
                                                 <a href="#" class="btn btn-outline-secondary"> View </a>
                                                 @if ($shift->status == "Pending")
-                                                    <a href="#" class="btn btn-outline-secondary" data-bs-toggle="modal"
+                                                    <a href="#" class="btn btn-outline-warning" data-bs-toggle="modal"
                                                     data-bs-target="#edit_shift-{{$shift->id}}"> Edit </a> 
                                                 @endif
                                                 @if ($shift->status == "Pending" || $shift->status == 'Assigned')
@@ -97,6 +101,31 @@
                                                 @endif
                                             </td>
                                         </tr>
+                                        <div class="modal custom-modal fade" id="cancel_shift-{{$shift->id}}" role="dialog">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <div class="modal-body">
+                                                        <div class="form-header">
+                                                            <h3>Cancel Shift?</h3>
+                                                            <p>Are you sure you want to cancel this shift?</p>
+                                                        </div>
+                                                        <div class="modal-btn delete-action">
+                                                            <div class="row">
+                                                                <div class="row">
+                                                                    <div class="col-6">
+                                                                        <a href="javascript:void(0);" data-bs-dismiss="modal"
+                                                                            class="btn btn-secondary cancel-btn">Cancel</a>
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <a href="{{route('client.shift.cancel', base64_encode($shift->id))}}" class="btn btn-primary submit-btn continue-btn">Confirm</a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div id="edit_shift-{{$shift->id}}" class="modal custom-modal fade" role="dialog">
                                             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                                                 <div class="modal-content">
@@ -199,7 +228,6 @@
                                             </div>
                                         </div>
                                     @endforeach
-                                    
                                 @endif
                             </tbody>
                         </table>

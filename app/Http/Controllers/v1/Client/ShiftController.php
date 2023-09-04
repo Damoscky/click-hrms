@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\NewShiftNotification;
+use Carbon\Carbon;
 
 class ShiftController extends Controller
 {
@@ -155,6 +156,39 @@ class ShiftController extends Controller
 
         toastr()->success("Record updated successfully.");
         return back();
+
+    }
+
+    public function cancelShifts($id)
+    {
+        $id = base64_decode($id);
+
+        $currentInstantUser = auth()->user();
+
+        $record = Shift::where('id', $id)->where('client_id', $currentInstantUser->id)->first();
+
+        if(is_null($record)){
+            toastr()->error("Record not found");
+            return back();
+        }
+
+        //check if shift is less than 24hours
+        // return now();
+        $shiftDate = Carbon::createFromFormat('Y-m-d', $record->date);
+        // Get the current date and time
+        $currentDateTime = Carbon::now();
+
+        // Calculate the date and time 24 hours ago
+        $twentyFourHoursAgo = $currentDateTime->subHours(24);
+        // Check if $dateToCheck is less than 24 hours ago
+        
+        $record->update([
+            'status' => 'Cancelled',
+        ]);
+
+        toastr()->success("Shift cancelled successfully");
+        return back();
+
 
     }
 

@@ -82,6 +82,7 @@ Route::group(['prefix' => 'client', 'middleware' => ["auth:web", "client"]], fun
         Route::post('/update/{id}', [ClientShiftController::class, 'updateShift'])->name('client.shift.update');
         Route::get('/pending', [ClientShiftController::class, 'pendingShifts'])->name('client.shift.pending');
         Route::get('/assigned', [ClientShiftController::class, 'assignedShifts'])->name('client.shift.assigned');
+        Route::get('/cancel/{id}', [ClientShiftController::class, 'cancelShifts'])->name('client.shift.cancel');
     });
 
 });
