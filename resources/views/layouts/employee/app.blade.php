@@ -210,8 +210,7 @@
                                 <a href="#"><i class="la la-calendar"></i> <span> Shifts & Schedule</span>
                                     <span class="menu-arrow"></span></a>
                                 <ul>
-                                    <li><a href="{{ route('admin.shift.all') }}">All Shifts</a></li>
-                                    <li><a href="{{ route('admin.shift.pending') }}">Pending Shifts</a></li>
+                                    <li><a href="{{ route('admin.shift.all') }}">Shifts</a></li>
                                     <li><a href="{{ route('employee.availability.all') }}">Availablility</a></li>
                                 </ul>
                             </li>
@@ -234,7 +233,7 @@
     </div>
 
 
-
+    <script src="{{ asset('assets') }}/js/disable-start-time.js"></script>
     <script src="{{ asset('assets') }}/js/jquery-3.7.0.min.js"></script>
 
     <script src="{{ asset('assets') }}/js/bootstrap.bundle.min.js"></script>

@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\v1\Admin\ReportController;
 use App\Http\Controllers\v1\Admin\ClientController;
+use App\Http\Controllers\v1\Employee\AvailabilityController as EmployeeAvailabilityController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -25,3 +27,5 @@ Route::group(['prefix' => 'reports'], function(){
 });
 
 Route::get('/client/location/{id}', [ClientController::class, 'getClientLocation'])->name('api.admin.client.location');
+
+//auth user 

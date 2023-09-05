@@ -8,6 +8,7 @@ use App\Http\Controllers\v1\Admin\DepartmentController;
 use App\Http\Controllers\v1\Admin\EmployeeController AS AdminEmployeeController;
 use App\Http\Controllers\v1\Employee\EmployeeController AS EmployeeController;
 use App\Http\Controllers\v1\Employee\TimesheetController AS EmployeeTimesheetController;
+use App\Http\Controllers\v1\Employee\AvailabilityController AS EmployeeAvailabilityController;
 use App\Http\Controllers\v1\Admin\ClientController;
 use App\Http\Controllers\v1\Client\ProfileController as ClientProfileController;
 use App\Http\Controllers\v1\Client\DashboardController as ClientDashboardController;
@@ -64,6 +65,9 @@ Route::group(['prefix' => 'employee', 'middleware' => ["auth:web", "employee"]],
 
     Route::group(['prefix' => 'availability'], function(){
         Route::get('/', [EmployeeTimesheetController::class, 'availability'])->name('employee.availability.all');
+        Route::post('/store', [EmployeeAvailabilityController::class, 'store'])->name('employee.availability.store');
+        Route::get('/all', [EmployeeAvailabilityController::class, 'index'])->name('api.employee.availability');
+
     });
 });
 
@@ -138,8 +142,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ["auth:web", "superadmin"]], 
 
     Route::group(['prefix' => 'shifts'], function(){
         Route::get('/', [ShiftController::class, 'index'])->name('admin.shift.all');
+        Route::post('/update/{id}', [ShiftController::class, 'updateShift'])->name('admin.shift.update');
         Route::get('/pending', [ShiftController::class, 'pendingShifts'])->name('admin.shift.pending');
         Route::get('/assigned', [ShiftController::class, 'assignedShifts'])->name('admin.shift.assigned');
+        Route::get('/cancel/{id}', [ShiftController::class, 'cancelShifts'])->name('admin.shift.cancel');
     });
 
 

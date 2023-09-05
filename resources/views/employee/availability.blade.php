@@ -21,6 +21,7 @@
                 </div>
             </div>
 
+
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card mb-0">
@@ -40,39 +41,57 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Add Event</h5>
+                        <h5 class="modal-title">Add Availability</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form>
-                            <div class="input-block mb-3">
-                                <label class="col-form-label">Event Name <span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" />
-                            </div>
-                            <div class="input-block mb-3">
-                                <label class="col-form-label">Event Date <span class="text-danger">*</span></label>
-                                <div class="cal-icon">
-                                    <input class="form-control datetimepicker" type="text" />
+                        <form action="{{route('employee.availability.store')}}" method="post">
+                            {{ csrf_field() }}
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="input-block mb-3">
+                                        <label class="col-form-label">Date
+                                            <span class="text-danger">*</span></label>
+                                        <div class="input-group">
+                                            <input required name="date" type="date" class="form-control" /><span
+                                                class="input-group-text"></span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="input-block mb-3">
-                                <label class="control-label col-form-label">Category</label>
-                                <select class="select form-control">
-                                    <option>Danger</option>
-                                    <option>Success</option>
-                                    <option>Purple</option>
-                                    <option>Primary</option>
-                                    <option>Pink</option>
-                                    <option>Info</option>
-                                    <option>Inverse</option>
-                                    <option>Orange</option>
-                                    <option>Brown</option>
-                                    <option>Teal</option>
-                                    <option>Warning</option>
-                                </select>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="input-block mb-3">
+                                        <label class="col-form-label">Start Time
+                                            <span class="text-danger">*</span></label>
+                                        <div class="input-group time">
+                                            <input required name="start_time" type="time" class="form-control" /><span
+                                                class="input-group-text"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="input-block mb-3">
+                                        <label class="col-form-label">End Time
+                                            <span class="text-danger">*</span></label>
+                                        <div class="input-group time">
+                                            <input required name="end_time" type="time" class="form-control" /><span
+                                                class="input-group-text"></span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
+                            {{-- <div class="col-sm-12">
+                                <div class="input-block mb-3">
+                                    <label class="col-form-label">All Day</label>
+                                    <div class="form-switch">
+                                        <input name="all_day" type="checkbox" class="form-check-input" id="customSwitch1"/>
+                                        <label class="form-check-label" for="customSwitch1"></label>
+                                    </div>
+                                </div>
+                            </div> --}}
                             <div class="submit-section">
                                 <button class="btn btn-primary submit-btn">Submit</button>
                             </div>

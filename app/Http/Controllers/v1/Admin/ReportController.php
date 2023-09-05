@@ -5,6 +5,7 @@ namespace App\Http\Controllers\v1\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Department;
 use App\Models\EmployeeRecord;
+use App\Models\Shift;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -78,9 +79,10 @@ class ReportController extends Controller
         $revenueSalesData = array();
 
         foreach ($months as $month) {
-            $presentYearShiftData = User::whereMonth('created_at', $month)
+            $presentYearShiftData = Shift::whereMonth('created_at', $month)
                 // ->whereHas('')
                 ->whereYear('created_at', Carbon::now()->year)
+                ->where('status', 'Completed')
                 ->count();
 
             $presentYearSalesData = EmployeeRecord::whereMonth('created_at', $month)

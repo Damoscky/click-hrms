@@ -351,8 +351,21 @@
             });
         }
 
+        function checkSelection() {
+            const selectElement = document.getElementById("employeeSelect");
+            const selectedOptions = selectElement.selectedOptions;
+
+            if (selectedOptions.length > 2) {
+                document.getElementById("result").textContent = "More than two items are selected.";
+            } else {
+                document.getElementById("result").textContent = "Two or fewer items are selected.";
+            }
+        }
+
     </script>
-   <script src="{{asset('assets')}}/js/total-revenue-bar.js"></script>
+
+    <script src="{{ asset('assets') }}/js/filter_by_status.js"></script>
+    <script src="{{asset('assets')}}/js/total-revenue-bar.js"></script>
     <script data-cfasync="false" src="../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
     <script src="{{ asset('assets') }}/js/jquery-3.7.0.min.js"></script>
 

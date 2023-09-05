@@ -76,7 +76,7 @@ class LoginController extends Controller
         ];
 
         ProcessAuditLog::storeAuditLog($dataToLog);
-        Notification::route('mail', $user->email)->notify(new LoginNotification($user));
+        // Notification::route('mail', $user->email)->notify(new LoginNotification($user));
 
         toastr()->success("You're logged in successfully!");
         

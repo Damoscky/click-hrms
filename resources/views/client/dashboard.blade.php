@@ -31,7 +31,7 @@
                         <div class="card-body">
                             <span class="dash-widget-icon"><i class="fa-solid fa-cubes"></i></span>
                             <div class="dash-widget-info">
-                                <h3>0</h3>
+                                <h3>{{$completedShifts->count()}}</h3>
                                 <span>Completed Shifts</span>
                             </div>
                         </div>
@@ -42,7 +42,7 @@
                         <div class="card-body">
                             <span class="dash-widget-icon"><i class="fa fa-cubes"></i></span>
                             <div class="dash-widget-info">
-                                <h3>2</h3>
+                                <h3>{{$pendingShifts->count()}}</h3>
                                 <span>Upcoming Shifts</span>
                             </div>
                         </div>
@@ -60,37 +60,34 @@
                                     <div class="col-md-6 col-6 text-center">
                                         <div class="stats-box mb-4">
                                             <p>Pending Shifts</p>
-                                            <h3>0</h3>
+                                            <h3>{{$pendingShifts->count()}}</h3>
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-6 text-center">
                                         <div class="stats-box mb-4">
                                             <p>Completed Shifts</p>
-                                            <h3>0</h3>
+                                            <h3>{{$completedShifts->count()}}</h3>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="progress mb-4">
-                               
-                                <div class="progress-bar bg-warning w-50" role="progressbar" aria-valuenow="1850"
-                                    aria-valuemin="0" aria-valuemax="100">
-                                    50%
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: {{ number_format(($pendingShifts->count() / ($completedShifts->count() + $pendingShifts->count())) * 100, 2) }}%;" aria-valuenow="{{ number_format(($pendingShifts->count() / ($completedShifts->count() + $pendingShifts->count())) * 100, 2) }}" aria-valuemin="0" aria-valuemax="100">
+                                    {{ number_format(($pendingShifts->count() / ($completedShifts->count() + $pendingShifts->count())) * 100, 2) }}%
                                 </div>
-                                <div class="progress-bar bg-success w-50" role="progressbar" aria-valuenow="50"
-                                    aria-valuemin="0" aria-valuemax="100">
-                                    50%
+                                <div class="progress-bar bg-success" role="progressbar" style="width: {{ number_format(($completedShifts->count() / ($completedShifts->count() + $pendingShifts->count())) * 100, 2) }}%;" aria-valuenow="{{ number_format(($completedShifts->count() / ($completedShifts->count() + $pendingShifts->count())) * 100, 2) }}" aria-valuemin="0" aria-valuemax="100">
+                                    {{ number_format(($completedShifts->count() / ($completedShifts->count() + $pendingShifts->count())) * 100, 2) }}%
                                 </div>
                                 
                             </div>
                             <div>
                                 <p>
                                     <i class="fa-regular fa-circle-dot text-success me-2"></i>Completed Shifts <span
-                                        class="float-end">0</span>
+                                        class="float-end">{{$completedShifts->count()}}</span>
                                 </p>
                                 <p>
                                     <i class="fa-regular fa-circle-dot text-warning me-2"></i>Pending Shifts <span
-                                        class="float-end">0</span>
+                                        class="float-end">{{$pendingShifts->count()}}</span>
                                 </p>
                                
                             </div>

@@ -177,7 +177,7 @@
 
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+    <script src="{{ asset('assets') }}/js/filter_by_status.js"></script>
     <script src="{{ asset('assets') }}/js/add-more-shift.js"></script>
     <script src="{{ asset('assets') }}/js/jquery-3.7.0.min.js"></script>
 

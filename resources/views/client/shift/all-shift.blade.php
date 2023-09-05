@@ -22,25 +22,25 @@
 
             <div class="row filter-row">
                 <div class="col-sm-6 col-md-4">
-                    <div class="input-block mb-3 form-focus">
-                        <input type="text" class="form-control floating" />
-                        <label class="focus-label">Type</label>
+                    <div class="form-group">
+                        <input type="text" id="searchInput" class="form-control" placeholder="Search by Type">
                     </div>
                 </div>
                 <div class="col-sm-6 col-md-4">
-                    <div class="input-block mb-3 form-focus select-focus">
-                        <select class="select floating">
-                            <option>-- Select Status --</option>
+                    <div class="form-group">
+                        <select id="statusFilter" class="form-control">
+                            <option value="">Filter by Status</option>
                             <option value="Pending">Pending</option>
                             <option value="Completed">Completed</option>
                             <option value="In Progress">In Progress</option>
+                            <option value="Cancelled">Cancelled</option>
                         </select>
-                        <label class="focus-label">Status</label>
                     </div>
                 </div>
                 <div class="col-sm-6 col-md-4">
                     <div class="d-grid">
-                        <a href="#" class="btn btn-success"> Search </a>
+                        <button id="clearFilterBtn" class="btn btn-secondary">Clear Filter</button>
+
                     </div>
                 </div>
             </div>
@@ -57,6 +57,7 @@
                                     <th>Start Time</th>
                                     <th>End Time</th>
                                     <th>Bank holiday</th>
+                                    <th>Total Staff</th>
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
@@ -72,6 +73,7 @@
                                             <td>{{$shift->start_time}}</td>
                                             <td>{{$shift->end_time}}</td>
                                             <td>{{($shift->bank_holiday == 1) ? 'Yes' : 'No'}}</td>
+                                            <td>{{$shift->total_staff}}</td>
                                             @if ($shift->status == "Pending")
                                                 <td>
                                                     <a href="#" class="btn btn-outline-secondary btn-sm"> Pending </a>

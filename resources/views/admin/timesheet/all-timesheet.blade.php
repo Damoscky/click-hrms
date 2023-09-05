@@ -81,52 +81,131 @@
                                     <td>08:30</td>
                                     <td>12hours 30mins</td>
                                     <td class="text-end">
-                                        <a href="#" class="btn btn-primary"> Approved </a>
+                                        <a href="#" class="btn btn-outline-primary btn-sm"> Approved </a>
+                                         <a href="#" data-bs-toggle="modal" data-bs-target="#view_timesheet" class="btn btn-outline-primary btn-sm"> View </a>
                                     </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <h2 class="table-avatar">
-                                            <a href="client-profile.html" class="avatar"><img
-                                                    src="{{asset('assets')}}/img/profiles/avatar-28.jpg" alt="User Image" /></a>
-                                            <a href="client-profile.html">Adebayo Olusola</a>
-                                        </h2>
-                                    </td>
-                                    <td>segun@yahoo.com</td>
-                                    <td>Tempcare Care Home</td>
-                                    <td>17 May 2023</td>
-                                    <td>Day Shift</td>
-                                    <td>23:00</td>
-                                    <td>08:30</td>
-                                    <td>10hours 0mins</td>
-                                    <td class="text-end">
-                                        <a href="#" class="btn btn-danger"> Declined </a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <h2 class="table-avatar">
-                                            <a href="client-profile.html" class="avatar"><img
-                                                    src="{{asset('assets')}}/img/profiles/avatar-28.jpg" alt="User Image" /></a>
-                                            <a href="client-profile.html">Isreal Janet </a>
-                                        </h2>
-                                    </td>
-                                    <td>sola.ade@yahoo.com</td>
-                                    <td>Click Care Home</td>
-                                    <td>12 August 2023</td>
-                                    <td>Half Day Shift</td>
-                                    <td>20:00</td>
-                                    <td>08:30</td>
-                                    <td>12hours 30mins</td>
-                                    <td class="text-end">
-                                        <a href="#" class="btn btn-warning"> Pending </a>
-                                    </td>
+                                    
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
+        </div>
+
+         <div class="modal custom-modal fade" id="view_timesheet" role="dialog">
+          <div
+            class="modal-dialog modal-dialog-centered modal-lg"
+            role="document"
+          >
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Timesheet Info</h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="card punch-status">
+                      <div class="card-body">
+                        <h5 class="card-title">
+                          Timesheet
+                          <small class="text-muted">11 Mar 2019</small>
+                        </h5>
+                        <div class="punch-det">
+                          <h6>Punch In at</h6>
+                          <p>Wed, 11th Mar 2019 10.00 AM</p>
+                        </div>
+                        <div class="punch-info">
+                          <div class="punch-hours">
+                            <span>3.45 hrs</span>
+                          </div>
+                        </div>
+                        <div class="punch-det">
+                          <h6>Punch Out at</h6>
+                          <p>Wed, 20th Feb 2019 9.00 PM</p>
+                        </div>
+                        <div class="statistics">
+                          <div class="row">
+                            <div class="col-md-6 col-6 text-center">
+                              <div class="stats-box">
+                                <p>Break</p>
+                                <h6>1.21 hrs</h6>
+                              </div>
+                            </div>
+                            <div class="col-md-6 col-6 text-center">
+                              <div class="stats-box">
+                                <p>Overtime</p>
+                                <h6>3 hrs</h6>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="card recent-activity">
+                      <div class="card-body">
+                        <h5 class="card-title">Activity</h5>
+                        <ul class="res-activity-list">
+                          <li>
+                            <p class="mb-0">Punch In at</p>
+                            <p class="res-activity-time">
+                              <i class="fa-regular fa-clock"></i>
+                              10.00 AM.
+                            </p>
+                          </li>
+                          <li>
+                            <p class="mb-0">Punch Out at</p>
+                            <p class="res-activity-time">
+                              <i class="fa-regular fa-clock"></i>
+                              11.00 AM.
+                            </p>
+                          </li>
+                          <li>
+                            <p class="mb-0">Punch In at</p>
+                            <p class="res-activity-time">
+                              <i class="fa-regular fa-clock"></i>
+                              11.15 AM.
+                            </p>
+                          </li>
+                          <li>
+                            <p class="mb-0">Punch Out at</p>
+                            <p class="res-activity-time">
+                              <i class="fa-regular fa-clock"></i>
+                              1.30 PM.
+                            </p>
+                          </li>
+                          <li>
+                            <p class="mb-0">Punch In at</p>
+                            <p class="res-activity-time">
+                              <i class="fa-regular fa-clock"></i>
+                              2.00 PM.
+                            </p>
+                          </li>
+                          <li>
+                            <p class="mb-0">Punch Out at</p>
+                            <p class="res-activity-time">
+                              <i class="fa-regular fa-clock"></i>
+                              7.30 PM.
+                            </p>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div id="add_client" class="modal custom-modal fade" role="dialog">

@@ -16,7 +16,7 @@ const barCtx = document.getElementById("barChart").getContext("2d");
           data: {
             labels: months,
             datasets: [{
-              label: 'Shift Overview',
+              label: 'Monthly Revenue',
               data: revenueSalesData,
               backgroundColor: 'rgba(54, 162, 235, 0.6)', // Bar color
               borderColor: 'rgba(54, 162, 235, 1)',
@@ -38,7 +38,7 @@ const barCtx = document.getElementById("barChart").getContext("2d");
           data: {
             labels: months,
             datasets: [{
-              label: 'Monthly Revenue',
+              label: 'Shift Overview',
               data: shiftSalesData,
               borderColor: 'rgba(75, 192, 192, 1)', // Line color
               fill: false
