@@ -67,6 +67,12 @@ class PermissionsTableSeeder extends Seeder
                 'model'       => 'Permission',
             ],
             [
+                'name'        => 'Can Manage Employee',
+                'slug'        => 'manage.employee',
+                'description' => 'Manage Employee Management',
+                'model'       => 'Permission',
+            ],
+            [
                 'name'        => 'Can View Client',
                 'slug'        => 'view.client',
                 'description' => 'Client Management',
@@ -88,6 +94,12 @@ class PermissionsTableSeeder extends Seeder
                 'name'        => 'Can Delete Client',
                 'slug'        => 'delete.client',
                 'description' => 'Client Management',
+                'model'       => 'Permission',
+            ],
+            [
+                'name'        => 'Can Manage Client',
+                'slug'        => 'manage.client',
+                'description' => 'Manage Client Management',
                 'model'       => 'Permission',
             ],
             [
@@ -114,6 +126,12 @@ class PermissionsTableSeeder extends Seeder
                 'description' => 'Timesheet Management',
                 'model'       => 'Permission',
             ],
+            [
+                'name'        => 'Can Manage Timesheet',
+                'slug'        => 'manage.timesheet',
+                'description' => 'Manage Timesheet Management',
+                'model'       => 'Permission',
+            ],
 
             [
                 'name'        => 'Can View Shift',
@@ -137,6 +155,12 @@ class PermissionsTableSeeder extends Seeder
                 'name'        => 'Can Delete Shift',
                 'slug'        => 'delete.shift',
                 'description' => 'Shift Management',
+                'model'       => 'Permission',
+            ],
+            [
+                'name'        => 'Can Manage Shift',
+                'slug'        => 'manage.shift',
+                'description' => 'Manage Shift Management',
                 'model'       => 'Permission',
             ],
 
@@ -263,6 +287,37 @@ class PermissionsTableSeeder extends Seeder
                 'name'        => 'Can Delete Department',
                 'slug'        => 'delete.department',
                 'description' => 'Department Management',
+                'model'       => 'Permission',
+            ],
+
+            [
+                'name'        => 'Can View Invoice',
+                'slug'        => 'view.invoice',
+                'description' => 'Invoice Management',
+                'model'       => 'Permission',
+            ],
+            [
+                'name'        => 'Can Create Invoice',
+                'slug'        => 'create.invoice',
+                'description' => 'Invoice Management',
+                'model'       => 'Permission',
+            ],
+            [
+                'name'        => 'Can Edit Invoice',
+                'slug'        => 'edit.invoice',
+                'description' => 'Invoice Management',
+                'model'       => 'Permission',
+            ],
+            [
+                'name'        => 'Can Delete Invoice',
+                'slug'        => 'delete.invoice',
+                'description' => 'Invoice Management',
+                'model'       => 'Permission',
+            ],
+            [
+                'name'        => 'Can Manage Invoice',
+                'slug'        => 'manage.invoice',
+                'description' => 'Manage Invoice Management',
                 'model'       => 'Permission',
             ],
 

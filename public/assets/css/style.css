@@ -9162,7 +9162,7 @@ th.width-64 {
 }
 .profile-view .profile-basic .profile-info-left .staff-msg .btn-custom {
   background: #ff9b44;
-  background: linear-gradient(to right, #ff9b44 0%, #fc6075 100%);
+  background: linear-gradient(to right, #000080 50%, #fc6075 150%);
   color: #ffffff;
 }
 .profile-view .profile-basic .profile-info-left .staff-msg .btn-custom:hover {

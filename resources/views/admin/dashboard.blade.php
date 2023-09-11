@@ -95,13 +95,12 @@
                                 </div>
                             </div>
                             <div class="progress mb-4">
-                                <div class="progress-bar bg-warning" role="progressbar" style="width: {{ number_format(($pendingShifts->count() / ($completedShifts->count() + $pendingShifts->count())) * 100, 2) }}%;" aria-valuenow="{{ number_format(($pendingShifts->count() / ($completedShifts->count() + $pendingShifts->count())) * 100, 2) }}" aria-valuemin="0" aria-valuemax="100">
-                                    {{ number_format(($pendingShifts->count() / ($completedShifts->count() + $pendingShifts->count())) * 100, 2) }}%
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: {{ count($pendingShifts) > 0  || count($completedShifts) > 0 ? number_format(($pendingShifts->count() / ($completedShifts->count() + $pendingShifts->count())) * 100, 2) : 0 }}%;" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                                    {{ count($pendingShifts) > 0  || count($completedShifts) > 0 ? number_format(($pendingShifts->count() / ($completedShifts->count() + $pendingShifts->count())) * 100, 2) : 0 }}%
                                 </div>
-                                <div class="progress-bar bg-success" role="progressbar" style="width: {{ number_format(($completedShifts->count() / ($completedShifts->count() + $pendingShifts->count())) * 100, 2) }}%;" aria-valuenow="{{ number_format(($completedShifts->count() / ($completedShifts->count() + $pendingShifts->count())) * 100, 2) }}" aria-valuemin="0" aria-valuemax="100">
-                                    {{ number_format(($completedShifts->count() / ($completedShifts->count() + $pendingShifts->count())) * 100, 2) }}%
+                                <div class="progress-bar bg-success" role="progressbar" style="width: {{ count($pendingShifts) > 0  || count($completedShifts) > 0 ? number_format(($completedShifts->count() / ($completedShifts->count() + $pendingShifts->count())) * 100, 2) : 0}}%;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
+                                    {{ count($pendingShifts) > 0  || count($completedShifts) > 0 ? number_format(($completedShifts->count() / ($completedShifts->count() + $pendingShifts->count())) * 100, 2) : 0 }}%
                                 </div>
-                                
                             </div>
                             <div>
                                 <p>
@@ -161,7 +160,7 @@
                                 </div>
                             </div>
                             <div class="load-more text-center">
-                                <a class="text-dark" href="javascript:void(0);">Load More</a>
+                                <a class="text-dark" href="{{route('admin.timesheet.all')}}">Load More</a>
                             </div>
                         </div>
                     </div>
@@ -186,249 +185,60 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>
-                                                <h2 class="table-avatar">
-                                                    <a href="#" class="avatar"><img
-                                                            src="assets/img/profiles/avatar-19.jpg"
-                                                            alt="User Image" /></a>
-                                                    <a href="client-profile.html">Barry Cuda <span>CEO</span></a>
-                                                </h2>
-                                            </td>
-                                            <td>
-                                                <a href="https://smarthr.dreamguystech.com/cdn-cgi/l/email-protection"
-                                                    class="__cf_email__"
-                                                    data-cfemail="1e7c7f6c6c677d6b7a7f5e7b667f736e727b307d7173">[email&#160;protected]</a>
-                                            </td>
-                                            <td>
-                                                <div class="dropdown action-label">
-                                                    <a class="btn btn-white btn-sm btn-rounded dropdown-toggle"
-                                                        href="#" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        <i class="fa-regular fa-circle-dot text-success"></i>
-                                                        Active
-                                                    </a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="#"><i
-                                                                class="fa-regular fa-circle-dot text-success"></i>
-                                                            Active</a>
-                                                        <a class="dropdown-item" href="#"><i
-                                                                class="fa-regular fa-circle-dot text-danger"></i>
-                                                            Inactive</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="text-end">
-                                                <div class="dropdown dropdown-action">
-                                                    <a href="#" class="action-icon dropdown-toggle"
-                                                        data-bs-toggle="dropdown" aria-expanded="false"><i
-                                                            class="material-icons">more_vert</i></a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="javascript:void(0)"><i
-                                                                class="fa-solid fa-pencil m-r-5"></i>
-                                                            Edit</a>
-                                                        <a class="dropdown-item" href="javascript:void(0)"><i
-                                                                class="fa-regular fa-trash-can m-r-5"></i>
-                                                            Delete</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <h2 class="table-avatar">
-                                                    <a href="#" class="avatar"><img
-                                                            src="assets/img/profiles/avatar-19.jpg"
-                                                            alt="User Image" /></a>
-                                                    <a href="client-profile.html">Tressa Wexler <span>Manager</span></a>
-                                                </h2>
-                                            </td>
-                                            <td>
-                                                <a href="https://smarthr.dreamguystech.com/cdn-cgi/l/email-protection"
-                                                    class="__cf_email__"
-                                                    data-cfemail="1460667167677563716c78716654716c75796478713a777b79">[email&#160;protected]</a>
-                                            </td>
-                                            <td>
-                                                <div class="dropdown action-label">
-                                                    <a class="btn btn-white btn-sm btn-rounded dropdown-toggle"
-                                                        href="#" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        <i class="fa-regular fa-circle-dot text-danger"></i>
-                                                        Inactive
-                                                    </a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="#"><i
-                                                                class="fa-regular fa-circle-dot text-success"></i>
-                                                            Active</a>
-                                                        <a class="dropdown-item" href="#"><i
-                                                                class="fa-regular fa-circle-dot text-danger"></i>
-                                                            Inactive</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="text-end">
-                                                <div class="dropdown dropdown-action">
-                                                    <a href="#" class="action-icon dropdown-toggle"
-                                                        data-bs-toggle="dropdown" aria-expanded="false"><i
-                                                            class="material-icons">more_vert</i></a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="javascript:void(0)"><i
-                                                                class="fa-solid fa-pencil m-r-5"></i>
-                                                            Edit</a>
-                                                        <a class="dropdown-item" href="javascript:void(0)"><i
-                                                                class="fa-regular fa-trash-can m-r-5"></i>
-                                                            Delete</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <h2 class="table-avatar">
-                                                    <a href="client-profile.html" class="avatar"><img
-                                                            src="assets/img/profiles/avatar-07.jpg"
-                                                            alt="User Image" /></a>
-                                                    <a href="client-profile.html">Ruby Bartlett <span>CEO</span></a>
-                                                </h2>
-                                            </td>
-                                            <td>
-                                                <a href="https://smarthr.dreamguystech.com/cdn-cgi/l/email-protection"
-                                                    class="__cf_email__"
-                                                    data-cfemail="067473647f646774726a63727246637e676b766a632865696b">[email&#160;protected]</a>
-                                            </td>
-                                            <td>
-                                                <div class="dropdown action-label">
-                                                    <a class="btn btn-white btn-sm btn-rounded dropdown-toggle"
-                                                        href="#" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        <i class="fa-regular fa-circle-dot text-danger"></i>
-                                                        Inactive
-                                                    </a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="#"><i
-                                                                class="fa-regular fa-circle-dot text-success"></i>
-                                                            Active</a>
-                                                        <a class="dropdown-item" href="#"><i
-                                                                class="fa-regular fa-circle-dot text-danger"></i>
-                                                            Inactive</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="text-end">
-                                                <div class="dropdown dropdown-action">
-                                                    <a href="#" class="action-icon dropdown-toggle"
-                                                        data-bs-toggle="dropdown" aria-expanded="false"><i
-                                                            class="material-icons">more_vert</i></a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="javascript:void(0)"><i
-                                                                class="fa-solid fa-pencil m-r-5"></i>
-                                                            Edit</a>
-                                                        <a class="dropdown-item" href="javascript:void(0)"><i
-                                                                class="fa-regular fa-trash-can m-r-5"></i>
-                                                            Delete</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <h2 class="table-avatar">
-                                                    <a href="client-profile.html" class="avatar"><img
-                                                            src="assets/img/profiles/avatar-06.jpg"
-                                                            alt="User Image" /></a>
-                                                    <a href="client-profile.html">
-                                                        Misty Tison <span>CEO</span></a>
-                                                </h2>
-                                            </td>
-                                            <td>
-                                                <a href="https://smarthr.dreamguystech.com/cdn-cgi/l/email-protection"
-                                                    class="__cf_email__"
-                                                    data-cfemail="7815110b0c010c110b1716381d00191508141d561b1715">[email&#160;protected]</a>
-                                            </td>
-                                            <td>
-                                                <div class="dropdown action-label">
-                                                    <a class="btn btn-white btn-sm btn-rounded dropdown-toggle"
-                                                        href="#" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        <i class="fa-regular fa-circle-dot text-success"></i>
-                                                        Active
-                                                    </a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="#"><i
-                                                                class="fa-regular fa-circle-dot text-success"></i>
-                                                            Active</a>
-                                                        <a class="dropdown-item" href="#"><i
-                                                                class="fa-regular fa-circle-dot text-danger"></i>
-                                                            Inactive</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="text-end">
-                                                <div class="dropdown dropdown-action">
-                                                    <a href="#" class="action-icon dropdown-toggle"
-                                                        data-bs-toggle="dropdown" aria-expanded="false"><i
-                                                            class="material-icons">more_vert</i></a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="javascript:void(0)"><i
-                                                                class="fa-solid fa-pencil m-r-5"></i>
-                                                            Edit</a>
-                                                        <a class="dropdown-item" href="javascript:void(0)"><i
-                                                                class="fa-regular fa-trash-can m-r-5"></i>
-                                                            Delete</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <h2 class="table-avatar">
-                                                    <a href="client-profile.html" class="avatar"><img
-                                                            src="assets/img/profiles/avatar-14.jpg"
-                                                            alt="User Image" /></a>
-                                                    <a href="client-profile.html">
-                                                        Daniel Deacon <span>CEO</span></a>
-                                                </h2>
-                                            </td>
-                                            <td>
-                                                <a href="https://smarthr.dreamguystech.com/cdn-cgi/l/email-protection"
-                                                    class="__cf_email__"
-                                                    data-cfemail="2e4a4f40474b424a4b4f4d41406e4b564f435e424b004d4143">[email&#160;protected]</a>
-                                            </td>
-                                            <td>
-                                                <div class="dropdown action-label">
-                                                    <a class="btn btn-white btn-sm btn-rounded dropdown-toggle"
-                                                        href="#" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        <i class="fa-regular fa-circle-dot text-danger"></i>
-                                                        Inactive
-                                                    </a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="#"><i
-                                                                class="fa-regular fa-circle-dot text-success"></i>
-                                                            Active</a>
-                                                        <a class="dropdown-item" href="#"><i
-                                                                class="fa-regular fa-circle-dot text-danger"></i>
-                                                            Inactive</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="text-end">
-                                                <div class="dropdown dropdown-action">
-                                                    <a href="#" class="action-icon dropdown-toggle"
-                                                        data-bs-toggle="dropdown" aria-expanded="false"><i
-                                                            class="material-icons">more_vert</i></a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="javascript:void(0)"><i
-                                                                class="fa-solid fa-pencil m-r-5"></i>
-                                                            Edit</a>
-                                                        <a class="dropdown-item" href="javascript:void(0)"><i
-                                                                class="fa-regular fa-trash-can m-r-5"></i>
-                                                            Delete</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                        @if(count($topClients) > 0)
+                                            @foreach ($topClients as $topClient)
+                                                
+                                                <tr>
+                                                    <td>
+                                                        <h2 class="table-avatar">
+                                                            <a href="#" class="avatar"><img
+                                                                    src="{{$topClient->clientRecord->image}}"
+                                                                    alt="User Image" /></a>
+                                                            <a href="client-profile.html">{{$topClient->clientRecord->company_name}}</a>
+                                                        </h2>
+                                                    </td>
+                                                    <td>
+                                                        <a href="https://smarthr.dreamguystech.com/cdn-cgi/l/email-protection"
+                                                            class="__cf_email__"
+                                                            data-cfemail="1e7c7f6c6c677d6b7a7f5e7b667f736e727b307d7173">{{$topClient->email}}</a>
+                                                    </td>
+                                                    <td>
+                                                        <div class="dropdown action-label">
+                                                            <a href="#" class="btn btn-outline-success btn-sm"> {{$topClient->status}} </a>
+                                                            <div class="dropdown-menu dropdown-menu-right">
+                                                                <a class="dropdown-item" href="#"><i
+                                                                        class="fa-regular fa-circle-dot text-success"></i>
+                                                                    Active</a>
+                                                                <a class="dropdown-item" href="#"><i
+                                                                        class="fa-regular fa-circle-dot text-danger"></i>
+                                                                    Inactive</a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-end">
+                                                        <div class="dropdown dropdown-action">
+                                                            <a href="#" class="action-icon dropdown-toggle"
+                                                                data-bs-toggle="dropdown" aria-expanded="false"><i
+                                                                    class="material-icons">more_vert</i></a>
+                                                            <div class="dropdown-menu dropdown-menu-right">
+                                                                <a class="dropdown-item" href="javascript:void(0)"><i
+                                                                        class="fa-solid fa-pencil m-r-5"></i>
+                                                                    Edit</a>
+                                                                <a class="dropdown-item" href="javascript:void(0)"><i
+                                                                        class="fa-regular fa-trash-can m-r-5"></i>
+                                                                    Delete</a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        @endif
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                         <div class="card-footer">
-                            <a href="clients.html">View all clients</a>
+                            <a href="{{route('admin.client.all')}}">View all Clients</a>
                         </div>
                     </div>
                 </div>
@@ -448,182 +258,13 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>
-                                                <h2>
-                                                    <a href="project-view.html">Office Management</a>
-                                                </h2>
-                                                <small class="block text-ellipsis">
-                                                    <span>1</span>
-                                                    <span class="text-muted">open tasks, </span>
-                                                    <span>9</span>
-                                                    <span class="text-muted">tasks completed</span>
-                                                </small>
-                                            </td>
-                                            <td>
-                                                <div class="progress progress-xs progress-striped">
-                                                    <div class="progress-bar w-65" role="progressbar"
-                                                        data-bs-toggle="tooltip" title="65%"></div>
-                                                </div>
-                                            </td>
-                                            <td class="text-end">
-                                                <div class="dropdown dropdown-action">
-                                                    <a href="#" class="action-icon dropdown-toggle"
-                                                        data-bs-toggle="dropdown" aria-expanded="false"><i
-                                                            class="material-icons">more_vert</i></a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="javascript:void(0)"><i
-                                                                class="fa-solid fa-pencil m-r-5"></i>
-                                                            Edit</a>
-                                                        <a class="dropdown-item" href="javascript:void(0)"><i
-                                                                class="fa-regular fa-trash-can m-r-5"></i>
-                                                            Delete</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <h2>
-                                                    <a href="project-view.html">Project Management</a>
-                                                </h2>
-                                                <small class="block text-ellipsis">
-                                                    <span>2</span>
-                                                    <span class="text-muted">open tasks, </span>
-                                                    <span>5</span>
-                                                    <span class="text-muted">tasks completed</span>
-                                                </small>
-                                            </td>
-                                            <td>
-                                                <div class="progress progress-xs progress-striped">
-                                                    <div class="progress-bar w-15" role="progressbar"
-                                                        data-bs-toggle="tooltip" title="15%"></div>
-                                                </div>
-                                            </td>
-                                            <td class="text-end">
-                                                <div class="dropdown dropdown-action">
-                                                    <a href="#" class="action-icon dropdown-toggle"
-                                                        data-bs-toggle="dropdown" aria-expanded="false"><i
-                                                            class="material-icons">more_vert</i></a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="javascript:void(0)"><i
-                                                                class="fa-solid fa-pencil m-r-5"></i>
-                                                            Edit</a>
-                                                        <a class="dropdown-item" href="javascript:void(0)"><i
-                                                                class="fa-regular fa-trash-can m-r-5"></i>
-                                                            Delete</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <h2>
-                                                    <a href="project-view.html">Video Calling App</a>
-                                                </h2>
-                                                <small class="block text-ellipsis">
-                                                    <span>3</span>
-                                                    <span class="text-muted">open tasks, </span>
-                                                    <span>3</span>
-                                                    <span class="text-muted">tasks completed</span>
-                                                </small>
-                                            </td>
-                                            <td>
-                                                <div class="progress progress-xs progress-striped">
-                                                    <div class="progress-bar w-50" role="progressbar"
-                                                        data-bs-toggle="tooltip" title="50%"></div>
-                                                </div>
-                                            </td>
-                                            <td class="text-end">
-                                                <div class="dropdown dropdown-action">
-                                                    <a href="#" class="action-icon dropdown-toggle"
-                                                        data-bs-toggle="dropdown" aria-expanded="false"><i
-                                                            class="material-icons">more_vert</i></a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="javascript:void(0)"><i
-                                                                class="fa-solid fa-pencil m-r-5"></i>
-                                                            Edit</a>
-                                                        <a class="dropdown-item" href="javascript:void(0)"><i
-                                                                class="fa-regular fa-trash-can m-r-5"></i>
-                                                            Delete</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <h2>
-                                                    <a href="project-view.html">Hospital Administration</a>
-                                                </h2>
-                                                <small class="block text-ellipsis">
-                                                    <span>12</span>
-                                                    <span class="text-muted">open tasks, </span>
-                                                    <span>4</span>
-                                                    <span class="text-muted">tasks completed</span>
-                                                </small>
-                                            </td>
-                                            <td>
-                                                <div class="progress progress-xs progress-striped">
-                                                    <div class="progress-bar w-88" role="progressbar"
-                                                        data-bs-toggle="tooltip" title="88%"></div>
-                                                </div>
-                                            </td>
-                                            <td class="text-end">
-                                                <div class="dropdown dropdown-action">
-                                                    <a href="#" class="action-icon dropdown-toggle"
-                                                        data-bs-toggle="dropdown" aria-expanded="false"><i
-                                                            class="material-icons">more_vert</i></a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="javascript:void(0)"><i
-                                                                class="fa-solid fa-pencil m-r-5"></i>
-                                                            Edit</a>
-                                                        <a class="dropdown-item" href="javascript:void(0)"><i
-                                                                class="fa-regular fa-trash-can m-r-5"></i>
-                                                            Delete</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <h2>
-                                                    <a href="project-view.html">Digital Marketplace</a>
-                                                </h2>
-                                                <small class="block text-ellipsis">
-                                                    <span>7</span>
-                                                    <span class="text-muted">open tasks, </span>
-                                                    <span>14</span>
-                                                    <span class="text-muted">tasks completed</span>
-                                                </small>
-                                            </td>
-                                            <td>
-                                                <div class="progress progress-xs progress-striped">
-                                                    <div class="progress-bar w-100" role="progressbar"
-                                                        data-bs-toggle="tooltip" title="100%"></div>
-                                                </div>
-                                            </td>
-                                            <td class="text-end">
-                                                <div class="dropdown dropdown-action">
-                                                    <a href="#" class="action-icon dropdown-toggle"
-                                                        data-bs-toggle="dropdown" aria-expanded="false"><i
-                                                            class="material-icons">more_vert</i></a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="javascript:void(0)"><i
-                                                                class="fa-solid fa-pencil m-r-5"></i>
-                                                            Edit</a>
-                                                        <a class="dropdown-item" href="javascript:void(0)"><i
-                                                                class="fa-regular fa-trash-can m-r-5"></i>
-                                                            Delete</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                        
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                         <div class="card-footer">
-                            <a href="projects.html">View all projects</a>
+                            <a href="{{route('admin.employee.all')}}">View all Employee</a>
                         </div>
                     </div>
                 </div>

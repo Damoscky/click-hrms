@@ -53,6 +53,7 @@ class DepartmentController extends Controller
             'action_id' => $record->id,
             'action_type' => "Models\Department",
             'log_name' => "Department created successfully",
+            'action' => 'Create',
             'description' => "{$userInstance->first_name} {$userInstance->last_name} created {$record->name} department successfully",
         ];
 
@@ -92,6 +93,7 @@ class DepartmentController extends Controller
             'action_id' => $record->id,
             'action_type' => "Models\Department",
             'log_name' => "Department deleted successfully",
+            'action' => 'Delete',
             'description' => "{$userInstance->first_name} {$userInstance->last_name} deleted {$record->name} department successfully",
         ];
 

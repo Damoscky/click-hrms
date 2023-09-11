@@ -32,6 +32,11 @@ class User extends Authenticatable
         return $this->hasOne(ClientRecord::class);
     }
 
+    public function shifts()
+    {
+        return $this->hasMany(Shift::class, 'client_id');
+    }
+
     public function bankInformation()
     {
         return $this->hasOne(BankInformation::class);

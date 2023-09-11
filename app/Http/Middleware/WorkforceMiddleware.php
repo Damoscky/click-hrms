@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 
-class SuperAdminMiddleware
+class WorkforceMiddleware
 {
     /**
      * Handle an incoming request.
@@ -15,7 +15,7 @@ class SuperAdminMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if (!auth()->user()->hasRole(['superadmin'])) {
+        if (!auth()->user()->hasRole('workforce')) {
             toastr()->error("Access Denied :(");
             return back();
         }

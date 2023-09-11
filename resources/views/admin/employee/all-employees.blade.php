@@ -168,7 +168,7 @@
                                         <label class="col-form-label">Department <span
                                                 class="text-danger">*</span></label>
                                         <select class="select" required name="department_id">
-                                            <option>Select Department</option>
+                                            <option value="">Select Department</option>
                                             @if (count($departments) > 0)
                                                 @foreach ($departments as $department)
                                                     <option value="{{ $department->id }}">{{ $department->name }}

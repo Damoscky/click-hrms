@@ -72,13 +72,12 @@
                                 </div>
                             </div>
                             <div class="progress mb-4">
-                                <div class="progress-bar bg-warning" role="progressbar" style="width: {{ number_format(($pendingShifts->count() / ($completedShifts->count() + $pendingShifts->count())) * 100, 2) }}%;" aria-valuenow="{{ number_format(($pendingShifts->count() / ($completedShifts->count() + $pendingShifts->count())) * 100, 2) }}" aria-valuemin="0" aria-valuemax="100">
-                                    {{ number_format(($pendingShifts->count() / ($completedShifts->count() + $pendingShifts->count())) * 100, 2) }}%
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: {{ count($pendingShifts) > 0  || count($completedShifts) > 0 ? number_format(($pendingShifts->count() / ($completedShifts->count() + $pendingShifts->count())) * 100, 2) : 0 }}%;" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                                    {{ count($pendingShifts) > 0  || count($completedShifts) > 0 ? number_format(($pendingShifts->count() / ($completedShifts->count() + $pendingShifts->count())) * 100, 2) : 0 }}%
                                 </div>
-                                <div class="progress-bar bg-success" role="progressbar" style="width: {{ number_format(($completedShifts->count() / ($completedShifts->count() + $pendingShifts->count())) * 100, 2) }}%;" aria-valuenow="{{ number_format(($completedShifts->count() / ($completedShifts->count() + $pendingShifts->count())) * 100, 2) }}" aria-valuemin="0" aria-valuemax="100">
-                                    {{ number_format(($completedShifts->count() / ($completedShifts->count() + $pendingShifts->count())) * 100, 2) }}%
+                                <div class="progress-bar bg-success" role="progressbar" style="width: {{ count($pendingShifts) > 0  || count($completedShifts) > 0 ? number_format(($completedShifts->count() / ($completedShifts->count() + $pendingShifts->count())) * 100, 2) : 0}}%;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
+                                    {{ count($pendingShifts) > 0  || count($completedShifts) > 0 ? number_format(($completedShifts->count() / ($completedShifts->count() + $pendingShifts->count())) * 100, 2) : 0 }}%
                                 </div>
-                                
                             </div>
                             <div>
                                 <p>
@@ -106,13 +105,13 @@
                                     <a href="profile.html" class="avatar"><img src="{{asset('assets')}}/img/user.jpg"
                                             alt="User Image" /></a>
                                     <div class="media-body flex-grow-1">
-                                        <div class="text-sm my-0">FirstHealth Care</div>
+                                        <div class="text-sm my-0">Isreal Doe</div>
                                     </div>
                                 </div>
                                 <div class="row align-items-center mt-3">
                                     <div class="col-6">
                                         <h6 class="mb-0">4 Sep 2023</h6>
-                                        <span class="text-sm text-muted">Leave Date</span>
+                                        <span class="text-sm text-muted">12hours Shift</span>
                                     </div>
                                     <div class="col-6 text-end">
                                         <span class="badge bg-inverse-danger">Pending</span>
@@ -129,8 +128,8 @@
                                 </div>
                                 <div class="row align-items-center mt-3">
                                     <div class="col-6">
-                                        <h6 class="mb-0">4 Sep 2019</h6>
-                                        <span class="text-sm text-muted">Leave Date</span>
+                                        <h6 class="mb-0">5 Sep 2023</h6>
+                                        <span class="text-sm text-muted">11hours Shift</span>
                                     </div>
                                     <div class="col-6 text-end">
                                         <span class="badge bg-inverse-success">Approved</span>

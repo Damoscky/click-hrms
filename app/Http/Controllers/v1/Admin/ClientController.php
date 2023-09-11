@@ -250,6 +250,11 @@ class ClientController extends Controller
 
     }
 
+    public function chat()
+    {
+        return view('admin.chat.chat');
+    }
+
     public function declineClient(Request $request, $id)
     {
         if(!auth()->user()->hasPermission('edit.client')){

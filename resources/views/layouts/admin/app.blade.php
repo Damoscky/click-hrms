@@ -223,7 +223,7 @@
 
                     <ul class="sidebar-vertical">
                        
-                        @role(['admin', 'superadmin'])  
+                        @role(['admin', 'superadmin', 'businessdevelopment', 'workforce', 'recruitment'])  
                             <li class="menu-title">
                                 <span>Main</span>
                             </li>
@@ -239,7 +239,7 @@
                         <li class="menu-title">
                             <span>Management</span>
                         </li>
-                        @role(['admin', 'superadmin']) 
+                        @role(['admin', 'recruitment', 'superadmin']) 
                             <li class="submenu @if(request()->is('admin/employee')) active @endif">
                                 <a href="#"><i class="la la-users"></i> <span> Employees</span>
                                     <span class="menu-arrow"></span></a>
@@ -249,7 +249,7 @@
                                 </ul>
                             </li>
                         @endrole
-                        @role(['admin', 'superadmin']) 
+                        @role(['admin', 'businessdevelopment', 'superadmin']) 
                             <li class="submenu @if(request()->is('admin/clients')) active @endif">
                                 <a href="#" class="@if(request()->is('admin/clients')) active @endif"><i class="la la-user-circle-o"></i> <span> Clients</span>
                                     <span class="menu-arrow"></span></a>
@@ -258,14 +258,16 @@
                                     
                                 </ul>
                             </li>
-                            <li class="submenu">
+                        @endrole
+                            {{-- <li class="submenu">
                                 <a href="#"><i class="la la-user"></i> <span> Staff</span>
                                     <span class="menu-arrow"></span></a>
                                 <ul>
                                     <li><a href="{{ route('admin.staff.all') }}">All Staffs</a></li>
                                     
                                 </ul>
-                            </li>
+                            </li> --}}
+                        @role(['admin', 'workforce', 'superadmin']) 
                             <li class="@if(request()->is('admin/timesheet')) active @endif">
                                 <a href="{{ route('admin.timesheet.all') }}" class="@if(request()->is('admin/timesheet')) active @endif"><i class="la la-clock-o"></i> <span> Timesheet</span></a>
                             </li>
@@ -275,9 +277,11 @@
                                 <ul>
                                     <li><a href="{{ route('admin.shift.all') }}" class="@if(request()->is('admin/shifts')) active @endif">All Shifts</a></li>
                                     <li><a href="{{ route('admin.shift.pending') }}" class="@if(request()->is('admin/shifts/pending')) active @endif">Pending Shifts</a></li>
-                                    <li><a href="{{ route('admin.employee.availability') }}" class="@if(request()->is('admin/employee/availability')) active @endif">Employee Availablility</a></li>
+                                    {{-- <li><a href="{{ route('admin.employee.availability') }}" class="@if(request()->is('admin/employee/availability')) active @endif">Employee Availablility</a></li> --}}
                                 </ul>
                             </li>
+                        @endrole
+                        @role(['admin', 'superadmin']) 
                             <li>
                                 <a href="#"><i class="la la-briefcase"></i> <span> Leave</span></a>
                             </li>
@@ -350,21 +354,11 @@
                 console.error('Error fetching data:', error);
             });
         }
-
-        function checkSelection() {
-            const selectElement = document.getElementById("employeeSelect");
-            const selectedOptions = selectElement.selectedOptions;
-
-            if (selectedOptions.length > 2) {
-                document.getElementById("result").textContent = "More than two items are selected.";
-            } else {
-                document.getElementById("result").textContent = "Two or fewer items are selected.";
-            }
-        }
-
     </script>
 
+    <script src="{{ asset('assets') }}/js/multipleselect-max.js"></script>
     <script src="{{ asset('assets') }}/js/filter_by_status.js"></script>
+    <script src="{{ asset('assets') }}/js/add-more-shift.js"></script>
     <script src="{{asset('assets')}}/js/total-revenue-bar.js"></script>
     <script data-cfasync="false" src="../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
     <script src="{{ asset('assets') }}/js/jquery-3.7.0.min.js"></script>

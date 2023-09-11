@@ -15,7 +15,7 @@ class AdminMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if (!auth()->user()->hasRole('admin')) {
+        if (!auth()->user()->hasRole(['superadmin', 'admin', 'workforce', 'recruitment', 'businessdevelopment'])) {
             toastr()->error("Access Denied :(");
             return back();
         }

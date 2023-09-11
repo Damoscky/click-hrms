@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('type')->nullable();
             $table->string('period')->nullable();
             $table->string('total_staff')->nullable();
+            $table->integer('total_staff_assigned')->dafault(0);
             $table->date('date')->nullable();
             $table->string('start_time')->nullable();
             $table->string('end_time')->nullable();

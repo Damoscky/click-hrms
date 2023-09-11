@@ -15,7 +15,7 @@ function filterTable() {
 
     tableRows.forEach((row) => {
         const type = row.querySelector("td:nth-child(1)").textContent.toLowerCase();
-        const status = row.querySelector("td:nth-child(8) a").textContent.toLowerCase();
+        const status = row.querySelector("td:nth-child(9) a").textContent.toLowerCase();
 
         if (
             (searchText === "" || type.includes(searchText)) &&

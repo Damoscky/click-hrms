@@ -9,7 +9,9 @@ use App\Models\EmployeeRecord;
 use App\Models\EmployeeReference;
 use App\Models\Experience;
 use App\Models\NextOfKin;
+use App\Models\EmployeeShift;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -32,7 +34,14 @@ class EmployeeController extends Controller
             toastr()->success("Your information is current under review!");
             return redirect()->route('employee.complete-registration');
         }
-        return view('employee.dashboard');
+
+        $currentInstantUser = auth()->user();
+
+        $upcomingShifts = EmployeeShift::where('date', '>=', Carbon::today())->where('employee_id', $currentInstantUser->id)->orderBy('created_at', 'DESC')->take(5)->get();
+        $pendingShifts = EmployeeShift::where('date', '>=', Carbon::today())->where('status', 'Pending')->where('employee_id', $currentInstantUser->id)->orderBy('created_at', 'DESC')->get();
+        $completedShifts = EmployeeShift::where('status', 'Completed')->where('employee_id', $currentInstantUser->id)->orderBy('created_at', 'DESC')->get();
+        $totalShifts = EmployeeShift::where('employee_id', $currentInstantUser->id)->orderBy('created_at', 'DESC')->get();
+        return view('employee.dashboard', ['totalShifts' => $totalShifts, 'upcomingShifts' => $upcomingShifts, 'pendingShifts' => $pendingShifts, 'completedShifts' => $completedShifts]);
     }
 
     public function completeRegistration()

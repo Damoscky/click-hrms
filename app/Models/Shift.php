@@ -13,4 +13,10 @@ class Shift extends Model
     use SoftDeletes;
 
     protected $guarded = ['id'];
+
+
+    public function clients()
+    {
+        return $this->belongsTo(User::class, 'client_id');
+    }
 }

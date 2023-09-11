@@ -84,7 +84,7 @@ class ShiftController extends Controller
         }
 
         //send email notification to admin
-        $adminRole = ['Super Admin', 'Admin'];
+        $adminRole = ['Workforce Admin Access', 'Admin'];
 
         $superAdmins = User::whereHas('roles', function ($roleTable) use ($adminRole) {
             $roleTable->whereIn('name', $adminRole);

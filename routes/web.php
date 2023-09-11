@@ -4,11 +4,13 @@ use App\Http\Controllers\v1\Auth\LoginController;
 use App\Http\Controllers\v1\Auth\RegisterController;
 use App\Http\Controllers\v1\Pages\PagesController;
 use App\Http\Controllers\v1\Admin\AdminController;
+use App\Http\Controllers\v1\Admin\ChatController;
 use App\Http\Controllers\v1\Admin\DepartmentController;
 use App\Http\Controllers\v1\Admin\EmployeeController AS AdminEmployeeController;
 use App\Http\Controllers\v1\Employee\EmployeeController AS EmployeeController;
 use App\Http\Controllers\v1\Employee\TimesheetController AS EmployeeTimesheetController;
 use App\Http\Controllers\v1\Employee\AvailabilityController AS EmployeeAvailabilityController;
+use App\Http\Controllers\v1\Employee\ShiftController AS EmployeeShiftController;
 use App\Http\Controllers\v1\Admin\ClientController;
 use App\Http\Controllers\v1\Client\ProfileController as ClientProfileController;
 use App\Http\Controllers\v1\Client\DashboardController as ClientDashboardController;
@@ -69,6 +71,11 @@ Route::group(['prefix' => 'employee', 'middleware' => ["auth:web", "employee"]],
         Route::get('/all', [EmployeeAvailabilityController::class, 'index'])->name('api.employee.availability');
 
     });
+
+    Route::group(['prefix' => 'shifts'], function(){
+        Route::get('/', [EmployeeShiftController::class, 'index'])->name('employee.shift.all');
+
+    });
 });
 
 //Client Route
@@ -94,7 +101,11 @@ Route::group(['prefix' => 'client', 'middleware' => ["auth:web", "client"]], fun
 
 
 // Admin Route
-Route::group(['prefix' => 'admin', 'middleware' => ["auth:web", "superadmin"]], function(){
+Route::group(['prefix' => 'admin', 'middleware' => ["auth:web", "admin"]], function(){
+
+
+    Route::get('/chat/{id}', [ChatController::class, 'chat'])->name('admin.chat');
+
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
     Route::group(['prefix' => 'department'], function(){
@@ -142,10 +153,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ["auth:web", "superadmin"]], 
 
     Route::group(['prefix' => 'shifts'], function(){
         Route::get('/', [ShiftController::class, 'index'])->name('admin.shift.all');
+        Route::post('/assign/{id}', [ShiftController::class, 'assignShift'])->name('admin.shift.assign');
         Route::post('/update/{id}', [ShiftController::class, 'updateShift'])->name('admin.shift.update');
         Route::get('/pending', [ShiftController::class, 'pendingShifts'])->name('admin.shift.pending');
         Route::get('/assigned', [ShiftController::class, 'assignedShifts'])->name('admin.shift.assigned');
         Route::get('/cancel/{id}', [ShiftController::class, 'cancelShifts'])->name('admin.shift.cancel');
+        Route::post('/request', [ShiftController::class, 'requestShift'])->name('admin.shift.request');
     });
 
 

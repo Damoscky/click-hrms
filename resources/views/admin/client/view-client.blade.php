@@ -52,7 +52,7 @@
                                                         <a class="btn btn-danger" data-bs-toggle="modal"
                                                             data-bs-target="#disapprove_modal">Decline</a>
                                                     @else
-                                                        {{-- <a class="btn btn-custom" href="#">Send Message</a> --}}
+                                                        <a class="btn btn-custom" href="{{route('admin.chat', base64_encode($client->user->id))}}">Send Message</a>
                                                     @endif
 
                                                 </div>

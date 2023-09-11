@@ -33,8 +33,10 @@ class AdminController extends Controller
         $pendingShifts = Shift::where('status', 'Pending')->get();
         $completedShifts = Shift::where('status', 'Completed')->get();
         $totalShifts = Shift::count();
+        $topClients = User::whereRelation('roles', 'slug', $clientRole)
+        ->whereHas('shifts')->get(); 
 
-        return view('admin.dashboard', ['totalEmployee' => $totalEmployee, 'totalClient' => $totalClient, 'pendingShifts' => $pendingShifts, 'completedShifts' => $completedShifts, 'totalShifts' => $totalShifts]);
+        return view('admin.dashboard', ['totalEmployee' => $totalEmployee, 'totalClient' => $totalClient, 'topClients'=> $topClients, 'pendingShifts' => $pendingShifts, 'completedShifts' => $completedShifts, 'totalShifts' => $totalShifts]);
             
 
     }

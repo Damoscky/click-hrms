@@ -19,40 +19,58 @@ class RolesTableSeeder extends Seeder
          */
         $RoleItems = [
             [
-                'name'        => 'Super Admin',
+                'name'        => 'Super Admin Access',
                 'slug'        => 'superadmin',
                 'description' => 'Super Admin Role',
                 'level'       => 1,
             ],
             [
+                'name'        => 'Recruitment Admin Access',
+                'slug'        => 'recruitment',
+                'description' => 'Recruitment Admin Role',
+                'level'       => 2,
+            ],
+            [
+                'name'        => 'Business Development Admin Access',
+                'slug'        => 'businessdevelopment',
+                'description' => 'Business Development Admin Role',
+                'level'       => 3,
+            ],
+            [
                 'name'        => 'Admin',
                 'slug'        => 'admin',
                 'description' => 'Admin Role',
-                'level'       => 2,
+                'level'       => 4,
             ],
             [
                 'name'        => 'Employee',
                 'slug'        => 'employee',
                 'description' => 'Employee Role',
-                'level'       => 3,
+                'level'       => 5,
             ],
             [
                 'name'        => 'Client',
                 'slug'        => 'client',
                 'description' => 'Client Role',
-                'level'       => 4,
+                'level'       => 6,
             ],
             [
                 'name'        => 'Staff',
                 'slug'        => 'staff',
                 'description' => 'Staff Role',
-                'level'       => 5,
+                'level'       => 7,
             ],
             [
                 'name'        => 'User',
                 'slug'        => 'user',
                 'description' => 'User Role',
-                'level'       => 6,
+                'level'       => 8,
+            ],
+            [
+                'name'        => 'Workforce Admin Access',
+                'slug'        => 'workforce',
+                'description' => 'Workforce Admin Role',
+                'level'       => 3,
             ],
             [
                 'name'        => 'Unverified',

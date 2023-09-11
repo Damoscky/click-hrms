@@ -96,10 +96,10 @@ class LoginController extends Controller
             return redirect()->route('client.dashboard');
         }
         
-        if (auth()->user()->roles[0]->slug == "superadmin") {
+        // if (auth()->user()->roles[0]->slug == "superadmin") {
               
             return redirect()->route('admin.dashboard');
-        }
+        // }
         
 
 

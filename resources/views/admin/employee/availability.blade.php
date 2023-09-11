@@ -70,8 +70,8 @@
                                     <td>
                                         <h2 class="table-avatar">
                                             <a href="profile.html" class="avatar"><img
-                                                    src="{{asset('assets')}}/img/profiles/avatar-02.jpg" alt="User Image" /></a>
-                                            <a href="profile.html">John Doe </a>
+                                                    src="{{ asset('assets') }}/img/user.png" alt="User Image" /></a>
+                                            <a href="profile.html">Isreal Doe </a>
                                         </h2>
                                     </td>
                                     <td>

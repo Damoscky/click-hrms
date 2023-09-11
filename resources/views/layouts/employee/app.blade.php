@@ -203,23 +203,21 @@
                             <span>Menus</span>
                         </li>
                         @role(['employee']) 
-                            <li class="active">
+                            <li class="@if(request()->is('employee/timesheet')) active @endif ">
                                 <a href="{{ route('employee.timesheet.all') }}"><i class="la la-clock-o"></i> <span> Timesheet</span></a>
                             </li>
-                            <li class="submenu active">
+                            <li class="submenu @if(request()->is('employee/shifts')) active @endif">
                                 <a href="#"><i class="la la-calendar"></i> <span> Shifts & Schedule</span>
                                     <span class="menu-arrow"></span></a>
                                 <ul>
-                                    <li><a href="{{ route('admin.shift.all') }}">Shifts</a></li>
-                                    <li><a href="{{ route('employee.availability.all') }}">Availablility</a></li>
+                                    <li class="@if(request()->is('employee/shifts')) active @endif" ><a href="{{ route('employee.shift.all') }}">Shifts</a></li>
+                                    <li class="@if(request()->is('employee/availability')) active @endif" ><a href="{{ route('employee.availability.all') }}">Availablility</a></li>
                                 </ul>
                             </li>
-                            <li>
+                            <li class="@if(request()->is('employee/leave')) active @endif">
                                 <a href="#"><i class="la la-briefcase"></i> <span> Leave</span></a>
                             </li>
                         @endrole
-                        
-                        
                     </ul>
                 </div>
             </div>
@@ -233,6 +231,7 @@
     </div>
 
 
+    <script src="{{ asset('assets') }}/js/upload-document.js"></script>
     <script src="{{ asset('assets') }}/js/disable-start-time.js"></script>
     <script src="{{ asset('assets') }}/js/jquery-3.7.0.min.js"></script>
 

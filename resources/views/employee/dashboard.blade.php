@@ -26,91 +26,34 @@
                     <section class="dash-section">
                         <h1 class="dash-sec-title">Upcoming Shifts</h1>
                         <div class="dash-sec-content">
-                            <div class="dash-info-list">
-                                <a href="#" class="dash-card">
-                                    <div class="dash-card-container">
-                                        <div class="dash-card-icon">
-                                            <i class="fa-regular fa-building"></i>
-                                        </div>
-                                        <div class="dash-card-content">
-                                            <p>Day Shift at Three Valley Care Home</p>
-                                        </div>
-                                        <div class="dash-card-avatars">
-                                            <div class="e-avatar">
-                                                <img src="{{ asset('assets') }}/img/user.jpg" alt="User Image" />
+                            @if (count($upcomingShifts) > 0 )
+                                @foreach($upcomingShifts as $upcomingShift)
+                                    <div class="dash-info-list">
+                                        <a href="#" class="dash-card">
+                                            <div class="dash-card-container">
+                                                <div class="dash-card-icon">
+                                                    <i class="fa-regular fa-building"></i>
+                                                </div>
+                                                <div class="dash-card-content">
+                                                    <p>{{$upcomingShift->shift->period}} Shift at {{$upcomingShift->shift->clients->clientRecord->company_name}}</p>
+                                                </div>
+                                                <div class="dash-card-avatars">
+                                                    <span>{{Carbon\Carbon::parse($upcomingShift->date)->format('j F, Y')}}</span>
+                                                </div>
                                             </div>
-                                        </div>
+                                        </a>
                                     </div>
-                                </a>
-                            </div>
-                            <div class="dash-info-list">
-                                <a href="#" class="dash-card">
-                                    <div class="dash-card-container">
-                                        <div class="dash-card-icon">
-                                            <i class="fa-regular fa-building"></i>
+                                @endforeach
+                            @else
+                                <div class="dash-info-list">
+                                    <a href="#" class="dash-card">
+                                        <div class="dash-card-container">
+                                            <p>No Upcoming Shift </p>
                                         </div>
-                                        <div class="dash-card-content">
-                                            <p>Day Shift at Three Valley Care Home</p>
-                                        </div>
-                                        <div class="dash-card-avatars">
-                                            <div class="e-avatar">
-                                                <img src="{{ asset('assets') }}/img/user.jpg" alt="User Image" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="dash-info-list">
-                                <a href="#" class="dash-card">
-                                    <div class="dash-card-container">
-                                        <div class="dash-card-icon">
-                                            <i class="fa-regular fa-building"></i>
-                                        </div>
-                                        <div class="dash-card-content">
-                                            <p>Day Shift at Three Valley Care Home</p>
-                                        </div>
-                                        <div class="dash-card-avatars">
-                                            <div class="e-avatar">
-                                                <img src="{{ asset('assets') }}/img/user.jpg" alt="User Image" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="dash-info-list">
-                                <a href="#" class="dash-card">
-                                    <div class="dash-card-container">
-                                        <div class="dash-card-icon">
-                                            <i class="fa-regular fa-building"></i>
-                                        </div>
-                                        <div class="dash-card-content">
-                                            <p>Day Shift at Three Valley Care Home</p>
-                                        </div>
-                                        <div class="dash-card-avatars">
-                                            <div class="e-avatar">
-                                                <img src="{{ asset('assets') }}/img/user.jpg" alt="User Image" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="dash-info-list">
-                                <a href="#" class="dash-card">
-                                    <div class="dash-card-container">
-                                        <div class="dash-card-icon">
-                                            <i class="fa-regular fa-building"></i>
-                                        </div>
-                                        <div class="dash-card-content">
-                                            <p>Day Shift at Three Valley Care Home</p>
-                                        </div>
-                                        <div class="dash-card-avatars">
-                                            <div class="e-avatar">
-                                                <img src="{{ asset('assets') }}/img/user.jpg" alt="User Image" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
+                                    </a>
+                                </div>
+                            @endif
+                            
                         </div>
                     </section>
                 </div>
@@ -122,18 +65,18 @@
                                 <div class="card-body">
                                     <div class="time-list">
                                         <div class="dash-stats-list">
-                                            <h4>3</h4>
+                                            <h4>{{isset($pendingShifts) ? count($pendingShifts) : 0}}</h4>
                                             <p>Upcoming Shifts</p>
                                         </div>
                                         <div class="dash-stats-list">
-                                            <h4>5</h4>
+                                            <h4>{{isset($completedShifts) ? count($completedShifts) : 0}}</h4>
                                             <p>Completed Shifts</p>
                                         </div>
                                     </div>
                                     <div class="request-btn">
                                         <div class="dash-stats-list">
                                             <span class="dash-widget-icon"><i class="fa-solid fa-cubes"></i></span>
-                                            <h4>9</h4>
+                                            <h4>{{isset($totalShifts) ? count($totalShifts) : 0 }}</h4>
                                             <p>Total Shifts</p>
                                         </div>
                                     </div>
@@ -146,12 +89,12 @@
                                     <div class="time-list">
                                         <div class="dash-stats-list">
                                             <span class="dash-widget-icon"><i class="fa-solid fa-user"></i></span>
-                                            <h4>1</h4>
+                                            <h4>0</h4>
                                             <p>Total Strike</p>
                                         </div>
                                         <div class="dash-stats-list">
                                             <span class="dash-widget-icon"><i class="fa-solid fa-gem"></i></span>
-                                            <h4>26</h4>
+                                            <h4>0</h4>
                                             <p>ClickHRM Token</p>
                                         </div>
                                     </div>
@@ -184,37 +127,33 @@
                                     <div class="col-md-6 col-6 text-center">
                                         <div class="stats-box mb-4">
                                             <p>Pending Shifts</p>
-                                            <h3>0</h3>
+                                            <h3>{{isset($pendingShifts) ? count($pendingShifts) : 0}}</h3>
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-6 text-center">
                                         <div class="stats-box mb-4">
                                             <p>Completed Shifts</p>
-                                            <h3>0</h3>
+                                            <h3>{{isset($completedShifts) ? count($completedShifts) : 0}}</h3>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="progress mb-4">
-
-                                <div class="progress-bar bg-warning w-50" role="progressbar" aria-valuenow="1850"
-                                    aria-valuemin="0" aria-valuemax="100">
-                                    50%
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: {{ count($pendingShifts) > 0  || count($completedShifts) > 0 ? number_format(($pendingShifts->count() / ($completedShifts->count() + $pendingShifts->count())) * 100, 2) : 0 }}%;" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                                    {{ count($pendingShifts) > 0  || count($completedShifts) > 0 ? number_format(($pendingShifts->count() / ($completedShifts->count() + $pendingShifts->count())) * 100, 2) : 0 }}%
                                 </div>
-                                <div class="progress-bar bg-success w-50" role="progressbar" aria-valuenow="50"
-                                    aria-valuemin="0" aria-valuemax="100">
-                                    50%
+                                <div class="progress-bar bg-success" role="progressbar" style="width: {{ count($pendingShifts) > 0  || count($completedShifts) > 0 ? number_format(($completedShifts->count() / ($completedShifts->count() + $pendingShifts->count())) * 100, 2) : 0}}%;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
+                                    {{ count($pendingShifts) > 0  || count($completedShifts) > 0 ? number_format(($completedShifts->count() / ($completedShifts->count() + $pendingShifts->count())) * 100, 2) : 0 }}%
                                 </div>
-
                             </div>
                             <div>
                                 <p>
                                     <i class="fa-regular fa-circle-dot text-success me-2"></i>Completed Shifts <span
-                                        class="float-end">0</span>
+                                        class="float-end">{{count($completedShifts)}}</span>
                                 </p>
                                 <p>
                                     <i class="fa-regular fa-circle-dot text-warning me-2"></i>Pending Shifts <span
-                                        class="float-end">0</span>
+                                        class="float-end">{{count($pendingShifts)}}</span>
                                 </p>
 
                             </div>

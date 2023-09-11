@@ -56,6 +56,7 @@
                                     <th>End Time</th>
                                     <th>Bank holiday</th>
                                     <th>Total Staff</th>
+                                    <th>Total Staff Assigned</th>
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
@@ -72,6 +73,7 @@
                                             <td>{{$shift->end_time}}</td>
                                             <td>{{($shift->bank_holiday == 1) ? 'Yes' : 'No'}}</td>
                                             <td>{{$shift->total_staff}}</td>
+                                            <td>{{$shift->total_staff_assigned}}</td>
                                             @if ($shift->status == "Pending")
                                                 <td>
                                                     <a href="#" class="btn btn-outline-secondary btn-sm"> Pending </a>
@@ -90,7 +92,6 @@
                                                 </td>
                                             @endif
                                             <td>
-                                                <a href="#" class="btn btn-outline-secondary"> View </a>
                                                 <a href="#" class="btn btn-outline-warning" data-bs-toggle="modal"
                                                 data-bs-target="#edit_shift-{{$shift->id}}"> Edit </a>
                                                 <a href="#" class="btn btn-outline-primary" data-bs-toggle="modal"
@@ -135,16 +136,17 @@
                                                         $employeeAvailability = \App\Models\EmployeeAvailability::with('employee')->whereDate('date', \Carbon\Carbon::parse($shift->date))->get();
                                                     @endphp
                                                     <div class="modal-body">
-                                                        <form>
+                                                        <form method="post" action="{{route('admin.shift.assign', base64_encode($shift->id))}}" id="myForm">
+                                                            {{ csrf_field() }}
                                                             <div class="row">
                                                                 <div class="col-sm-12">
                                                                     <div class="input-block mb-3">
                                                                         <label class="col-form-label">Employee Name <span
                                                                                 class="text-danger">*</span></label>
                                                                         @if($shift->total_staff > 1)
-                                                                            <select class="select" name="employee_name[]" multiple>
+                                                                            <select class="select" name="employee_ids[]" required multiple>
                                                                         @else
-                                                                            <select class="select" name="employee_name[]">
+                                                                            <select class="select" name="employee_ids[]" required>
                                                                         @endif
                                                                             @if(count($employeeAvailability) > 0)
                                                                                 @foreach ($employeeAvailability as $availability)
@@ -158,7 +160,7 @@
                                                                 <div class="col-md-12">
                                                                     <div class="input-block mb-3">
                                                                         <label class="col-form-label">Rules & Regulations </label>
-                                                                        <textarea cols="30" rows="10" class="form-control">{{isset($companySettings) ? $companySettings->rules_regulations : ''}}</textarea>
+                                                                        <textarea cols="30" rows="10" required name="rules_regulations" class="form-control">{{isset($companySettings) ? $companySettings->rules_regulations : ''}}</textarea>
                                                                     </div>
                                                                 </div>
                                                                 
@@ -166,7 +168,7 @@
                                                                     <div class="input-block mb-3">
                                                                         <label class="col-form-label">Notify Client </label>
                                                                         <div class="form-switch">
-                                                                            <input type="checkbox" class="form-check-input" id="customSwitch1"
+                                                                            <input type="checkbox" name="notify_client" class="form-check-input"
                                                                                 checked="" />
                                                                             <label class="form-check-label" for="customSwitch1"></label>
                                                                         </div>

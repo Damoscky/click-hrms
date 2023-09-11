@@ -807,14 +807,93 @@
                                                     <div class="input-block mb-3">
                                                         <select required class="select" required name="document_type">
                                                             <option value="">Select Document Type</option>
-                                                            <option value="BRP">BRP</option>
+                                                            <option value="BRP">BRP (Right to Work)</option>
                                                             <option value="Passport">Passport</option>
-                                                            <option value="Right to Work">Right to Work</option>
-                                                            <option value="Training Certificate">Training Certificate
-                                                            </option>
-                                                            <option value="Driving Licence">Driving Licence</option>
-                                                            <option value="Proof of Address">Proof of Address</option>
-                                                            <option value="CV">CV</option>
+                                                            <option value="Enhanced DBS Document">Enhanced DBS Document</option>
+                                                            <option value="Passport Picture">Passport Picture (White Background) </option>
+                                                            <option value="Driving Licence">Driving Licence (Optional)</option>
+                                                            <option value="Proof of Address">Proof of Address (Utility Bill or Bank Statement)</option>
+                                                            <option value="Proof of NIN/Payslip">Proof of NIN/Payslip</option>
+                                                            <option value="CV">Updated CV</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="input-block mb-3 form-focus focused">
+                                                        <input type="text" value="" name="document_number"
+                                                            class="form-control floating" />
+                                                        <label class="focus-label">Document Number</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="input-block mb-3">
+                                                        <input type="file" required name="document_file" required
+                                                            value="" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="input-block mb-3 form-focus focused">
+                                                        <div class="cal-icon">
+                                                            <input type="text" value="" name="issued_date"
+                                                                class="form-control floating datetimepicker" />
+                                                        </div>
+                                                        <label class="focus-label">Issued Date</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="input-block mb-3 form-focus focused">
+                                                        <div class="cal-icon">
+                                                            <input type="text" value="" name="expiry_date"
+                                                                class="form-control floating datetimepicker" />
+                                                        </div>
+                                                        <label class="focus-label">Expiry Date</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {{-- <div class="add-more">
+                                                <a href="javascript:void(0);"><i class="fa-solid fa-plus-circle"></i> Add
+                                                    More</a>
+                                            </div> --}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="submit-section">
+                                    <button class="btn btn-primary submit-btn">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="certification_info" class="modal custom-modal fade" role="dialog">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Upload Documents</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form method="POST" enctype="multipart/form-data"
+                                action="{{ route('employee.document.upload') }}">
+                                {{ csrf_field() }}
+                                <div class="form-scroll">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="input-block mb-3">
+                                                        <select required class="select" required name="document_type">
+                                                            <option value="">Select Document Type</option>
+                                                            <option value="BRP">BRP (Right to Work)</option>
+                                                            <option value="Passport">Passport</option>
+                                                            <option value="Enhanced DBS Document">Enhanced DBS Document</option>
+                                                            <option value="Passport Picture">Passport Picture (White Background) </option>
+                                                            <option value="Driving Licence">Driving Licence (Optional)</option>
+                                                            <option value="Proof of Address">Proof of Address (Utility Bill or Bank Statement)</option>
+                                                            <option value="Proof of NIN/Payslip">Proof of NIN/Payslip</option>
+                                                            <option value="CV">Updated CV</option>
                                                         </select>
                                                     </div>
                                                 </div>

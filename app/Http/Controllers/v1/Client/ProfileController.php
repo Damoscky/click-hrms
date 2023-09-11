@@ -250,7 +250,7 @@ class ProfileController extends Controller
                 'status' => 'Review',
             ]);
 
-            $adminRole = 'Super Admin';
+            $adminRole = 'Business Development Admin Access';
 
             $superAdmins = User::whereHas('roles', function ($roleTable) use ($adminRole) {
                 $roleTable->where('name', $adminRole);
