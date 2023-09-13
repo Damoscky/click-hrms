@@ -92,8 +92,9 @@
                                                 </td>
                                             @endif
                                             <td>
-                                                <a href="#" class="btn btn-outline-warning" data-bs-toggle="modal"
-                                                    data-bs-target="#cancel_shift-{{$shift->id}}"> Clock In </a> 
+                                                <button class="btn btn-outline-warning" id="getLocationButton">Clock In</button>
+                                                {{-- <a href="#" class="btn btn-outline-warning" data-bs-toggle="modal"
+                                                    data-bs-target="#cancel_shift-{{$shift->id}}"> Clock In </a>  --}}
                                             </td>
                                         </tr>
                                         <div class="modal custom-modal fade" id="cancel_shift-{{$shift->id}}" role="dialog">
@@ -112,8 +113,7 @@
                                                                             class="btn btn-secondary cancel-btn">No</a>
                                                                     </div>
                                                                     <div class="col-6">
-                                                                        <button id="getLocationButton">Get My Location</button>
-
+                                                                        {{-- <button id="getLocationButton">Get My Location</button> --}}
                                                                         {{-- <a href="{{route('employee.shift.clockin', base64_encode($shift->id))}}" class="btn btn-primary submit-btn continue-btn">Yes</a> --}}
                                                                     </div>
                                                                 </div>

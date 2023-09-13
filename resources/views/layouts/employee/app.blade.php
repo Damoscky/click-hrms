@@ -232,7 +232,7 @@
     </div>
 
 
-    
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyApcI-eCy2vhDU9Fx4GmhKsysL8xoZ69oU&libraries=places"></script>
     <script src="{{ asset('assets') }}/js/get-user-location.js"></script>
     <script src="{{ asset('assets') }}/js/upload-document.js"></script>
     <script src="{{ asset('assets') }}/js/employee_filter_by_status.js"></script>
