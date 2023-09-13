@@ -6,9 +6,8 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use Carbon\Carbon;
 
-class AssignEmployeeShiftNotification extends Notification
+class EmployeeShiftNotification extends Notification
 {
     use Queueable;
 
@@ -39,16 +38,11 @@ class AssignEmployeeShiftNotification extends Notification
     {
         $data = $this->data;
         return (new MailMessage)
-            ->greeting('Hello '. $data['employee']['first_name'].'!')
-            ->subject("New Shift Assigned - ". env('APP_NAME'))
-            ->line("You've been assigned a new shift for " . Carbon::parse($data['date'])->format('j F, Y'))
-            ->line("Client: ". $data['shift']['clients']['clientRecord']['company_name'])
-            ->line("Address: ". $data['shift']['clients']['clientRecord']['address'])
-            ->action("View Direction", url('https://www.google.com/maps?q=' . urlencode($data['shift']['clients']['clientRecord']['post_code'])))
-            ->line($data['rules_regulations'])
-            ->line("Kindly login to your dashboard to accept your shift!" );  
-    }
-
+                ->greeting('Hello')
+                ->subject("Shift ".$data['status'] )
+                ->line($data['first_name']. ' '.$data['last_name']. ' '. $data['status'] ." a shift assigned for ". \Carbon\Carbon::parse($data['date'])->format('j F, Y'))
+                ->line("Kindly login to your account to view more details");
+        }
 
     /**
      * Get the array representation of the notification.

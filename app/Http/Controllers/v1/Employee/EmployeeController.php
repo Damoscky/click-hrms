@@ -37,7 +37,7 @@ class EmployeeController extends Controller
 
         $currentInstantUser = auth()->user();
 
-        $upcomingShifts = EmployeeShift::where('date', '>=', Carbon::today())->where('employee_id', $currentInstantUser->id)->orderBy('created_at', 'DESC')->take(5)->get();
+        $upcomingShifts = EmployeeShift::where('date', '>=', Carbon::today())->where('status', '!=', 'Cancelled')->where('employee_id', $currentInstantUser->id)->orderBy('created_at', 'DESC')->take(5)->get();
         $pendingShifts = EmployeeShift::where('date', '>=', Carbon::today())->where('status', 'Pending')->where('employee_id', $currentInstantUser->id)->orderBy('created_at', 'DESC')->get();
         $completedShifts = EmployeeShift::where('status', 'Completed')->where('employee_id', $currentInstantUser->id)->orderBy('created_at', 'DESC')->get();
         $totalShifts = EmployeeShift::where('employee_id', $currentInstantUser->id)->orderBy('created_at', 'DESC')->get();

@@ -210,7 +210,8 @@
                                 <a href="#"><i class="la la-calendar"></i> <span> Shifts & Schedule</span>
                                     <span class="menu-arrow"></span></a>
                                 <ul>
-                                    <li class="@if(request()->is('employee/shifts')) active @endif" ><a href="{{ route('employee.shift.all') }}">Shifts</a></li>
+                                    <li class="@if(request()->is('employee/shifts')) active @endif" ><a href="{{ route('employee.shift.all') }}">All Shifts</a></li>
+                                    <li class="@if(request()->is('employee/shifts')) active @endif" ><a href="{{ route('employee.shift.current') }}">Today's Shifts</a></li>
                                     <li class="@if(request()->is('employee/availability')) active @endif" ><a href="{{ route('employee.availability.all') }}">Availablility</a></li>
                                 </ul>
                             </li>
@@ -231,7 +232,10 @@
     </div>
 
 
+    
+    <script src="{{ asset('assets') }}/js/get-user-location.js"></script>
     <script src="{{ asset('assets') }}/js/upload-document.js"></script>
+    <script src="{{ asset('assets') }}/js/employee_filter_by_status.js"></script>
     <script src="{{ asset('assets') }}/js/disable-start-time.js"></script>
     <script src="{{ asset('assets') }}/js/jquery-3.7.0.min.js"></script>
 

@@ -74,6 +74,10 @@ Route::group(['prefix' => 'employee', 'middleware' => ["auth:web", "employee"]],
 
     Route::group(['prefix' => 'shifts'], function(){
         Route::get('/', [EmployeeShiftController::class, 'index'])->name('employee.shift.all');
+        Route::get('/cancel/{id}', [EmployeeShiftController::class, 'cancelShift'])->name('employee.shift.cancel');
+        Route::get('/accept/{id}', [EmployeeShiftController::class, 'acceptShift'])->name('employee.shift.accept');
+        Route::get('/current', [EmployeeShiftController::class, 'currentShift'])->name('employee.shift.current');
+        Route::get('/clockIn/{id}', [EmployeeShiftController::class, 'clockIn'])->name('employee.shift.clockin');
 
     });
 });

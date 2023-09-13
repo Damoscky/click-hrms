@@ -93,7 +93,7 @@
             </div>
         </div>
 
-         <div class="modal custom-modal fade" id="view_timesheet" role="dialog">
+        <div class="modal custom-modal fade" id="view_timesheet" role="dialog">
           <div
             class="modal-dialog modal-dialog-centered modal-lg"
             role="document"

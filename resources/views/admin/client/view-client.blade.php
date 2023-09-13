@@ -46,7 +46,7 @@
                                                     Date Created : {{ \Carbon\Carbon::parse($client->created_at)->format('j F, Y') }}
                                                 </div>
                                                 <div class="staff-msg">
-                                                    @if ($client->user->sent_for_approval && $client->status == 'Review')
+                                                    @if ($client->user->sent_for_approval && $client->user->status == 'Review')
                                                         <a class="btn btn-success" data-bs-toggle="modal"
                                                             data-bs-target="#approve_modal">Accept</a>
                                                         <a class="btn btn-danger" data-bs-toggle="modal"

@@ -260,9 +260,9 @@ class ShiftController extends Controller
             foreach ($employeeIds as $employeeId) {
                 
                 //check if employee has not been assigned for same date
-                $employeeShiftExist = EmployeeShift::where('employee_id', $employeeId)->where('date', $shift->date)->first();
+                $employeeShiftExist = EmployeeShift::where('employee_id', $employeeId)->where('date', $shift->date)->where('status', '!=', 'Cancelled' )->first();
                 if($employeeShiftExist){
-                    toastr()->warning("One or more employee has a shift alredy booked for same date.");
+                    toastr()->warning("One or more employee has a shift already booked for same date.");
                     return back();
                 }
                 

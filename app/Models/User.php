@@ -20,7 +20,7 @@ class User extends Authenticatable
      */
     protected $guarded = ['id'];
 
-    protected $with = ['roles'];
+    protected $with = ['roles', 'employeeRecord'];
 
     public function employeeRecord()
     {

@@ -9,7 +9,7 @@
                         <h3 class="page-title">Shifts</h3>
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item">
-                                <a href="{{ route('employee.shift.all') }}">All Shifts</a>
+                                <a href="{{ route('employee.shift.all') }}">Today's Shifts</a>
                             </li>
                         </ul>
                     </div>
@@ -32,6 +32,7 @@
                             <option value="">Filter by Status</option>
                             <option value="Pending">Pending</option>
                             <option value="Completed">Completed</option>
+                            <option value="Accepted">Accepted</option>
                             <option value="In Progress">In Progress</option>
                             <option value="Cancelled">Cancelled</option>
                         </select>
@@ -91,18 +92,8 @@
                                                 </td>
                                             @endif
                                             <td>
-                                                @if ($shift->status == "Pending")
-                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#accept_shift-{{$shift->id}}" 
-                                                        class="btn btn-outline-warning"> Accept </a>
-                                                @endif
-                                                @if (Carbon\Carbon::parse($shift->date)->diffInHours(Carbon\Carbon::now()) > 24 && $shift->status != "Cancelled")
-                                                    <a href="#" class="btn btn-outline-danger" data-bs-toggle="modal"
-                                                    data-bs-target="#cancel_shift-{{$shift->id}}"> Cancel </a> 
-                                                @elseif($shift->status == "Cancelled")
-                                                    <a href="#" class="btn btn-outline-danger"> Shift Cancelled </a>    
-                                                @else
-                                                    <a href="#" class="btn btn-outline-success"> Shift {{$shift->status}} </a>
-                                                @endif
+                                                <a href="#" class="btn btn-outline-warning" data-bs-toggle="modal"
+                                                    data-bs-target="#cancel_shift-{{$shift->id}}"> Clock In </a> 
                                             </td>
                                         </tr>
                                         <div class="modal custom-modal fade" id="cancel_shift-{{$shift->id}}" role="dialog">
@@ -110,43 +101,20 @@
                                                 <div class="modal-content">
                                                     <div class="modal-body">
                                                         <div class="form-header">
-                                                            <h3>Cancel Shift?</h3>
-                                                            <p>Are you sure you want to cancel this shift? T&C may applies.</p>
+                                                            <h3>Are you ready to clock In?</h3>
+                                                            {{-- <p>Are you sure you want to cancel this shift? T&C may applies.</p> --}}
                                                         </div>
                                                         <div class="modal-btn delete-action">
                                                             <div class="row">
                                                                 <div class="row">
                                                                     <div class="col-6">
                                                                         <a href="javascript:void(0);" data-bs-dismiss="modal"
-                                                                            class="btn btn-secondary cancel-btn">Cancel</a>
+                                                                            class="btn btn-secondary cancel-btn">No</a>
                                                                     </div>
                                                                     <div class="col-6">
-                                                                        <a href="{{route('employee.shift.cancel', base64_encode($shift->id))}}" class="btn btn-primary submit-btn continue-btn">Confirm</a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="modal custom-modal fade" id="accept_shift-{{$shift->id}}" role="dialog">
-                                            <div class="modal-dialog modal-dialog-centered">
-                                                <div class="modal-content">
-                                                    <div class="modal-body">
-                                                        <div class="form-header">
-                                                            <h3>Accept this Shift?</h3>
-                                                            <p>Are you sure you want to accept this shift?</p>
-                                                        </div>
-                                                        <div class="modal-btn delete-action">
-                                                            <div class="row">
-                                                                <div class="row">
-                                                                    <div class="col-6">
-                                                                        <a href="javascript:void(0);" data-bs-dismiss="modal"
-                                                                            class="btn btn-secondary cancel-btn">Cancel</a>
-                                                                    </div>
-                                                                    <div class="col-6">
-                                                                        <a href="{{route('employee.shift.accept', base64_encode($shift->id))}}" class="btn btn-primary submit-btn continue-btn">Confirm</a>
+                                                                        <button id="getLocationButton">Get My Location</button>
+
+                                                                        {{-- <a href="{{route('employee.shift.clockin', base64_encode($shift->id))}}" class="btn btn-primary submit-btn continue-btn">Yes</a> --}}
                                                                     </div>
                                                                 </div>
                                                             </div>

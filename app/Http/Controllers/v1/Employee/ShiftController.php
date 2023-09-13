@@ -5,8 +5,12 @@ namespace App\Http\Controllers\v1\Employee;
 use App\Helpers\ProcessAuditLog;
 use App\Http\Controllers\Controller;
 use App\Models\EmployeeShift;
+use App\Notifications\EmployeeShiftNotification;
+use Illuminate\Support\Facades\Notification;
 use App\Models\User;
 use Illuminate\Http\Request;
+use DB;
+use Carbon\Carbon;
 
 class ShiftController extends Controller
 {
@@ -26,6 +30,7 @@ class ShiftController extends Controller
 
         $employeeShift = EmployeeShift::where('id', $id)->where('employee_id', $currentInstantUser->id)->first();
 
+        DB::beginTransaction();
         if(is_null($employeeShift)){
             toastr()->warning("Record not Found");
             return back();
@@ -34,6 +39,23 @@ class ShiftController extends Controller
         $employeeShift->update([
             'status' => 'Accepted',
         ]);
+
+        $adminRole = 'Workforce Admin Access';
+
+        //send email to Admin
+        $superAdmins = User::whereHas('roles', function ($roleTable) use ($adminRole) {
+            $roleTable->where('name', $adminRole);
+        })->pluck('email');
+
+        $data = [
+            'first_name' => $currentInstantUser->first_name,
+            'last_name' => $currentInstantUser->last_name,
+            'status' => "Accepted",
+            'date' => $employeeShift->date,
+        ];
+
+         //send email to Admin
+        //  Notification::route('mail', $superAdmins)->notify(new EmployeeShiftNotification($data));
 
         $dataToLog = [
             'causer_id' => $currentInstantUser->id,
@@ -46,8 +68,25 @@ class ShiftController extends Controller
 
         ProcessAuditLog::storeAuditLog($dataToLog);
 
+        DB::commit();
         toastr()->success("Shift Accepted Successfully");
         return back();
+    }
+
+    public function currentShift()
+    {
+        $currentInstantUser = auth()->user(); 
+
+        $totalShifts = EmployeeShift::where('employee_id', $currentInstantUser->id)->where('date', Carbon::today())->where('status', 'Accepted')->get();
+        return view('employee.current-shift', ['totalShifts' => $totalShifts]);
+    }
+
+    public function clockIn($id)
+    {
+        $id = base64_decode($id);
+        $userIpAddress = request()->ip();
+        return getGeolocation($userIpAddress);
+        return $employeeShift = EmployeeShift::find($id);
     }
 
     public function cancelShift($id)
@@ -58,6 +97,7 @@ class ShiftController extends Controller
 
         $employeeShift = EmployeeShift::where('id', $id)->where('employee_id', $currentInstantUser->id)->first();
 
+        DB::beginTransaction();
         if(is_null($employeeShift)){
             toastr()->warning("Record not Found");
             return back();
@@ -67,15 +107,27 @@ class ShiftController extends Controller
             'status' => 'Cancelled',
         ]);
 
-        $adminRole = 'Workforce';
+        $employeeShift->shift->update([
+            'total_staff_assigned' => $employeeShift->shift->total_staff_assigned - 1,
+            'status' => 'Pending'
+        ]);
+
+        $adminRole = 'Workforce Admin Access';
 
         //send email to Admin
         $superAdmins = User::whereHas('roles', function ($roleTable) use ($adminRole) {
             $roleTable->where('name', $adminRole);
         })->pluck('email');
 
+        $data = [
+            'first_name' => $currentInstantUser->first_name,
+            'last_name' => $currentInstantUser->last_name,
+            'status' => "Cancelled",
+            'date' => $employeeShift->date,
+        ];
+
          //send email to Admin
-         Notification::route('mail', $superAdmins)->notify(new SentForApprovallNotification($record));
+         Notification::route('mail', $superAdmins)->notify(new EmployeeShiftNotification($data));
 
         $dataToLog = [
             'causer_id' => $currentInstantUser->id,
@@ -88,6 +140,7 @@ class ShiftController extends Controller
 
         ProcessAuditLog::storeAuditLog($dataToLog);
 
+        DB::commit();
         toastr()->success("Shift Cancelled Successfully");
         return back();
     }
