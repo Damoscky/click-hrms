@@ -1,4 +1,4 @@
-window.onload = function () {
+function getPostalCodeFromLocation(postcode, id) {
     // Code to get the user's location
     if ('geolocation' in navigator) {
         navigator.geolocation.getCurrentPosition(
@@ -18,9 +18,18 @@ window.onload = function () {
                     if (status == google.maps.GeocoderStatus.OK) {
                         if (results[0]) {
                             const postalCode = getPostalCodeFromResults(results[0]);
-                            console.log('Postal Code:', postalCode);
+                            // $('#clock_in-' + id).modal('show');
+                            if (postalCode === postcode) {
+                                // Postal code matches, display the modal
+                                $('#clock_in-' + id).modal('show');
+                            } else {
+                                // Postal code does not match
+                                // Handle other actions or conditions here
+                                $('#clock_in_error-' + id).modal('show');
+                                // alert('You need to be at the location to start your shift.');
+                            }
                         } else {
-                            console.log('No results found');
+                            alert('Error occured while fetching your location');
                         }
                     } else {
                         console.log('Geocoder failed due to: ' + status);

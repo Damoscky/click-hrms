@@ -92,12 +92,15 @@
                                                 </td>
                                             @endif
                                             <td>
-                                                <button class="btn btn-outline-warning" id="getLocationButton">Clock In</button>
-                                                {{-- <a href="#" class="btn btn-outline-warning" data-bs-toggle="modal"
-                                                    data-bs-target="#cancel_shift-{{$shift->id}}"> Clock In </a>  --}}
+                                                @if (!$shift->clock_in && !$shift->clock_out)
+                                                    <button class="btn btn-outline-warning" onclick="getPostalCodeFromLocation('{{$shift->shift->clients->clientRecord->post_code}}', '{{$shift->id}}')">Clock In</button>
+                                                @elseif($shift->clock_in && !$shift->clock_out)
+                                                    <button class="btn btn-outline-warning">Clock Out</button>
+                                                @endif
                                             </td>
                                         </tr>
-                                        <div class="modal custom-modal fade" id="cancel_shift-{{$shift->id}}" role="dialog">
+                                        
+                                        <div class="modal custom-modal fade" id="clock_in-{{$shift->id}}" role="dialog">
                                             <div class="modal-dialog modal-dialog-centered">
                                                 <div class="modal-content">
                                                     <div class="modal-body">
@@ -108,13 +111,36 @@
                                                         <div class="modal-btn delete-action">
                                                             <div class="row">
                                                                 <div class="row">
+                                                                    <div class="col-12">
+                                                                        <img style="width: 100px; height:100px; display:block; margin:0 auto;" class="mb-3" src="{{asset('assets')}}/img/tumb-up.jpeg" alt="">
+                                                                    </div>
                                                                     <div class="col-6">
                                                                         <a href="javascript:void(0);" data-bs-dismiss="modal"
                                                                             class="btn btn-secondary cancel-btn">No</a>
                                                                     </div>
                                                                     <div class="col-6">
-                                                                        {{-- <button id="getLocationButton">Get My Location</button> --}}
-                                                                        {{-- <a href="{{route('employee.shift.clockin', base64_encode($shift->id))}}" class="btn btn-primary submit-btn continue-btn">Yes</a> --}}
+                                                                        <a href="{{route('employee.shift.clockin', base64_encode($shift->id))}}" class="btn btn-primary submit-btn continue-btn">Yes</a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal custom-modal fade" id="clock_in_error-{{$shift->id}}" role="dialog">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <div class="modal-body">
+                                                        <div class="form-header">
+                                                            <h3>Opps! You are not yet at the location</h3>
+                                                            {{-- <p>Are you sure you want to cancel this shift? T&C may applies.</p> --}}
+                                                        </div>
+                                                        <div class="modal-btn delete-action">
+                                                            <div class="row">
+                                                                <div class="row">
+                                                                    <div class="col-12">
+                                                                        <img style="width: 200px; height:200px; display:block; margin:0 auto;" class="mb-3" src="{{asset('assets')}}/img/not-found.jpeg" alt="">
                                                                     </div>
                                                                 </div>
                                                             </div>

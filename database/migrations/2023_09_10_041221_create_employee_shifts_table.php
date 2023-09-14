@@ -17,6 +17,8 @@ return new class extends Migration
             $table->unsignedBigInteger('shift_id');
             $table->text('rules_regulations')->nullable();
             $table->date('date');
+            $table->boolean('clock_in')->default(false);
+            $table->boolean('clock_out')->default(false);
             $table->string('status')->default("Pending")->comment('Pending, Accepted, Cancelled, Completed');
             $table->foreign('employee_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('shift_id')->references('id')->on('shifts')->onDelete('cascade');

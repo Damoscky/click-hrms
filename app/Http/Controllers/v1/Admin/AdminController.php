@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\v1\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\EmployeeTimesheet;
 use App\Models\Shift;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -36,7 +37,10 @@ class AdminController extends Controller
         $topClients = User::whereRelation('roles', 'slug', $clientRole)
         ->whereHas('shifts')->get(); 
 
-        return view('admin.dashboard', ['totalEmployee' => $totalEmployee, 'totalClient' => $totalClient, 'topClients'=> $topClients, 'pendingShifts' => $pendingShifts, 'completedShifts' => $completedShifts, 'totalShifts' => $totalShifts]);
+        $recentTimesheet = EmployeeTimesheet::with('employee', 'shift')->orderBy('created_at', 'DESC')->take(2)->get();
+
+
+        return view('admin.dashboard', ['recentTimesheet' => $recentTimesheet, 'totalEmployee' => $totalEmployee, 'totalClient' => $totalClient, 'topClients'=> $topClients, 'pendingShifts' => $pendingShifts, 'completedShifts' => $completedShifts, 'totalShifts' => $totalShifts]);
             
 
     }

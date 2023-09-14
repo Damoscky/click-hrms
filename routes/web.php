@@ -18,6 +18,7 @@ use App\Http\Controllers\v1\Admin\TimesheetController;
 use App\Http\Controllers\v1\Admin\StaffController;
 use App\Http\Controllers\v1\Admin\ShiftController;
 use App\Http\Controllers\v1\Client\ShiftController as ClientShiftController;
+use App\Http\Controllers\v1\Client\TimesheetController as ClientTimesheetController;
 use App\Http\Controllers\v1\Admin\ReportController;
 use App\Http\Controllers\v1\Admin\SettingController as AdminSettingController;
 use Illuminate\Support\Facades\Route;
@@ -100,6 +101,10 @@ Route::group(['prefix' => 'client', 'middleware' => ["auth:web", "client"]], fun
         Route::get('/cancel/{id}', [ClientShiftController::class, 'cancelShifts'])->name('client.shift.cancel');
     });
 
+    Route::group(['prefix' => 'timesheet'], function(){
+        Route::get('/', [ClientTimesheetController::class, 'index'])->name('client.timesheet.all');
+    });
+    
 });
 
 

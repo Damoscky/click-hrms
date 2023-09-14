@@ -5,6 +5,7 @@ namespace App\Http\Controllers\v1\Employee;
 use App\Helpers\ProcessAuditLog;
 use App\Http\Controllers\Controller;
 use App\Models\EmployeeShift;
+use App\Models\EmployeeTimesheet;
 use App\Notifications\EmployeeShiftNotification;
 use Illuminate\Support\Facades\Notification;
 use App\Models\User;
@@ -83,10 +84,35 @@ class ShiftController extends Controller
 
     public function clockIn($id)
     {
-        $id = base64_decode($id);
-        $userIpAddress = request()->ip();
-        return getGeolocation($userIpAddress);
-        return $employeeShift = EmployeeShift::find($id);
+       try {
+            $id = base64_decode($id);
+            $employeeShift = EmployeeShift::find($id);
+            $currentDateTime = Carbon::now();
+            $clockInTime = $currentDateTime->format('H:i:s');
+
+            DB::beginTransaction();
+            //create timesheet
+            $timesheet = EmployeeTimesheet::firstOrCreate([
+                'client_id' => $employeeShift->shift->client_id,
+                'employee_id' => auth()->user()->id,
+                'shift_id' => $employeeShift->shift_id,
+                'time_in' => $clockInTime,
+                'clock_in' => true,
+                'clock_in_date' => $currentDateTime,
+            ]);
+
+            $employeeShift->update([
+                'clock_in' => true 
+            ]);
+
+            DB::commit();
+            toastr()->success("You've started your shift Successfully");
+            return back(); 
+       } catch (\Throwable $error) {
+            toastr()->error($error->getMessage());
+            return back(); 
+       }      
+
     }
 
     public function cancelShift($id)

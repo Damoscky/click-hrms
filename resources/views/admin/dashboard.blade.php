@@ -123,45 +123,44 @@
                                 Recent Timesheet
                                 {{-- <span class="badge bg-inverse-danger ms-2">5</span> --}}
                             </h4>
-                            <div class="leave-info-box">
-                                <div class="media d-flex align-items-center">
-                                    <a href="profile.html" class="avatar"><img src="{{asset('assets')}}/img/user.jpg"
-                                            alt="User Image" /></a>
-                                    <div class="media-body flex-grow-1">
-                                        <div class="text-sm my-0">FirstHealth Care</div>
+                            @if (count($recentTimesheet) > 0)
+                                @foreach ($recentTimesheet as $timesheet)
+                                    <div class="leave-info-box">
+                                        <div class="media d-flex align-items-center">
+                                            <a href="profile.html" class="avatar">
+                                                @if ($timesheet->employee->employeeRecord->image)
+                                                    <img src="{{$timesheet->employee->employeeRecord->image}}" alt="User Image" />
+                                                @else
+                                                    <img src="{{ asset('assets') }}/img/user.jpg" alt="User Image" />
+                                                @endif
+                                            </a>
+                                            <div class="media-body flex-grow-1">
+                                                <div class="text-sm my-0">{{$timesheet->employee->first_name}} {{$timesheet->employee->last_name}}</div>
+                                            </div>
+                                        </div>
+                                        <div class="row align-items-center mt-3">
+                                            <div class="col-6">
+                                                <h6 class="mb-0">{{Carbon\Carbon::parse($timesheet->date)->format('j F, Y')}}</h6>
+                                                <span class="text-sm text-muted">{{$timesheet->shift->type}} Shift</span>
+                                            </div>
+                                            <div class="col-6 text-end">
+                                                @if ($timesheet->status == "Pending")
+                                                    <span class="badge bg-inverse-danger">{{$timesheet->status}}</span>
+                                                @else
+                                                    <span class="badge bg-inverse-success">{{$timesheet->status}}</span>
+                                                @endif
+                                                
+                                            </div>
+                                        </div>
                                     </div>
+                                @endforeach
+                                <div class="load-more text-center">
+                                    <a class="text-dark" href="{{route('client.timesheet.all')}}">Load More</a>
                                 </div>
-                                <div class="row align-items-center mt-3">
-                                    <div class="col-6">
-                                        <h6 class="mb-0">4 Sep 2023</h6>
-                                        <span class="text-sm text-muted">Leave Date</span>
-                                    </div>
-                                    <div class="col-6 text-end">
-                                        <span class="badge bg-inverse-danger">Pending</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="leave-info-box">
-                                <div class="media d-flex align-items-center">
-                                    <a href="profile.html" class="avatar"><img src="{{asset('assets')}}/img/user.jpg"
-                                            alt="User Image" /></a>
-                                    <div class="media-body flex-grow-1">
-                                        <div class="text-sm my-0">Martin Lewis</div>
-                                    </div>
-                                </div>
-                                <div class="row align-items-center mt-3">
-                                    <div class="col-6">
-                                        <h6 class="mb-0">4 Sep 2019</h6>
-                                        <span class="text-sm text-muted">Leave Date</span>
-                                    </div>
-                                    <div class="col-6 text-end">
-                                        <span class="badge bg-inverse-success">Approved</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="load-more text-center">
-                                <a class="text-dark" href="{{route('admin.timesheet.all')}}">Load More</a>
-                            </div>
+                            @else
+                                <img style="width: 200px; height:200px; display:block; margin:0 auto;" class="mb-3" src="{{asset('assets')}}/img/no-data.jpeg" alt="">
+                            @endif
+                            
                         </div>
                     </div>
                 </div>

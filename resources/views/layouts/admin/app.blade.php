@@ -67,7 +67,7 @@
 
             <ul class="nav user-menu">
 
-                <li class="nav-item dropdown">
+                {{-- <li class="nav-item dropdown">
                     <a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
                         <i class="fa-regular fa-bell"></i>
                         <span class="badge rounded-pill">3</span>
@@ -126,64 +126,9 @@
                             <a href="activities.html">View all Notifications</a>
                         </div>
                     </div>
-                </li>
+                </li> --}}
 
-                <li class="nav-item dropdown">
-                    <a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
-                        <i class="fa-regular fa-comment"></i><span class="badge rounded-pill">8</span>
-                    </a>
-                    <div class="dropdown-menu notifications">
-                        <div class="topnav-dropdown-header">
-                            <span class="notification-title">Messages</span>
-                            <a href="javascript:void(0)" class="clear-noti"> Clear All </a>
-                        </div>
-                        <div class="noti-content">
-                            <ul class="notification-list">
-                                <li class="notification-message">
-                                    <a href="chat.html">
-                                        <div class="list-item">
-                                            <div class="list-left">
-                                                <span class="avatar">
-                                                    <img src="{{ asset('assets') }}/img/profiles/avatar-09.jpg"
-                                                        alt="User Image" />
-                                                </span>
-                                            </div>
-                                            <div class="list-body">
-                                                <span class="message-author">Richard Miles </span>
-                                                <span class="message-time">12:28 AM</span>
-                                                <div class="clearfix"></div>
-                                                <span class="message-content">Lorem ipsum dolor sit amet, consectetur
-                                                    adipiscing</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li class="notification-message">
-                                    <a href="chat.html">
-                                        <div class="list-item">
-                                            <div class="list-left">
-                                                <span class="avatar">
-                                                    <img src="{{ asset('assets') }}/img/profiles/avatar-02.jpg"
-                                                        alt="User Image" />
-                                                </span>
-                                            </div>
-                                            <div class="list-body">
-                                                <span class="message-author">John Doe</span>
-                                                <span class="message-time">6 Mar</span>
-                                                <div class="clearfix"></div>
-                                                <span class="message-content">Lorem ipsum dolor sit amet, consectetur
-                                                    adipiscing</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="topnav-dropdown-footer">
-                            <a href="chat.html">View all Messages</a>
-                        </div>
-                    </div>
-                </li>
+                
 
                 <li class="nav-item dropdown has-arrow main-drop">
                     <a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
@@ -199,8 +144,8 @@
                         <span>{{auth()->user()->first_name}}</span>
                     </a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="profile.html">My Profile</a>
-                        <a class="dropdown-item" href="settings.html">Settings</a>
+                        {{-- <a class="dropdown-item" href="profile.html">My Profile</a>
+                        <a class="dropdown-item" href="settings.html">Settings</a> --}}
                         <a class="dropdown-item" href="{{route('auth.logout')}}">Logout</a>
                     </div>
                 </li>

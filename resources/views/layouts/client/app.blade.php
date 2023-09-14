@@ -120,7 +120,7 @@
                         </li>
                         @role(['client']) 
                             <li class="active">
-                                <a href="{{ route('employee.timesheet.all') }}"><i class="la la-clock-o"></i> <span> Timesheet</span></a>
+                                <a href="{{ route('client.timesheet.all') }}"><i class="la la-clock-o"></i> <span> Timesheet</span></a>
                             </li>
                             <li class="submenu active">
                                 <a href="#"><i class="la la-calendar"></i> <span> Shifts & Schedule</span>
