@@ -162,8 +162,8 @@
                         <span>{{auth()->user()->first_name}}</span>
                     </a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="profile.html">My Profile</a>
-                        <a class="dropdown-item" href="settings.html">Settings</a>
+                        {{-- <a class="dropdown-item" href="profile.html">My Profile</a>
+                        <a class="dropdown-item" href="settings.html">Settings</a> --}}
                         <a class="dropdown-item" href="{{route('auth.logout')}}">Logout</a>
                     </div>
                 </li>
@@ -173,8 +173,8 @@
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
                     aria-expanded="false"><i class="fa-solid fa-ellipsis-vertical"></i></a>
                 <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item" href="profile.html">My Profile</a>
-                    <a class="dropdown-item" href="settings.html">Settings</a>
+                    {{-- <a class="dropdown-item" href="profile.html">My Profile</a>
+                    <a class="dropdown-item" href="settings.html">Settings</a> --}}
                     <a class="dropdown-item" href="{{route('auth.logout')}}">Logout</a>
                 </div>
             </div>
@@ -204,7 +204,7 @@
                         </li>
                         @role(['employee']) 
                             <li class="@if(request()->is('employee/timesheet')) active @endif ">
-                                <a href="{{ route('employee.timesheet.all') }}"><i class="la la-clock-o"></i> <span> Timesheet</span></a>
+                                {{-- <a href="{{ route('employee.timesheet.all') }}"><i class="la la-clock-o"></i> <span> Timesheet</span></a> --}}
                             </li>
                             <li class="submenu @if(request()->is('employee/shifts')) active @endif">
                                 <a href="#"><i class="la la-calendar"></i> <span> Shifts & Schedule</span>
@@ -231,10 +231,10 @@
 
     </div>
 
-
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyApcI-eCy2vhDU9Fx4GmhKsysL8xoZ69oU&libraries=places"></script>
+    
+    <script src="{{ asset('assets') }}/js/check-employee-documents.js"></script>
     <script src="{{ asset('assets') }}/js/get-user-location.js"></script>
-    <script src="{{ asset('assets') }}/js/upload-document.js"></script>
     <script src="{{ asset('assets') }}/js/employee_filter_by_status.js"></script>
     <script src="{{ asset('assets') }}/js/disable-start-time.js"></script>
     <script src="{{ asset('assets') }}/js/jquery-3.7.0.min.js"></script>
@@ -242,6 +242,17 @@
     <script src="{{ asset('assets') }}/js/bootstrap.bundle.min.js"></script>
 
     <script src="{{ asset('assets') }}/js/jquery.slimscroll.min.js"></script>
+    <script src="{{ asset('assets') }}/js/upload-certificate.js"></script>
+    <script src="{{ asset('assets') }}/js/upload-document.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Initialize Datepicker on the "Expiry Date" input field
+            $('#expiry_date').datepicker({
+                minDate: 0, // Set the minimum date to today (0 means today)
+                dateFormat: 'yy-mm-dd', // Set the date format as needed
+            });
+        });
+    </script>
 
     <script src="{{ asset('assets') }}/plugins/morris/morris.min.js"></script>
     <script src="{{ asset('assets') }}/plugins/raphael/raphael.min.js"></script>

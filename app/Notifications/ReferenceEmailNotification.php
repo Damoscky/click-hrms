@@ -40,10 +40,11 @@ class ReferenceEmailNotification extends Notification
         return (new MailMessage)
                 ->greeting('Dear '.$data['contact_name'].'!')
                 ->subject("Reference Request - ". auth()->user()->first_name .' '. auth()->user()->last_name)
-                ->line(auth()->user()->first_name .' '. auth()->user()->last_name . " has listed you as a reference contact and therefore would appreciate if you could verify some details about " .auth()->user()->first_name .' '. auth()->user()->last_name . " to help us reach our hiring decision.")
+                ->line(auth()->user()->first_name .' '. auth()->user()->last_name . " is currently registering with Click Operations (UK) Limited and has provided your name as a referee.  I would be grateful if you could complete the reference form as much detail as possible based on the information available to you to help us reach our hiring decision.")
+                ->line("The information you provide may be passed confidentially to prospective employers for the purpose of finding this applicant work. Please indicate clearly on the reference if you do not wish information you provide to be shared in this way.")
                 ->line("Please click on the link below to complete the reference form." )
                 ->action('Submit Reference', url('/reference/submit/'.$data['token'].'?email='. auth()->user()->email))
-                ->line('If the above link does not work, please copy and paste the following URL into your browser');
+                ->line('If you have any queries or need any more information, please do not hesitate to contact me at compliance@clickoperationshealthcare.com');
     }
 
     /**

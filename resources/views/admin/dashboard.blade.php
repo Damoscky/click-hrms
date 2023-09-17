@@ -186,47 +186,32 @@
                                     <tbody>
                                         @if(count($topClients) > 0)
                                             @foreach ($topClients as $topClient)
-                                                
                                                 <tr>
                                                     <td>
                                                         <h2 class="table-avatar">
-                                                            <a href="#" class="avatar"><img
-                                                                    src="{{$topClient->clientRecord->image}}"
-                                                                    alt="User Image" /></a>
-                                                            <a href="client-profile.html">{{$topClient->clientRecord->company_name}}</a>
+                                                            @if (isset($topClient->clientRecord->image))
+                                                                <a href="#" class="avatar"><img src="{{ $client->clientRecord->image }}"
+                                                                        alt="Profile Picture" /></a>
+                                                            @else
+                                                                <a href="#" class="avatar"><img
+                                                                        src="{{ asset('assets') }}/img/user.png" alt="Client Logo" /></a>
+                                                            @endif
+                                                            <a href="{{route('admin.client.show', base64_encode($topClient->clientRecord->id))}}">{{$topClient->clientRecord->company_name}}</a>
                                                         </h2>
                                                     </td>
                                                     <td>
-                                                        <a href="https://smarthr.dreamguystech.com/cdn-cgi/l/email-protection"
-                                                            class="__cf_email__"
-                                                            data-cfemail="1e7c7f6c6c677d6b7a7f5e7b667f736e727b307d7173">{{$topClient->email}}</a>
+                                                        <a href="#"
+                                                            class="__cf_email__">{{$topClient->email}}</a>
                                                     </td>
                                                     <td>
                                                         <div class="dropdown action-label">
                                                             <a href="#" class="btn btn-outline-success btn-sm"> {{$topClient->status}} </a>
-                                                            <div class="dropdown-menu dropdown-menu-right">
-                                                                <a class="dropdown-item" href="#"><i
-                                                                        class="fa-regular fa-circle-dot text-success"></i>
-                                                                    Active</a>
-                                                                <a class="dropdown-item" href="#"><i
-                                                                        class="fa-regular fa-circle-dot text-danger"></i>
-                                                                    Inactive</a>
-                                                            </div>
+                                                            
                                                         </div>
                                                     </td>
                                                     <td class="text-end">
                                                         <div class="dropdown dropdown-action">
-                                                            <a href="#" class="action-icon dropdown-toggle"
-                                                                data-bs-toggle="dropdown" aria-expanded="false"><i
-                                                                    class="material-icons">more_vert</i></a>
-                                                            <div class="dropdown-menu dropdown-menu-right">
-                                                                <a class="dropdown-item" href="javascript:void(0)"><i
-                                                                        class="fa-solid fa-pencil m-r-5"></i>
-                                                                    Edit</a>
-                                                                <a class="dropdown-item" href="javascript:void(0)"><i
-                                                                        class="fa-regular fa-trash-can m-r-5"></i>
-                                                                    Delete</a>
-                                                            </div>
+                                                            <a href="{{route('admin.client.show', base64_encode($topClient->clientRecord->id))}}" class="btn btn-outline-warning btn-sm"> View </a>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -251,12 +236,43 @@
                                 <table class="table custom-table mb-0">
                                     <thead>
                                         <tr>
-                                            <th>Project Name</th>
-                                            <th>Progress</th>
+                                            <th>Name</th>
+                                            <th>Email</th>
+                                            <th>Total Shift Covered</th>
                                             <th class="text-end">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        @if (count($topPerformingEmployees) > 0)
+                                            @foreach($topPerformingEmployees as $employee)
+                                                <tr>
+                                                    <td>
+                                                        <h2 class="table-avatar">
+                                                            @if (isset($employee->employeeRecord->image))
+                                                                <a href="#" class="avatar"><img src="{{ $employee->employeeRecord->image }}"
+                                                                        alt="Profile Picture" /></a>
+                                                            @else
+                                                                <a href="#" class="avatar"><img
+                                                                        src="{{ asset('assets') }}/img/user.png" alt="Client Logo" /></a>
+                                                            @endif
+                                                            <a href="{{route('admin.employee.show', base64_encode($employee->id))}}">{{$employee->first_name}} {{$employee->last_name}}</a>
+                                                        </h2>
+                                                    </td>
+                                                    <td>
+                                                        <a href="#"
+                                                            class="__cf_email__">{{$employee->email}}</a>
+                                                    </td>
+                                                    <td>
+                                                        {{$employee->employeeshifts_count}}
+                                                    </td>
+                                                    <td class="text-end">
+                                                        <div class="dropdown dropdown-action">
+                                                            <a href="{{route('admin.employee.show', base64_encode($employee->id))}}" class="btn btn-outline-warning btn-sm"> View </a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        @endif
                                         
                                     </tbody>
                                 </table>

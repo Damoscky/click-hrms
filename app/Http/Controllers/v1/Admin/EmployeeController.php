@@ -17,6 +17,7 @@ use App\Notifications\ApproveEmployeeNotification;
 use App\Notifications\DeclineEmployeeNotification;
 use App\Helpers\ProcessAuditLog;
 use App\Models\EmployeeDisapproval;
+use App\Models\EmployeeShift;
 use Carbon\Carbon;
 use Auth, Hash;
 
@@ -92,6 +93,23 @@ class EmployeeController extends Controller
         return view('admin.employee.pending-employees', ['departments' => $departments, 'totalEmployees' => $totalEmployees]);
     }
 
+    public function pendingRegistration()
+    {
+        if(!auth()->user()->hasPermission('view.employee')){
+
+            toastr()->error("Access Denied :(");
+            return back();
+        }
+        $employeeRole = 'employee';
+            // $recordSearchParam = $request->searchByDate;
+
+        $totalEmployees = User::whereHas('roles', function ($roleTable) use ($employeeRole) {
+            $roleTable->where('slug', $employeeRole);
+        })->where('sent_for_approval', false)->orderBy('created_at', 'DESC')->paginate(16);
+        $departments = Department::where('is_active', true)->get();
+        return view('admin.employee.pending-employees-registration', ['departments' => $departments, 'totalEmployees' => $totalEmployees]);
+    }
+
 
     public function show($id)
     {
@@ -108,7 +126,9 @@ class EmployeeController extends Controller
             toastr()->error("Record not found");
             return back();
         }
-        return view('admin.employee.view-employee', ['employee' => $record]);
+
+        $shifts = EmployeeShift::where('employee_id', $record->id)->get();
+        return view('admin.employee.view-employee', ['employee' => $record, 'shifts' => $shifts]);
     }
 
     public function approveEmployee($id)

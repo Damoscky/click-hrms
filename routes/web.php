@@ -36,6 +36,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PagesController::class, 'index'])->name('index');
 
+Route::get('/reference/submit/{token}', [EmployeeController::class, 'referenceForm'])->name('employee.reference');
 
 Route::group(['prefix' => 'auth'], function (){
     Route::post('/login', [LoginController::class, 'login'])->name('auth.login');
@@ -58,7 +59,9 @@ Route::group(['prefix' => 'employee', 'middleware' => ["auth:web", "employee"]],
     Route::get('experience/delete/{id}', [EmployeeController::class, 'deleteExperience'])->name('employee.experience.delete');
     Route::post('experience/update', [EmployeeController::class, 'updateExperience'])->name('employee.experience.update');
     Route::post('document/upload', [EmployeeController::class, 'uploadDocument'])->name('employee.document.upload');
+    Route::post('certificate/upload', [EmployeeController::class, 'uploadCertification'])->name('employee.certificate.upload');
     Route::get('document/delete/{id}', [EmployeeController::class, 'deleteDocument'])->name('employee.document.delete');
+    Route::get('certificate/delete/{id}', [EmployeeController::class, 'deleteCertificate'])->name('employee.certificate.delete');
     Route::get('application/sendforapproval', [EmployeeController::class, 'sendForApproval'])->name('employee.application.sendforapproval');
     Route::get('/complete/registration', [EmployeeController::class, 'completeRegistration'])->name('employee.complete-registration');
 
@@ -137,6 +140,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ["auth:web", "admin"]], funct
         Route::get('/', [AdminEmployeeController::class, 'index'])->name('admin.employee.all');
         Route::post('/search', [AdminEmployeeController::class, 'search'])->name('admin.employee.search');
         Route::get('/pending', [AdminEmployeeController::class, 'pendingApproval'])->name('admin.employee.pending');
+        Route::get('/pending/registration', [AdminEmployeeController::class, 'pendingRegistration'])->name('admin.employee.pending.registration');
         Route::post('/store', [AdminEmployeeController::class, 'store'])->name('admin.employee.store');
         Route::get('/view/{id}', [AdminEmployeeController::class, 'show'])->name('admin.employee.show');
         Route::get('/approve/{id}', [AdminEmployeeController::class, 'approveEmployee'])->name('admin.employee.approve');

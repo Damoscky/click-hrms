@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('company_name')->nullable();
             $table->string('email')->nullable();
             $table->string('phoneno')->nullable();
+            $table->string('status')->nullable();
+            $table->string('token')->nullable();
             $table->timestamp('start_date')->nullable();
             $table->timestamp('end_date')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

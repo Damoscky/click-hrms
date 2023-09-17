@@ -191,6 +191,7 @@
                                 <ul>
                                     <li><a href="{{ route('admin.employee.all') }}" class="@if(request()->is('admin/employee')) active @endif">All Employees</a></li>
                                     <li><a href="{{ route('admin.employee.pending') }}" class="@if(request()->is('admin/employee/pending')) active @endif">Pending Approval</a></li>
+                                    <li><a href="{{ route('admin.employee.pending.registration') }}" class="@if(request()->is('admin/employee/pending/registration')) active @endif">Pending Registration</a></li>
                                 </ul>
                             </li>
                         @endrole
@@ -299,6 +300,40 @@
                 console.error('Error fetching data:', error);
             });
         }
+    </script>
+    <script>
+        // Define a JavaScript function to handle the filtering and search logic
+        function filterEmployees() {
+            const employeeIdFilter = document.getElementById('employee_id_filter').value.trim().toLowerCase();
+            const employeeNameFilter = document.getElementById('employee_name_filter').value.trim().toLowerCase();
+            const departmentFilter = document.getElementById('department_filter').value;
+
+            // Loop through the employee cards and hide/show based on filters
+            const employeeCards = document.querySelectorAll('.profile-widget');
+            employeeCards.forEach(card => {
+                const employeeName = card.querySelector('.user-name a').textContent.toLowerCase();
+                const employeeDepartment = card.querySelector('.small').textContent.trim().toLowerCase();
+
+                const isIdMatch = employeeIdFilter === '' || employeeIdFilter === card.dataset.employeeId;
+                const isNameMatch = employeeName.includes(employeeNameFilter);
+                const isDepartmentMatch = departmentFilter === 'Select Department' || departmentFilter === '' || departmentFilter === employeeDepartment;
+
+                if (isIdMatch && isNameMatch && isDepartmentMatch) {
+                    card.style.display = 'block'; // Show the card
+                } else {
+                    card.style.display = 'none'; // Hide the card
+                }
+            });
+        }
+
+        // Attach event listeners to the filter inputs and search button
+        document.getElementById('employee_id_filter').addEventListener('input', filterEmployees);
+        document.getElementById('employee_name_filter').addEventListener('input', filterEmployees);
+        document.getElementById('department_filter').addEventListener('change', filterEmployees);
+        document.getElementById('search_button').addEventListener('click', filterEmployees);
+
+        // Call the filterEmployees function once to initially display all employees
+        window.onload = filterEmployees;
     </script>
 
     <script src="{{ asset('assets') }}/js/multipleselect-max.js"></script>

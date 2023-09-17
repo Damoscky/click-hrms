@@ -26,22 +26,24 @@
                             
                             <div class="input-block mb-4">
                                 <label class="col-form-label">New Password</label>
-                                <input class="form-control" type="password" name="password" value="">
+                                <input class="form-control" required type="password" name="password" value="" id="password" onkeyup="validatePassword()">
+                                <p id="password-message"></p>
                             </div>
 
                             <div class="input-block mb-4">
                                 <label class="col-form-label">Confirm Password</label>
-                                <input class="form-control" type="password" name="password_confirmation" value="">
+                                <input class="form-control" required type="password" name="password_confirmation" value="" id="confirm-password" onkeyup="validatePassword()">
+                                <p id="confirm-password-message"></p>
                             </div>
+                            
                            
                             <div class="input-block mb-4 text-center">
-                                <button class="btn btn-primary account-btn" type="submit">Reset Password</button>
+                                <button id="reset-submit-button" class="btn btn-primary account-btn" type="submit">Reset Password</button>
                             </div>
                             {{-- <div class="account-footer">
                                 <p>Remember your password? <a href="{{route('index')}}">Login</a></p>
                             </div> --}}
                         </form>
-
                     </div>
                 </div>
             </div>

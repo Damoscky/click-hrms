@@ -25,7 +25,7 @@
                                 <div class="profile-img-wrap">
                                     <div class="profile-img">
                                         @if (isset($employee->employeeRecord->image))
-                                            <img src="{{ $employee->employeeRecord->image }}"
+                                            <img class="img-fluid object-cover" src="{{ $employee->employeeRecord->image }}"
                                                 alt="{{ $employee->employeeRecord->employee_id }}" />
                                         @else
                                             <img src="{{ asset('assets') }}/img/user.png"
@@ -79,7 +79,7 @@
                                                 <li>
                                                     <div class="title">Birthday:</div>
                                                     <div class="text">
-                                                        {{ \Carbon\Carbon::parse($employee->employeeRecord->date_of_birth)->format('F j') }}
+                                                        {{ \Carbon\Carbon::parse($employee->employeeRecord->date_of_birth)->format('F j, Y') }}
                                                     </div>
                                                 </li>
                                                 <li>
@@ -116,7 +116,7 @@
                                 <a href="#emp_profile" data-bs-toggle="tab" class="nav-link active">Profile</a>
                             </li>
                             <li class="nav-item">
-                                <a href="#emp_assets" data-bs-toggle="tab" class="nav-link">Shifts</a>
+                                <a href="#emp_shift" data-bs-toggle="tab" class="nav-link">Shifts</a>
                             </li>
                         </ul>
                     </div>
@@ -322,7 +322,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="card profile-box flex-fill">
                                 <div class="card-body">
                                     <div class="file-cont-inner">
@@ -370,7 +370,78 @@
                                                                                 <h6><a
                                                                                         href="#">{{ $document->document_type }}.{{ $document->document_extension }}</a>
                                                                                 </h6>
-                                                                                <span>12mb</span>
+                                                                                <span>{{$document->size}}mb</span>
+                                                                            </div>
+                                                                            <div class="card-footer">
+                                                                                Issued:
+                                                                                {{ \Carbon\Carbon::parse($document->issued_date)->format('j F, Y') }},
+                                                                            </div>
+                                                                            <div class="card-footer">
+                                                                                Expire:
+                                                                                {{ \Carbon\Carbon::parse($document->expiry_date)->format('j F, Y') }}
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                @endforeach
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card profile-box flex-fill">
+                                <div class="card-body">
+                                    <div class="file-cont-inner">
+                                        <div class="file-content">
+                                            <div class="file-body">
+                                                <div class="file-scroll">
+                                                    <div class="file-content-inner">
+                                                        <h4>Recents Certificates 
+                                                        </h4>
+                                                        <div class="row row-sm">
+                                                            @if (count($employee->certificate))
+                                                                @foreach ($employee->certificate as $document)
+                                                                    <div
+                                                                        class="col-12 col-sm-4 col-md-3 col-lg-4 col-xl-3">
+                                                                        <div class="card card-file">
+                                                                            <div class="dropdown-file">
+                                                                                <a href="#" class="dropdown-link"
+                                                                                    data-bs-toggle="dropdown"><i
+                                                                                        class="fa-solid fa-ellipsis-vertical"></i></a>
+                                                                                <div
+                                                                                    class="dropdown-menu dropdown-menu-right">
+
+                                                                                    <a href="{{ $document->file_path }}"
+                                                                                        target="_blank"
+                                                                                        class="dropdown-item">Download</a>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="card-file-thumb">
+                                                                                @if ($document->document_extension == 'pdf')
+                                                                                    <a href="{{ $document->file_path }}"
+                                                                                        target="_blank"><i
+                                                                                            class="fa-regular fa-file-pdf"></i></a>
+                                                                                @elseif($document->document_extension == 'docx')
+                                                                                    <a href="{{ $document->file_path }}"
+                                                                                        target="_blank"><i
+                                                                                            class="fa-regular fa-file-word"></i></a>
+                                                                                @else
+                                                                                    <a href="{{ $document->file_path }}"
+                                                                                        target="_blank"><i
+                                                                                            class="fa-regular fa-file-image"></i></a>
+                                                                                @endif
+
+                                                                            </div>
+                                                                            <div class="card-body">
+                                                                                <h6><a
+                                                                                        href="#">{{ $document->document_type }}.{{ $document->document_extension }}</a>
+                                                                                </h6>
+                                                                                <span>{{$document->size}}mb</span>
                                                                             </div>
                                                                             <div class="card-footer">
                                                                                 Issued:
@@ -458,214 +529,58 @@
 
 
 
-                <div class="tab-pane fade" id="emp_assets">
+                <div class="tab-pane fade" id="emp_shift">
                     <div class="table-responsive table-newdatatable">
                         <table class="table table-new custom-table mb-0 datatable">
                             <thead>
                                 <tr>
-                                    <th>#</th>
-                                    <th>Name</th>
-                                    <th>Asset ID</th>
-                                    <th>Assigned Date</th>
-                                    <th>Assignee</th>
-                                    <th>Action</th>
+                                    <th>Type</th>
+                                    <th>Period</th>
+                                    <th>Date</th>
+                                    <th>Start Time</th>
+                                    <th>End Time</th>
+                                    <th>Bank holiday</th>
+                                    <th>Status</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>
-                                        <a href="assets-details.html" class="table-imgname">
-                                            <img src="{{ asset('assets') }}/img/laptop.png" class="me-2"
-                                                alt="Laptop Image" />
-                                            <span>Laptop</span>
-                                        </a>
-                                    </td>
-                                    <td>AST - 001</td>
-                                    <td>22 Nov, 2022 10:32AM</td>
-                                    <td class="table-namesplit">
-                                        <a href="javascript:void(0);" class="table-profileimage">
-                                            <img src="{{ asset('assets') }}/img/profiles/avatar-02.jpg" class="me-2"
-                                                alt="User Image" />
-                                        </a>
-                                        <a href="javascript:void(0);" class="table-name">
-                                            <span>John Paul Raj</span>
-                                            <p>
-                                                <span class="__cf_email__"
-                                                    data-cfemail="dab0b5b2b49abea8bfbbb7bdafa3a9aebfb9b2f4b9b5b7">[email&#160;protected]</span>
-                                            </p>
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <div class="table-actions d-flex">
-                                            <a class="delete-table me-2" href="user-asset-details.html">
-                                                <img src="{{ asset('assets') }}/img/icons/eye.svg" alt="Eye Icon" />
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>
-                                        <a href="assets-details.html" class="table-imgname">
-                                            <img src="{{ asset('assets') }}/img/laptop.png" class="me-2"
-                                                alt="Laptop Image" />
-                                            <span>Laptop</span>
-                                        </a>
-                                    </td>
-                                    <td>AST - 002</td>
-                                    <td>22 Nov, 2022 10:32AM</td>
-                                    <td class="table-namesplit">
-                                        <a href="javascript:void(0);" class="table-profileimage" data-bs-toggle="modal"
-                                            data-bs-target="#edit-asset">
-                                            <img src="{{ asset('assets') }}/img/profiles/avatar-05.jpg" class="me-2"
-                                                alt="User Image" />
-                                        </a>
-                                        <a href="javascript:void(0);" class="table-name">
-                                            <span>Vinod Selvaraj</span>
-                                            <p>
-                                                <span class="__cf_email__"
-                                                    data-cfemail="06706f686962287546627463676b61737f757263656e2865696b">[email&#160;protected]</span>
-                                            </p>
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <div class="table-actions d-flex">
-                                            <a class="delete-table me-2" href="user-asset-details.html">
-                                                <img src="{{ asset('assets') }}/img/icons/eye.svg" alt="Eye Icon" />
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>
-                                        <a href="assets-details.html" class="table-imgname">
-                                            <img src="{{ asset('assets') }}/img/keyboard.png" class="me-2"
-                                                alt="Keyboard Image" />
-                                            <span>Dell Keyboard</span>
-                                        </a>
-                                    </td>
-                                    <td>AST - 003</td>
-                                    <td>22 Nov, 2022 10:32AM</td>
-                                    <td class="table-namesplit">
-                                        <a href="javascript:void(0);" class="table-profileimage" data-bs-toggle="modal"
-                                            data-bs-target="#edit-asset">
-                                            <img src="{{ asset('assets') }}/img/profiles/avatar-03.jpg" class="me-2"
-                                                alt="User Image" />
-                                        </a>
-                                        <a href="javascript:void(0);" class="table-name">
-                                            <span>Harika </span>
-                                            <p>
-                                                <span class="__cf_email__"
-                                                    data-cfemail="aac2cbd8c3c1cb84dceaced8cfcbc7cddfd3d9decfc9c284c9c5c7">[email&#160;protected]</span>
-                                            </p>
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <div class="table-actions d-flex">
-                                            <a class="delete-table me-2" href="user-asset-details.html">
-                                                <img src="{{ asset('assets') }}/img/icons/eye.svg" alt="Eye Icon" />
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>4</td>
-                                    <td>
-                                        <a href="#" class="table-imgname">
-                                            <img src="{{ asset('assets') }}/img/mouse.png" class="me-2"
-                                                alt="Mouse Image" />
-                                            <span>Logitech Mouse</span>
-                                        </a>
-                                    </td>
-                                    <td>AST - 0024</td>
-                                    <td>22 Nov, 2022 10:32AM</td>
-                                    <td class="table-namesplit">
-                                        <a href="assets-details.html" class="table-profileimage">
-                                            <img src="{{ asset('assets') }}/img/profiles/avatar-02.jpg" class="me-2"
-                                                alt="User Image" />
-                                        </a>
-                                        <a href="assets-details.html" class="table-name">
-                                            <span>Mythili</span>
-                                            <p>
-                                                <span class="__cf_email__"
-                                                    data-cfemail="7c110508141510153c180e191d111b09050f08191f14521f1311">[email&#160;protected]</span>
-                                            </p>
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <div class="table-actions d-flex">
-                                            <a class="delete-table me-2" href="user-asset-details.html">
-                                                <img src="{{ asset('assets') }}/img/icons/eye.svg" alt="Eye Icon" />
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>5</td>
-                                    <td>
-                                        <a href="#" class="table-imgname">
-                                            <img src="{{ asset('assets') }}/img/laptop.png" class="me-2"
-                                                alt="Laptop Image" />
-                                            <span>Laptop</span>
-                                        </a>
-                                    </td>
-                                    <td>AST - 005</td>
-                                    <td>22 Nov, 2022 10:32AM</td>
-                                    <td class="table-namesplit">
-                                        <a href="assets-details.html" class="table-profileimage">
-                                            <img src="{{ asset('assets') }}/img/profiles/avatar-02.jpg" class="me-2"
-                                                alt="User Image" />
-                                        </a>
-                                        <a href="assets-details.html" class="table-name">
-                                            <span>John Paul Raj</span>
-                                            <p>
-                                                <span class="__cf_email__"
-                                                    data-cfemail="7a101512143a1e081f1b171d0f03090e1f191254191517">[email&#160;protected]</span>
-                                            </p>
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <div class="table-actions d-flex">
-                                            <a class="delete-table me-2" href="user-asset-details.html">
-                                                <img src="{{ asset('assets') }}/img/icons/eye.svg" alt="Eye Icon" />
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>6</td>
-                                    <td>
-                                        <a href="#" class="table-imgname">
-                                            <img src="{{ asset('assets') }}/img/laptop.png" class="me-2"
-                                                alt="Laptop Image" />
-                                            <span>Laptop</span>
-                                        </a>
-                                    </td>
-                                    <td>AST - 006</td>
-                                    <td>22 Nov, 2022 10:32AM</td>
-                                    <td class="table-namesplit">
-                                        <a href="javascript:void(0);" class="table-profileimage">
-                                            <img src="{{ asset('assets') }}/img/profiles/avatar-05.jpg" class="me-2"
-                                                alt="User Image" />
-                                        </a>
-                                        <a href="javascript:void(0);" class="table-name">
-                                            <span>Vinod Selvaraj</span>
-                                            <p>
-                                                <span class="__cf_email__"
-                                                    data-cfemail="5a2c3334353e74291a3e283f3b373d2f23292e3f393274393537">[email&#160;protected]</span>
-                                            </p>
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <div class="table-actions d-flex">
-                                            <a class="delete-table me-2" href="user-asset-details.html">
-                                                <img src="{{ asset('assets') }}/img/icons/eye.svg" alt="Eye Icon" />
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
+                                @if (count($shifts) > 0)
+                                    @foreach ($shifts as $shift)
+                                    <tr>
+                                        <td>{{ $shift->type }}</td>
+                                        <td>{{ $shift->period }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($shift->date)->format('j F, Y') }}</td>
+                                        <td>{{ $shift->start_time }}</td>
+                                        <td>{{ $shift->end_time }}</td>
+                                        <td>{{ $shift->bank_holiday == 1 ? 'Yes' : 'No' }}</td>
+                                        <td>{{ $shift->total_staff }}</td>
+                                        <td>{{ $shift->total_staff_assigned }}</td>
+                                        @if ($shift->status == 'Pending')
+                                            <td>
+                                                <a href="#" class="btn btn-outline-secondary btn-sm"> Pending </a>
+                                            </td>
+                                        @elseif($shift->status == 'Completed')
+                                            <td>
+                                                <a href="#" class="btn btn-outline-success btn-sm"> Completed </a>
+                                            </td>
+                                        @elseif($shift->status == 'In Progress')
+                                            <td>
+                                                <a href="#" class="btn btn-outline-primary btn-sm"> In Progress
+                                                </a>
+                                            </td>
+                                        @elseif($shift->status == 'Assigned')
+                                            <td>
+                                                <a href="#" class="btn btn-outline-primary btn-sm"> Assigned </a>
+                                            </td>
+                                        @elseif($shift->status == 'Cancelled')
+                                            <td>
+                                                <a href="#" class="btn btn-outline-danger btn-sm"> Cancelled </a>
+                                            </td>
+                                        @endif
+                                        
+                                    </tr>
+                                    @endforeach
+                                @endif
                             </tbody>
                         </table>
                     </div>

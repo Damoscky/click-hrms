@@ -40,9 +40,9 @@ class LoginNotification extends Notification
         return (new MailMessage)
                 ->greeting('Hello '.$data['first_name'].'!')
                 ->subject("Login Notification")
-                ->line("Please be informed that your ". env('APP_NAME') ." account was accessed on ". \Carbon\Carbon::now())
-                ->line('If you did not log on to your profile at the time detailed above, please email us at info@click-hrm.co.uk or click on the link below to reset your password.')
-                ->action('Reset Password', url('/auth/reset-password'.'?email='. $data['email']))
+                ->line("Please be informed that your ". env('APP_NAME') ." account was accessed on ". \Carbon\Carbon::now()->format('j F, Y') .' '. \Carbon\Carbon::now()->format('h:i:s A'))
+                ->line('If you did not log on to your profile at the time detailed above, please email us at info@clickhrm.com or click on the link below to reset your password.')
+                ->action('Reset Password', url('/auth/forget-password'))
                 ->line('If the above link does not work, please copy and paste the following URL into your browser');
     }
 

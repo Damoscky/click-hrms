@@ -5,6 +5,7 @@ namespace App\Http\Controllers\v1\Employee;
 use App\Http\Controllers\Controller;
 use App\Models\BankInformation;
 use App\Models\Document;
+use App\Models\EmployeeCertification;
 use App\Models\EmployeeRecord;
 use App\Models\EmployeeReference;
 use App\Models\Experience;
@@ -17,6 +18,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\ReferenceEmailNotification;
+use App\Helpers\ProcessAuditLog;
 use App\Notifications\SentForApprovallNotification;
 use App\Notifications\EmployeeSentForApprovallNotification;
 use Illuminate\Http\Request;
@@ -51,6 +53,7 @@ class EmployeeController extends Controller
 
     public function updatePersonalRecord(Request $request)
     {
+        
         $validateRequest = $this->validatePersonalRecord($request);
 
         if ($validateRequest->fails()) {
@@ -252,6 +255,8 @@ class EmployeeController extends Controller
                 'start_date' => $request->start_date,
                 'reference_type' => $request->reference_type,
                 'end_date' => $request->end_date,
+                'token' => $verification_code,
+                'status' => 'Pending',
                 'email' => $request->email,
             ]);
 
@@ -309,46 +314,175 @@ class EmployeeController extends Controller
 
     public function uploadDocument(Request $request)
     {
+
         $validateRequest = $this->validateDocument($request);
 
         if ($validateRequest->fails()) {
-            toastr()->warning($validateRequest->errors()->first());
-            return back();
+            return response()->json([
+                'message' => $validateRequest->errors()->first(),
+                'error' => true,
+                'data' => []
+            ]);
+            // toastr()->warning($validateRequest->errors()->first());
+            // return back();
         }
         DB::beginTransaction();
 
         try {
 
+            $currentInstantUser = auth()->user();
+
+            //check if same type has been uploaded 
+            $typeExist = Document::where('document_type', $request->document_type)->where('user_id', $currentInstantUser->id)->first();
+            if(!is_null($typeExist)){
+                return response()->json([
+                    'message' => $request->document_type .' has already been uploaded. Please select another document type',
+                    'error' => true,
+                    'data' => ''
+                ]);
+            }
+
             $record = EmployeeRecord::where('user_id', auth()->user()->id)->first();
 
             $image = $request->document_file;
-            $fileExt = $image->getClientOriginalExtension();
-            $uniqueId = bin2hex(openssl_random_pseudo_bytes(4));
-            $name = 'image_' . $record->employee_id . '_'. $request->document_type . '.' . $fileExt;
-            $fileUrl = config('app.url') . 'documents/' . $name;
+            if($image){
+                $fileSize = number_format($image->getSize() * 0.000001, 2);
+                $fileMime = $image->getMimeType(); 
+                $fileExt = $image->getClientOriginalExtension();
+                $uniqueId = bin2hex(openssl_random_pseudo_bytes(4));
+                $name = 'image_' . $record->employee_id . '_'. $request->document_type . '.' . $fileExt;
+                $fileUrl = config('app.url') . 'documents/' . $name;
+    
+                $image->move(public_path('documents'), $fileUrl);
+            }else{
+                $fileUrl = null;
+            }
 
-            $image->move(public_path('documents'), $fileUrl);
-
-            $record = Document::create([
+            $document = Document::create([
                 'user_id' => auth()->user()->id,
                 'document_type' => $request->document_type,
                 'document_number' => $request->document_number,
                 'document_extension' => $fileExt,
                 'document_extension' => $fileExt,
-                'size' => '',
+                'size' => $fileSize,
+                'document_mime' => $fileMime,
                 'file_path' => $fileUrl,
                 'issued_date' => $request->issued_date,
                 'expiry_date' => $request->expiry_date,
                 'document_id' => $request->document_number,
             ]);
 
+            $dataToLog = [
+                'causer_id' => auth()->user()->id,
+                'action_id' => $document->id,
+                'action_type' => "Models\Document",
+                'log_name' => "Document updated successfully",
+                'action' => 'Create',
+                'description' => "{$currentInstantUser->first_name} {$currentInstantUser->last_name} added a new Document successfully",
+            ];
+    
+            ProcessAuditLog::storeAuditLog($dataToLog);
+
             DB::commit();
 
-            toastr()->success('Document Uploaded successfully');
-            return back();
+            return response()->json([
+                'message' => 'Document saved successfully',
+                'error' => false,
+                'data' => $document
+            ]);
+            // toastr()->success('Document Uploaded successfully');
+            // return back();
         } catch (\Throwable $error) {
             toastr()->error($error->getMessage());
             return back();
+        }
+    }
+
+    public function uploadCertification(Request $request)
+    {
+
+        $validateRequest = $this->validateCertificate($request);
+
+        if ($validateRequest->fails()) {
+            return response()->json([
+                'message' => $validateRequest->errors()->first(),
+                'error' => true,
+                'data' => []
+            ]);
+            // toastr()->warning($validateRequest->errors()->first());
+            // return back();
+        }
+        DB::beginTransaction();
+        $currentInstantUser = auth()->user();
+
+        //check if same type has been uploaded 
+        $typeExist = EmployeeCertification::where('document_type', $request->document_type)->where('user_id', $currentInstantUser->id)->first();
+        if(!is_null($typeExist)){
+            return response()->json([
+                'message' => $request->document_type .' has already been uploaded. Please select another document type',
+                'error' => true,
+                'data' => ''
+            ]);
+        }
+        try {
+
+            $record = EmployeeRecord::where('user_id', auth()->user()->id)->first();
+
+            $image = $request->document_file;
+            if($image){
+                $fileSize = number_format($image->getSize() * 0.000001, 2);
+                $fileMime = $image->getMimeType(); 
+                $fileExt = $image->getClientOriginalExtension();
+                $uniqueId = bin2hex(openssl_random_pseudo_bytes(4));
+                $name = 'image_' . $record->employee_id . '_'. $request->document_type . '.' . $fileExt;
+                $fileUrl = config('app.url') . 'documents/' . $name;
+    
+                $image->move(public_path('documents'), $fileUrl);
+            }else{
+                $fileUrl = null;
+            }
+            
+
+            $certificate = EmployeeCertification::create([
+                'user_id' => auth()->user()->id,
+                'document_type' => $request->document_type,
+                'document_extension' => $fileExt,
+                'size' => '',
+                'file_path' => $fileUrl,
+                'size' => $fileSize,
+                'document_mime' => $fileMime,
+                'issued_date' => $request->issued_date,
+                'expiry_date' => $request->expiry_date,
+            ]);
+
+            $dataToLog = [
+                'causer_id' => auth()->user()->id,
+                'action_id' => $certificate->id,
+                'action_type' => "Models\EmployeeCertification",
+                'log_name' => "EmployeeCertification updated successfully",
+                'action' => 'Create',
+                'description' => "{$currentInstantUser->first_name} {$currentInstantUser->last_name} added a new Certification successfully",
+            ];
+    
+            ProcessAuditLog::storeAuditLog($dataToLog);
+
+            DB::commit();
+
+            return response()->json([
+                'message' => 'Document saved successfully',
+                'error' => false,
+                'data' => $certificate
+            ]);
+            // toastr()->success('Document Uploaded successfully');
+            // return back();
+        } catch (\Throwable $error) {
+            return response()->json([
+                'message' => $error->getMessage(),
+                'error' => true,
+                'data' => []
+            ]);
+            // toastr()->error($error->getMessage());
+            // return back();
         }
     }
 
@@ -357,6 +491,19 @@ class EmployeeController extends Controller
         $rules = [
             'document_file' => 'required',
             'document_number' => 'required',
+            'document_type' => 'required',
+            'issued_date' => 'required',
+            'expiry_date' => 'required',
+        ];
+
+        $validate = Validator::make($request->all(), $rules);
+        return $validate;
+    }
+
+    public function validateCertificate($request)
+    {
+        $rules = [
+            'document_file' => 'required',
             'document_type' => 'required',
             'issued_date' => 'required',
             'expiry_date' => 'required',
@@ -430,17 +577,51 @@ class EmployeeController extends Controller
         return back();
     }
 
+    public function deleteCertificate($id)
+    {
+        $id = base64_decode($id);
+        $record = EmployeeCertification::where('id', $id)->where('user_id', auth()->user()->id)->first();
+
+        if(is_null($record)){
+            toastr()->warning('Record not found');
+            return back();
+        }
+        $currentInstantUser = auth()->user();
+
+        $dataToLog = [
+            'causer_id' => auth()->user()->id,
+            'action_id' => $record->id,
+            'action_type' => "Models\EmployeeCertification",
+            'log_name' => "EmployeeCertification deleted successfully",
+            'action' => 'Delete',
+            'description' => "{$currentInstantUser->first_name} {$currentInstantUser->last_name} delete a Certificate successfully",
+        ];
+
+        ProcessAuditLog::storeAuditLog($dataToLog);
+
+        $record->delete();
+
+        toastr()->success('Record deleted successfully!');
+        return back();
+    }
+
     public function sendForApproval()
     {
         try {
             $record = User::find(auth()->user()->id);
+
+            //check if they upload two reference 
+            if(count($record->document) < 2){
+                toastr()->error('You need to upload at least two reference');
+                return back();
+            }
 
             $record->update([
                 'sent_for_approval' => true,
                 'status' => 'Review',
             ]);
 
-            $adminRole = 'Super Admin';
+            $adminRole = 'Super Admin Access';
 
             $superAdmins = User::whereHas('roles', function ($roleTable) use ($adminRole) {
                 $roleTable->where('name', $adminRole);
@@ -529,5 +710,18 @@ class EmployeeController extends Controller
 
         $validate = Validator::make($request->all(), $rules);
         return $validate;
+    }
+
+    public function referenceForm(Request $request, $token)
+    {
+        $email = $request->email;
+        $validateRecord = EmployeeReference::where('email', $email)->where('token', $token)->where('status', 'Pending')->first();
+
+        if(is_null($validateRecord) || !$token){
+            toastr()->error("Invalid token!");
+            return redirect()->route('index');
+        }
+
+        return view('employee.reference-form', ['data' => $validateRecord]);
     }
 }

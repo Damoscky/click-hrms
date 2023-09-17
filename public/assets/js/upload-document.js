@@ -1,35 +1,33 @@
-function removeUploadedOption() {
-    // Get the select element
-    var selectElement = document.querySelector('select[name="document_type"]');
-    
-    // Get the options that have been uploaded (you will need to implement this logic)
-    var uploadedOption = document.querySelector('select[name="document_type"]').value; // Example uploaded option
+$(document).ready(function () {
+    $('#employeeDocumentUploadForm').on('submit', function (e) {
+        e.preventDefault();
 
-    // Make an API request to upload the document
-    fetch('{{ route('employee.document.upload.api') }}', {
-        method: 'POST',
-        body: new FormData(document.querySelector('form')),
-        headers: {
-            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-        },
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.message === 'Document uploaded successfully') {
-            // Remove the uploaded option from the select
-            for (var i = 0; i < selectElement.options.length; i++) {
-                if (selectElement.options[i].value === uploadedOption) {
-                    selectElement.remove(i);
-                    break; // Exit the loop once the option is removed
+        // Serialize form data to send to the API
+        var formData = new FormData(this);
+
+        $.ajax({
+            url: '/employee/document/upload',
+            method: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                // Handle success response (e.g., show a success message)
+                console.log(response);
+                if(response.error == true){
+                    alert(response.message);
+                }else{
+                    alert(response.message);
+                    window.location.reload();
                 }
+                
+                // You can redirect the user or update the UI as needed
+            },
+            error: function (xhr, status, error) {
+                // Handle error response (e.g., display an error message)
+                console.error(xhr.responseText);
+                alert('Error: ' + xhr.responseText);
             }
-            alert('Document uploaded successfully');
-        } else {
-            alert('Error uploading document');
-        }
-    })
-    .catch(error => {
-        console.error(error);
-        alert('An error occurred');
+        });
     });
-}
+});

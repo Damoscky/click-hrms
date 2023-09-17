@@ -63,7 +63,7 @@
                                         <a href="{{ route('admin.employee.show', base64_encode($employee->id)) }}" class="avatar"><img
                                             src="{{ $employee->employeeRecord->image }}" alt="Profile Picture" /></a>
                                     @else
-                                        <a href="{{ route('admin.employee.show') }}" class="avatar"><img
+                                        <a href="{{ route('admin.employee.show', base64_encode($employee->id)) }}" class="avatar"><img
                                             src="{{ asset('assets') }}/img/user.png" alt="User Image" /></a>
                                     @endif
                                 </div>
@@ -80,7 +80,7 @@
                                     </div>
                                 </div> --}}
                                 <h4 class="user-name m-t-10 mb-0 text-ellipsis">
-                                    <a href="profile.html">{{$employee->first_name}} {{$employee->last_name}}</a>
+                                    <a href="{{ route('admin.employee.show', base64_encode($employee->id)) }}">{{$employee->first_name}} {{$employee->last_name}}</a>
                                 </h4>
                                 <div class="small text-muted">{{$employee->employeeRecord->department->name}}</div>
                             </div>

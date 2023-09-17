@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\v1\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\EmployeeShift;
 use App\Models\EmployeeTimesheet;
 use App\Models\Shift;
 use App\Models\User;
@@ -35,12 +36,21 @@ class AdminController extends Controller
         $completedShifts = Shift::where('status', 'Completed')->get();
         $totalShifts = Shift::count();
         $topClients = User::whereRelation('roles', 'slug', $clientRole)
-        ->whereHas('shifts')->get(); 
+        ->whereHas('shifts')->take(5)->get(); 
 
         $recentTimesheet = EmployeeTimesheet::with('employee', 'shift')->orderBy('created_at', 'DESC')->take(2)->get();
+        $topPerformingEmployees = User::whereRelation('roles', 'slug', $employeeRole)
+                        ->whereHas('employeeshifts', function ($query) {
+                            // $query->where('status', 'Completed');
+                        })
+                        ->withCount(['employeeshifts' => function ($query) {
+                            $query->where('status', 'Completed');
+                        }])
+                        ->orderByDesc('employeeshifts_count')
+                        ->take(5)
+                        ->get();
 
-
-        return view('admin.dashboard', ['recentTimesheet' => $recentTimesheet, 'totalEmployee' => $totalEmployee, 'totalClient' => $totalClient, 'topClients'=> $topClients, 'pendingShifts' => $pendingShifts, 'completedShifts' => $completedShifts, 'totalShifts' => $totalShifts]);
+        return view('admin.dashboard', ['topPerformingEmployees' => $topPerformingEmployees, 'recentTimesheet' => $recentTimesheet, 'totalEmployee' => $totalEmployee, 'totalClient' => $totalClient, 'topClients'=> $topClients, 'pendingShifts' => $pendingShifts, 'completedShifts' => $completedShifts, 'totalShifts' => $totalShifts]);
             
 
     }

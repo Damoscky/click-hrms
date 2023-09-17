@@ -156,6 +156,7 @@ class LoginController extends Controller
             return back();
 
         } catch (\Exception $error) {
+            DB::rollBack();
             toastr()->error($error->getMessage());
             return back();
         }

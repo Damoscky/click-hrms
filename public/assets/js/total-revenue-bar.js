@@ -2,7 +2,7 @@ const barCtx = document.getElementById("barChart").getContext("2d");
     const lineCtx = document.getElementById("lineChart").getContext("2d");
 
     // Fetch dynamic sales data from an API
-    fetch("http://127.0.0.1:8000/api/reports/sales/overview")
+    fetch("https://www.clickhrm.com/api/reports/sales/overview")
       .then(response => response.json())
       .then(data => {
         console.log(data.data);

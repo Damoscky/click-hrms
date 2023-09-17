@@ -391,7 +391,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-6">
                     <div class="card profile-box flex-fill">
                         <div class="card-body">
                             <div class="file-cont-inner">
@@ -446,7 +446,81 @@
                                                                         <h6><a
                                                                                 href="#">{{ $document->document_type }}.{{ $document->document_extension }}</a>
                                                                         </h6>
-                                                                        <span>12mb</span>
+                                                                        <span>{{$document->size}}mb</span>
+                                                                    </div>
+                                                                    <div class="card-footer">
+                                                                        {{ \Carbon\Carbon::parse($document->created_at)->format('j F') }},
+                                                                        {{ \Carbon\Carbon::parse($document->created_at)->format('H:i') }}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        @endforeach
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card profile-box flex-fill">
+                        <div class="card-body">
+                            <div class="file-cont-inner">
+                                <div class="file-content">
+                                    <div class="file-body">
+                                        <div class="file-scroll">
+                                            <div class="file-content-inner">
+                                                <h4>Recents Certificate
+                                                    @if (!auth()->user()->sent_for_approval)
+                                                        <a href="#" class="edit-icon" data-bs-toggle="modal"
+                                                            data-bs-target="#certification_info"><i
+                                                                class="fa-solid fa-plus"></i></a>
+                                                    @endif
+                                                </h4>
+                                                <div class="row row-sm">
+                                                    @if (count(auth()->user()->certificate))
+                                                        @foreach (auth()->user()->certificate as $document)
+                                                            <div class="col-12 col-sm-4 col-md-3 col-lg-4 col-xl-3">
+                                                                <div class="card card-file">
+                                                                    <div class="dropdown-file">
+                                                                        <a href="#" class="dropdown-link"
+                                                                            data-bs-toggle="dropdown"><i
+                                                                                class="fa-solid fa-ellipsis-vertical"></i></a>
+                                                                        <div class="dropdown-menu dropdown-menu-right">
+
+                                                                            <a href="{{ $document->file_path }}"
+                                                                                target="_blank"
+                                                                                class="dropdown-item">Download</a>
+                                                                            @if (!auth()->user()->sent_for_approval)
+                                                                                <a href="{{ route('employee.certificate.delete', base64_encode($document->id)) }}"
+                                                                                    class="dropdown-item">Delete</a>
+                                                                            @endif
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="card-file-thumb">
+                                                                        @if ($document->document_extension == 'pdf')
+                                                                            <a href="{{ $document->file_path }}"
+                                                                                target="_blank"><i
+                                                                                    class="fa-regular fa-file-pdf"></i></a>
+                                                                        @elseif($document->document_extension == 'docx')
+                                                                            <a href="{{ $document->file_path }}"
+                                                                                target="_blank"><i
+                                                                                    class="fa-regular fa-file-word"></i></a>
+                                                                        @else
+                                                                            <a href="{{ $document->file_path }}"
+                                                                                target="_blank"><i
+                                                                                    class="fa-regular fa-file-image"></i></a>
+                                                                        @endif
+
+                                                                    </div>
+                                                                    <div class="card-body">
+                                                                        <h6><a
+                                                                                href="#">{{ $document->document_type }}.{{ $document->document_extension }}</a>
+                                                                        </h6>
+                                                                        <span>{{$document->size}}mb</span>
                                                                     </div>
                                                                     <div class="card-footer">
                                                                         {{ \Carbon\Carbon::parse($document->created_at)->format('j F') }},
@@ -467,9 +541,8 @@
                 </div>
             </div>
             @if (!auth()->user()->sent_for_approval)
-                <a href="{{ route('employee.application.sendforapproval') }}" class="btn btn-success"
-                    data-bs-toggle="modal" data-bs-target="#confirm_approval_modal">Submit for
-                    Approval</a>
+                <button class="btn btn-success" onclick="checkEmployeeDocument('{{auth()->user()->employeeRecord->department->name}}', '{{count(auth()->user()->certificate)}}', '{{count(auth()->user()->document)}}', '{{count(auth()->user()->employeeReference)}}')">Submit for
+                    Approval</button>
             @endif
             <!--Submit for Approval Modal -->
             <div class="modal custom-modal fade" id="confirm_approval_modal" role="dialog">
@@ -490,6 +563,27 @@
                                     <div class="col-6">
                                         <a href="{{ route('employee.application.sendforapproval') }}"
                                             class="btn btn-success continue-btn">Confirm</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal custom-modal fade" id="confirm_approval_modal_error" role="dialog">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="form-header">
+                                <h3>Opps! You have not uploaded all the required documents or required References</h3>
+                                {{-- <p>Are you sure you want to cancel this shift? T&C may applies.</p> --}}
+                            </div>
+                            <div class="modal-btn delete-action">
+                                <div class="row">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <img style="width: 200px; height:200px; display:block; margin:0 auto;" class="mb-3" src="{{asset('assets')}}/img/not-found.jpeg" alt="">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -786,6 +880,9 @@
                     </div>
                 </div>
             </div>
+            @php
+                $currentDate = date('Y-m-d');
+            @endphp
             <div id="document_info" class="modal custom-modal fade" role="dialog">
                 <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                     <div class="modal-content">
@@ -796,8 +893,7 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form method="POST" enctype="multipart/form-data"
-                                action="{{ route('employee.document.upload') }}">
+                            <form id="employeeDocumentUploadForm" enctype="multipart/form-data">
                                 {{ csrf_field() }}
                                 <div class="form-scroll">
                                     <div class="card">
@@ -805,16 +901,20 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="input-block mb-3">
-                                                        <select required class="select" required name="document_type">
-                                                            <option value="">Select Document Type</option>
-                                                            <option value="BRP">BRP (Right to Work)</option>
-                                                            <option value="Passport">Passport</option>
-                                                            <option value="Enhanced DBS Document">Enhanced DBS Document</option>
-                                                            <option value="Passport Picture">Passport Picture (White Background) </option>
-                                                            <option value="Driving Licence">Driving Licence (Optional)</option>
-                                                            <option value="Proof of Address">Proof of Address (Utility Bill or Bank Statement)</option>
-                                                            <option value="Proof of NIN/Payslip">Proof of NIN/Payslip</option>
-                                                            <option value="CV">Updated CV</option>
+                                                        <select required class="select" name="document_type">
+                                                            <option value="" data-document-type="">Select Document Type</option>
+                                                            <option value="BRP" data-document-type="BRP">BRP (Right to Work)</option>
+                                                            <option value="Passport" data-document-type="Passport">Passport</option>
+                                                            <option value="Enhanced DBS Document" data-document-type="Enhanced DBS Document">Enhanced DBS Document</option>
+                                                            <option value="Passport Picture" data-document-type="Passport Picture">Passport Picture (White Background) </option>
+                                                            <option value="OSCE Certificate" data-document-type="OSCE Certificate">OSCE Certificate </option>
+                                                            <option value="Driving Licence" data-document-type="Driving Licence">Driving Licence (Optional)</option>
+                                                            <option value="Proof of Address" data-document-type="Proof of Address">Proof of Address (Utility Bill or Bank Statement)</option>
+                                                            <option value="Covid Vaccine" data-document-type="Covid Vaccine">Covid Vaccine (Optional) </option>
+                                                            <option value="Proof of NIN/Payslip" data-document-type="Proof of NIN/Payslip">Proof of NIN/Payslip</option>
+                                                            <option value="Nurse Pin" data-document-type="Nurse Pin">Nurse Pin</option>
+                                                            <option value="IELTS" data-document-type="IELTS">IELTS</option>
+                                                            <option value="Updated CV" data-document-type="Updated CV">Updated CV</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -833,18 +933,18 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="input-block mb-3 form-focus focused">
-                                                        <div class="cal-icon">
-                                                            <input type="text" value="" name="issued_date"
-                                                                class="form-control floating datetimepicker" />
+                                                        <div>
+                                                            <input type="date" required value="" name="issued_date"
+                                                                class="form-control" />
                                                         </div>
                                                         <label class="focus-label">Issued Date</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="input-block mb-3 form-focus focused">
-                                                        <div class="cal-icon">
-                                                            <input type="text" value="" name="expiry_date"
-                                                                class="form-control floating datetimepicker" />
+                                                        <div>
+                                                            <input type="date" value="" name="expiry_date"
+                                                                class="form-control" min="{{$currentDate}}" />
                                                         </div>
                                                         <label class="focus-label">Expiry Date</label>
                                                     </div>
@@ -858,7 +958,7 @@
                                     </div>
                                 </div>
                                 <div class="submit-section">
-                                    <button class="btn btn-primary submit-btn">Submit</button>
+                                    <button class="btn btn-primary submit-btn" type="submit" >Submit</button>
                                 </div>
                             </form>
                         </div>
@@ -869,61 +969,66 @@
                 <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">Upload Documents</h5>
+                            <h5 class="modal-title">Upload Certificate</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form method="POST" enctype="multipart/form-data"
-                                action="{{ route('employee.document.upload') }}">
-                                {{ csrf_field() }}
+                            <form id="certificateUploadForm" enctype="multipart/form-data">
+                                {{csrf_field()}}
                                 <div class="form-scroll">
                                     <div class="card">
                                         <div class="card-body">
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="input-block mb-3">
-                                                        <select required class="select" required name="document_type">
+                                                        <select class="select" required name="document_type">
                                                             <option value="">Select Document Type</option>
-                                                            <option value="BRP">BRP (Right to Work)</option>
-                                                            <option value="Passport">Passport</option>
-                                                            <option value="Enhanced DBS Document">Enhanced DBS Document</option>
-                                                            <option value="Passport Picture">Passport Picture (White Background) </option>
-                                                            <option value="Driving Licence">Driving Licence (Optional)</option>
-                                                            <option value="Proof of Address">Proof of Address (Utility Bill or Bank Statement)</option>
-                                                            <option value="Proof of NIN/Payslip">Proof of NIN/Payslip</option>
-                                                            <option value="CV">Updated CV</option>
+                                                            <option value="Information Governance">Information Governance</option>
+                                                            <option value="GDPR">GDPR</option>
+                                                            <option value="Food Safety Level 2">Food Safety Level 2</option>
+                                                            <option value="Medication Management">Medication Management Practical</option>
+                                                            <option value="Basic Life Support">Basic Life Support</option>
+                                                            <option value="Equality and Diversity">Equality and Diversity</option>
+                                                            <option value="Fire Safety">Fire Safety</option>
+                                                            <option value="Health and Safety">Health and Safety</option>
+                                                            <option value="Infection Prevention and Control">Infection Prevention and Control</option>
+                                                            <option value="First Aid">First Aid</option>
+                                                            <option value="Person Centred Awareness and Communication">Person Centred Awareness and Communication</option>
+                                                            <option value="Learning Disability Awareness">Learning Disability Awareness</option>
+                                                            <option value="Epilepsy Awareness">Epilepsy Awareness</option>
+                                                            <option value="Dementia Awareness">Dementia Awareness</option>
+                                                            <option value="Autism Awareness">Autism Awareness</option>
+                                                            <option value="Safeguarding Children">Safeguarding Children</option>
+                                                            <option value="Medication Training (Practical)">Medication Training (Practical)</option>
+                                                            <option value="Medication Training (Theory)">Medication Training (Theory)</option>
+                                                            <option value="Moving & Handling (Practical)">Moving & Handling (Practical) </option>
+                                                            <option value="Moving & Handling(Theory)">Moving & Handling (Theory) </option>
                                                         </select>
                                                     </div>
                                                 </div>
+                                                
                                                 <div class="col-md-6">
-                                                    <div class="input-block mb-3 form-focus focused">
-                                                        <input type="text" value="" name="document_number"
-                                                            class="form-control floating" />
-                                                        <label class="focus-label">Document Number</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-12">
                                                     <div class="input-block mb-3">
-                                                        <input type="file" required name="document_file" required
+                                                        <input type="file" required name="document_file"
                                                             value="" class="form-control" />
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="input-block mb-3 form-focus focused">
-                                                        <div class="cal-icon">
-                                                            <input type="text" value="" name="issued_date"
-                                                                class="form-control floating datetimepicker" />
+                                                        <div>
+                                                            <input type="date" required value="" name="issued_date"
+                                                                class="form-control" />
                                                         </div>
                                                         <label class="focus-label">Issued Date</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="input-block mb-3 form-focus focused">
-                                                        <div class="cal-icon">
-                                                            <input type="text" value="" name="expiry_date"
-                                                                class="form-control floating datetimepicker" />
+                                                        <div>
+                                                            <input type="date" value="" name="expiry_date"
+                                                                class="form-control" min="{{$currentDate}}" />
                                                         </div>
                                                         <label class="focus-label">Expiry Date</label>
                                                     </div>
@@ -937,7 +1042,7 @@
                                     </div>
                                 </div>
                                 <div class="submit-section">
-                                    <button class="btn btn-primary submit-btn">Submit</button>
+                                    <button class="btn btn-primary submit-btn" type="submit">Submit</button>
                                 </div>
                             </form>
                         </div>

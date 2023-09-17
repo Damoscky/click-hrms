@@ -5,6 +5,7 @@ namespace App\Http\Controllers\v1\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Department;
 use App\Models\EmployeeRecord;
+use App\Models\EmployeeTimesheet;
 use App\Models\Shift;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -85,8 +86,7 @@ class ReportController extends Controller
                 ->where('status', 'Completed')
                 ->count();
 
-            $presentYearSalesData = EmployeeRecord::whereMonth('created_at', $month)
-                // ->whereHas('')
+            $presentYearSalesData = EmployeeTimesheet::where('status', 'Approved')->whereMonth('created_at', $month)
                 ->whereYear('created_at', Carbon::now()->year)
                 ->count();
 

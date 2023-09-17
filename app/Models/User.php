@@ -72,9 +72,19 @@ class User extends Authenticatable
         return $this->hasMany(Document::class);
     }
 
+    public function certificate()
+    {
+        return $this->hasMany(EmployeeCertification::class);
+    }
+
     public function education()
     {
         return $this->hasMany(Education::class);
+    }
+
+    public function employeeshifts()
+    {
+        return $this->hasMany(EmployeeShift::class, 'employee_id');
     }
 
     /**

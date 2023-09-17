@@ -9,7 +9,7 @@
                         <h3 class="page-title">Client Profile</h3>
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item">
-                                <a href="{{route('admin.dashboard')}}">Dashboard</a>
+                                <a href="{{ route('admin.dashboard') }}">Dashboard</a>
                             </li>
                             <li class="breadcrumb-item active">Profile</li>
                         </ul>
@@ -28,11 +28,10 @@
                                 <div class="profile-img-wrap">
                                     <div class="profile-img">
                                         @if (isset($client->image))
-                                            <a href="#"><img src="{{ $client->image }}"
-                                                    alt="Profile Picture" /></a>
+                                            <a href="#"><img src="{{ $client->image }}" alt="Profile Picture" /></a>
                                         @else
-                                            <a href="#"><img
-                                                    src="{{ asset('assets') }}/img/user.png" alt="Client Logo" /></a>
+                                            <a href="#"><img src="{{ asset('assets') }}/img/user.png"
+                                                    alt="Client Logo" /></a>
                                         @endif
                                     </div>
                                 </div>
@@ -40,10 +39,11 @@
                                     <div class="row">
                                         <div class="col-md-5">
                                             <div class="profile-info-left">
-                                                <h3 class="user-name m-t-0 mb-0">{{$client->company_name}}</h3>
-                                                <div class="staff-id">Client ID : {{$client->client_id}}</div>
+                                                <h3 class="user-name m-t-0 mb-0">{{ $client->company_name }}</h3>
+                                                <div class="staff-id">Client ID : {{ $client->client_id }}</div>
                                                 <div class="small doj text-muted">
-                                                    Date Created : {{ \Carbon\Carbon::parse($client->created_at)->format('j F, Y') }}
+                                                    Date Created :
+                                                    {{ \Carbon\Carbon::parse($client->created_at)->format('j F, Y') }}
                                                 </div>
                                                 <div class="staff-msg">
                                                     @if ($client->user->sent_for_approval && $client->user->status == 'Review')
@@ -52,7 +52,9 @@
                                                         <a class="btn btn-danger" data-bs-toggle="modal"
                                                             data-bs-target="#disapprove_modal">Decline</a>
                                                     @else
-                                                        <a class="btn btn-custom" href="{{route('admin.chat', base64_encode($client->user->id))}}">Send Message</a>
+                                                        <a class="btn btn-custom"
+                                                            href="{{ route('admin.chat', base64_encode($client->user->id)) }}">Send
+                                                            Message</a>
                                                     @endif
 
                                                 </div>
@@ -69,7 +71,8 @@
                                                 <li>
                                                     <div class="title">Email:</div>
                                                     <div class="text">
-                                                        <a href="mailto:{{ $client->user->email }}"><span class="__cf_email__"
+                                                        <a href="mailto:{{ $client->user->email }}"><span
+                                                                class="__cf_email__"
                                                                 data-cfemail="c9a3a6a1a7ada6ac89acb1a8a4b9a5ace7aaa6a4">{{ $client->user->email }}</span></a>
                                                     </div>
                                                 </li>
@@ -84,7 +87,7 @@
                                                     <div class="title">Postcode:</div>
                                                     <div class="text">{{ $client->post_code }}</div>
                                                 </li>
-                                                
+
 
                                             </ul>
                                         </div>
@@ -123,49 +126,58 @@
                                     <ul class="personal-info">
                                         <li>
                                             <div class="title">HCA</div>
-                                            <div class="text">{{$companySetting->currency}}{{$companySetting->standard_hca}}/h</div>
+                                            <div class="text">
+                                                {{ $companySetting->currency }}{{ $companySetting->standard_hca }}/h</div>
                                         </li>
 
                                         <li>
                                             <div class="title">Senior HCA</div>
-                                            <div class="text">{{$companySetting->currency}}{{$companySetting->senior_hca}}/h</div>
+                                            <div class="text">
+                                                {{ $companySetting->currency }}{{ $companySetting->senior_hca }}/h</div>
                                         </li>
                                         <li>
                                             <div class="title">RGN</div>
-                                            <div class="text">{{$companySetting->currency}}{{$companySetting->rgn}}/h</div>
+                                            <div class="text">
+                                                {{ $companySetting->currency }}{{ $companySetting->rgn }}/h</div>
                                         </li>
                                         <li>
                                             <div class="title">Kitchen Assistant / Chef</div>
-                                            <div class="text">{{$companySetting->currency}}{{$companySetting->standard_hca}}/h</div>
+                                            <div class="text">
+                                                {{ $companySetting->currency }}{{ $companySetting->standard_hca }}/h</div>
                                         </li>
                                         <li>
                                             <div class="title">Laundry / Domestic</div>
-                                            <div class="text">{{$companySetting->currency}}{{$companySetting->laundry}}/h</div>
+                                            <div class="text">
+                                                {{ $companySetting->currency }}{{ $companySetting->laundry }}/h</div>
                                         </li>
                                     </ul>
                                     <hr />
                                     <h3 class="card-title">Client Rate</h3>
-                                    
+
                                     <ul class="personal-info">
                                         <li>
                                             <div class="title">HCA</div>
-                                            <div class="text">{{$companySetting->currency}}{{$client->standard_hca}}/h</div>
+                                            <div class="text">
+                                                {{ $companySetting->currency }}{{ $client->standard_hca }}/h</div>
                                         </li>
                                         <li>
                                             <div class="title">Senior HCA</div>
-                                            <div class="text">{{$companySetting->currency}}{{$client->senior_hca}}/h</div>
+                                            <div class="text">{{ $companySetting->currency }}{{ $client->senior_hca }}/h
+                                            </div>
                                         </li>
                                         <li>
                                             <div class="title">RGN</div>
-                                            <div class="text">{{$companySetting->currency}}{{$client->rgn}}/h</div>
+                                            <div class="text">{{ $companySetting->currency }}{{ $client->rgn }}/h</div>
                                         </li>
                                         <li>
                                             <div class="title">Kitchen Assistant / Chef</div>
-                                            <div class="text">{{$companySetting->currency}}{{$client->kitchen_assistant}}/h</div>
+                                            <div class="text">
+                                                {{ $companySetting->currency }}{{ $client->kitchen_assistant }}/h</div>
                                         </li>
                                         <li>
                                             <div class="title">Laundry / Domestic</div>
-                                            <div class="text">{{$companySetting->currency}}{{$client->laundry}}/h</div>
+                                            <div class="text">{{ $companySetting->currency }}{{ $client->laundry }}/h
+                                            </div>
                                         </li>
                                     </ul>
 
@@ -178,12 +190,8 @@
                                     <h3 class="card-title">
                                         Client Location
                                     </h3>
-                                    <iframe
-                                        width="100%"     
-                                        height="400" 
-                                        frameborder="0" 
-                                        style="border:0"
-                                        src="https://www.google.com/maps/embed/v1/place?key=AIzaSyApcI-eCy2vhDU9Fx4GmhKsysL8xoZ69oU&q={{$client->location}}">
+                                    <iframe width="100%" height="400" frameborder="0" style="border:0"
+                                        src="https://www.google.com/maps/embed/v1/place?key=AIzaSyApcI-eCy2vhDU9Fx4GmhKsysL8xoZ69oU&q={{ $client->location }}">
                                     </iframe>
                                 </div>
                             </div>
@@ -196,209 +204,55 @@
                         <table class="table table-new custom-table mb-0 datatable">
                             <thead>
                                 <tr>
-                                    <th>#</th>
-                                    <th>Name</th>
-                                    <th>Asset ID</th>
-                                    <th>Assigned Date</th>
-                                    <th>Assignee</th>
-                                    <th>Action</th>
+                                    <th>Type</th>
+                                    <th>Period</th>
+                                    <th>Date</th>
+                                    <th>Start Time</th>
+                                    <th>End Time</th>
+                                    <th>Bank holiday</th>
+                                    <th>Total Staff Needed</th>
+                                    <th>Total Staff Assigned</th>
+                                    <th>Status</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>
-                                        <a href="assets-details.html" class="table-imgname">
-                                            <img src="{{ asset('assets') }}/img/laptop.png" class="me-2"
-                                                alt="Laptop Image" />
-                                            <span>Laptop</span>
-                                        </a>
-                                    </td>
-                                    <td>AST - 001</td>
-                                    <td>22 Nov, 2022 10:32AM</td>
-                                    <td class="table-namesplit">
-                                        <a href="javascript:void(0);" class="table-profileimage">
-                                            <img src="{{ asset('assets') }}/img/profiles/avatar-02.jpg" class="me-2"
-                                                alt="User Image" />
-                                        </a>
-                                        <a href="javascript:void(0);" class="table-name">
-                                            <span>John Paul Raj</span>
-                                            <p>
-                                                <span class="__cf_email__"
-                                                    data-cfemail="dab0b5b2b49abea8bfbbb7bdafa3a9aebfb9b2f4b9b5b7">[email&#160;protected]</span>
-                                            </p>
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <div class="table-actions d-flex">
-                                            <a class="delete-table me-2" href="user-asset-details.html">
-                                                <img src="{{ asset('assets') }}/img/icons/eye.svg" alt="Eye Icon" />
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>
-                                        <a href="assets-details.html" class="table-imgname">
-                                            <img src="{{ asset('assets') }}/img/laptop.png" class="me-2"
-                                                alt="Laptop Image" />
-                                            <span>Laptop</span>
-                                        </a>
-                                    </td>
-                                    <td>AST - 002</td>
-                                    <td>22 Nov, 2022 10:32AM</td>
-                                    <td class="table-namesplit">
-                                        <a href="javascript:void(0);" class="table-profileimage" data-bs-toggle="modal"
-                                            data-bs-target="#edit-asset">
-                                            <img src="{{ asset('assets') }}/img/profiles/avatar-05.jpg" class="me-2"
-                                                alt="User Image" />
-                                        </a>
-                                        <a href="javascript:void(0);" class="table-name">
-                                            <span>Vinod Selvaraj</span>
-                                            <p>
-                                                <span class="__cf_email__"
-                                                    data-cfemail="06706f686962287546627463676b61737f757263656e2865696b">[email&#160;protected]</span>
-                                            </p>
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <div class="table-actions d-flex">
-                                            <a class="delete-table me-2" href="user-asset-details.html">
-                                                <img src="{{ asset('assets') }}/img/icons/eye.svg" alt="Eye Icon" />
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>
-                                        <a href="assets-details.html" class="table-imgname">
-                                            <img src="{{ asset('assets') }}/img/keyboard.png" class="me-2"
-                                                alt="Keyboard Image" />
-                                            <span>Dell Keyboard</span>
-                                        </a>
-                                    </td>
-                                    <td>AST - 003</td>
-                                    <td>22 Nov, 2022 10:32AM</td>
-                                    <td class="table-namesplit">
-                                        <a href="javascript:void(0);" class="table-profileimage" data-bs-toggle="modal"
-                                            data-bs-target="#edit-asset">
-                                            <img src="{{ asset('assets') }}/img/profiles/avatar-03.jpg" class="me-2"
-                                                alt="User Image" />
-                                        </a>
-                                        <a href="javascript:void(0);" class="table-name">
-                                            <span>Harika </span>
-                                            <p>
-                                                <span class="__cf_email__"
-                                                    data-cfemail="aac2cbd8c3c1cb84dceaced8cfcbc7cddfd3d9decfc9c284c9c5c7">[email&#160;protected]</span>
-                                            </p>
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <div class="table-actions d-flex">
-                                            <a class="delete-table me-2" href="user-asset-details.html">
-                                                <img src="{{ asset('assets') }}/img/icons/eye.svg" alt="Eye Icon" />
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>4</td>
-                                    <td>
-                                        <a href="#" class="table-imgname">
-                                            <img src="{{ asset('assets') }}/img/mouse.png" class="me-2"
-                                                alt="Mouse Image" />
-                                            <span>Logitech Mouse</span>
-                                        </a>
-                                    </td>
-                                    <td>AST - 0024</td>
-                                    <td>22 Nov, 2022 10:32AM</td>
-                                    <td class="table-namesplit">
-                                        <a href="assets-details.html" class="table-profileimage">
-                                            <img src="{{ asset('assets') }}/img/profiles/avatar-02.jpg" class="me-2"
-                                                alt="User Image" />
-                                        </a>
-                                        <a href="assets-details.html" class="table-name">
-                                            <span>Mythili</span>
-                                            <p>
-                                                <span class="__cf_email__"
-                                                    data-cfemail="7c110508141510153c180e191d111b09050f08191f14521f1311">[email&#160;protected]</span>
-                                            </p>
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <div class="table-actions d-flex">
-                                            <a class="delete-table me-2" href="user-asset-details.html">
-                                                <img src="{{ asset('assets') }}/img/icons/eye.svg" alt="Eye Icon" />
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>5</td>
-                                    <td>
-                                        <a href="#" class="table-imgname">
-                                            <img src="{{ asset('assets') }}/img/laptop.png" class="me-2"
-                                                alt="Laptop Image" />
-                                            <span>Laptop</span>
-                                        </a>
-                                    </td>
-                                    <td>AST - 005</td>
-                                    <td>22 Nov, 2022 10:32AM</td>
-                                    <td class="table-namesplit">
-                                        <a href="assets-details.html" class="table-profileimage">
-                                            <img src="{{ asset('assets') }}/img/profiles/avatar-02.jpg" class="me-2"
-                                                alt="User Image" />
-                                        </a>
-                                        <a href="assets-details.html" class="table-name">
-                                            <span>John Paul Raj</span>
-                                            <p>
-                                                <span class="__cf_email__"
-                                                    data-cfemail="7a101512143a1e081f1b171d0f03090e1f191254191517">[email&#160;protected]</span>
-                                            </p>
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <div class="table-actions d-flex">
-                                            <a class="delete-table me-2" href="user-asset-details.html">
-                                                <img src="{{ asset('assets') }}/img/icons/eye.svg" alt="Eye Icon" />
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>6</td>
-                                    <td>
-                                        <a href="#" class="table-imgname">
-                                            <img src="{{ asset('assets') }}/img/laptop.png" class="me-2"
-                                                alt="Laptop Image" />
-                                            <span>Laptop</span>
-                                        </a>
-                                    </td>
-                                    <td>AST - 006</td>
-                                    <td>22 Nov, 2022 10:32AM</td>
-                                    <td class="table-namesplit">
-                                        <a href="javascript:void(0);" class="table-profileimage">
-                                            <img src="{{ asset('assets') }}/img/profiles/avatar-05.jpg" class="me-2"
-                                                alt="User Image" />
-                                        </a>
-                                        <a href="javascript:void(0);" class="table-name">
-                                            <span>Vinod Selvaraj</span>
-                                            <p>
-                                                <span class="__cf_email__"
-                                                    data-cfemail="5a2c3334353e74291a3e283f3b373d2f23292e3f393274393537">[email&#160;protected]</span>
-                                            </p>
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <div class="table-actions d-flex">
-                                            <a class="delete-table me-2" href="user-asset-details.html">
-                                                <img src="{{ asset('assets') }}/img/icons/eye.svg" alt="Eye Icon" />
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
+                                @if (count($shifts) > 0)
+                                    @foreach ($shifts as $shift)
+                                    <tr>
+                                        <td>{{ $shift->type }}</td>
+                                        <td>{{ $shift->period }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($shift->date)->format('j F, Y') }}</td>
+                                        <td>{{ $shift->start_time }}</td>
+                                        <td>{{ $shift->end_time }}</td>
+                                        <td>{{ $shift->bank_holiday == 1 ? 'Yes' : 'No' }}</td>
+                                        <td>{{ $shift->total_staff }}</td>
+                                        <td>{{ $shift->total_staff_assigned }}</td>
+                                        @if ($shift->status == 'Pending')
+                                            <td>
+                                                <a href="#" class="btn btn-outline-secondary btn-sm"> Pending </a>
+                                            </td>
+                                        @elseif($shift->status == 'Completed')
+                                            <td>
+                                                <a href="#" class="btn btn-outline-success btn-sm"> Completed </a>
+                                            </td>
+                                        @elseif($shift->status == 'In Progress')
+                                            <td>
+                                                <a href="#" class="btn btn-outline-primary btn-sm"> In Progress
+                                                </a>
+                                            </td>
+                                        @elseif($shift->status == 'Assigned')
+                                            <td>
+                                                <a href="#" class="btn btn-outline-primary btn-sm"> Assigned </a>
+                                            </td>
+                                        @elseif($shift->status == 'Cancelled')
+                                            <td>
+                                                <a href="#" class="btn btn-outline-danger btn-sm"> Cancelled </a>
+                                            </td>
+                                        @endif
+                                        
+                                    </tr>
+                                    @endforeach
+                                @endif
                             </tbody>
                         </table>
                     </div>
@@ -413,10 +267,9 @@
                                     <div class="file-body">
                                         <div class="file-scroll">
                                             <div class="file-content-inner">
-                                                <h4>Contract Document - {{$client->company_name}}
+                                                <h4>Contract Document - {{ $client->company_name }}
                                                 </h4>
-                                                <object data="{{$client->contract_document}}" 
-                                                    width="100%"
+                                                <object data="{{ $client->contract_document }}" width="100%"
                                                     height="1000">
                                                 </object>
                                             </div>
@@ -438,8 +291,9 @@
                             <p>This action cannot be undone.</p>
                         </div>
                         <div class="modal-btn delete-action">
-                            <form action="{{route('admin.client.disapprove', base64_encode($client->user->id))}}" method="POST">
-                                {{csrf_field()}}
+                            <form action="{{ route('admin.client.disapprove', base64_encode($client->user->id)) }}"
+                                method="POST">
+                                {{ csrf_field() }}
                                 <div class="row">
                                     <div class="input-block mb-3">
                                         <label class="col-form-label">Reason
@@ -487,6 +341,6 @@
             </div>
         </div>
 
-       
+
     </div>
 @endsection

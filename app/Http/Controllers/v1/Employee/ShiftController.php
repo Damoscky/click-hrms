@@ -17,6 +17,15 @@ class ShiftController extends Controller
 {
     public function index()
     {
+        if (!auth()->user()->is_completed) {
+            toastr()->warning("Please complete your registration!");
+            return redirect()->route('employee.complete-registration');
+        }
+        if (!auth()->user()->is_verified) {
+            toastr()->success("Your information is current under review!");
+            return redirect()->route('employee.complete-registration');
+        }
+
         $currentInstantUser = auth()->user(); 
 
         $totalShifts = EmployeeShift::where('employee_id', $currentInstantUser->id)->get();
@@ -25,6 +34,15 @@ class ShiftController extends Controller
 
     public function acceptShift($id)
     {   
+        if (!auth()->user()->is_completed) {
+            toastr()->warning("Please complete your registration!");
+            return redirect()->route('employee.complete-registration');
+        }
+        if (!auth()->user()->is_verified) {
+            toastr()->success("Your information is current under review!");
+            return redirect()->route('employee.complete-registration');
+        }
+
         $id = base64_decode($id);
 
         $currentInstantUser = auth()->user(); 
@@ -76,6 +94,15 @@ class ShiftController extends Controller
 
     public function currentShift()
     {
+        if (!auth()->user()->is_completed) {
+            toastr()->warning("Please complete your registration!");
+            return redirect()->route('employee.complete-registration');
+        }
+        if (!auth()->user()->is_verified) {
+            toastr()->success("Your information is current under review!");
+            return redirect()->route('employee.complete-registration');
+        }
+
         $currentInstantUser = auth()->user(); 
 
         $totalShifts = EmployeeShift::where('employee_id', $currentInstantUser->id)->where('date', Carbon::today())->where('status', 'Accepted')->get();
@@ -84,6 +111,15 @@ class ShiftController extends Controller
 
     public function clockIn($id)
     {
+        if (!auth()->user()->is_completed) {
+            toastr()->warning("Please complete your registration!");
+            return redirect()->route('employee.complete-registration');
+        }
+        if (!auth()->user()->is_verified) {
+            toastr()->success("Your information is current under review!");
+            return redirect()->route('employee.complete-registration');
+        }
+
        try {
             $id = base64_decode($id);
             $employeeShift = EmployeeShift::find($id);
@@ -117,6 +153,15 @@ class ShiftController extends Controller
 
     public function cancelShift($id)
     {   
+        if (!auth()->user()->is_completed) {
+            toastr()->warning("Please complete your registration!");
+            return redirect()->route('employee.complete-registration');
+        }
+        if (!auth()->user()->is_verified) {
+            toastr()->success("Your information is current under review!");
+            return redirect()->route('employee.complete-registration');
+        }
+        
         $id = base64_decode($id);
 
         $currentInstantUser = auth()->user(); 

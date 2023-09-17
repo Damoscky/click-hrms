@@ -17,6 +17,7 @@ use App\Notifications\DeclineClientNotification;
 use App\Models\EmployeeDisapproval;
 use App\Helpers\ProcessAuditLog;
 use App\Models\CompanySetting;
+use App\Models\Shift;
 use App\Notifications\ApproveClientNotification;
 use PDF, Storage;
 use Carbon\Carbon;
@@ -62,8 +63,9 @@ class ClientController extends Controller
         $id = base64_decode($id);
 
         $record = ClientRecord::find($id);
+        $shifts = Shift::where('client_id', $record->user->id)->get();
 
-        return view('admin.client.view-client', ['client' => $record]);
+        return view('admin.client.view-client', ['client' => $record, 'shifts' => $shifts]);
     }
 
     public function store(Request $request)

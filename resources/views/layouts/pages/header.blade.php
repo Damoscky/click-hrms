@@ -26,6 +26,34 @@
 
             @yield('content');
 
+        <script>
+            function validatePassword() {
+                const passwordInput = document.getElementById('password');
+                const confirmPasswordInput = document.getElementById('confirm-password');
+                const passwordMessage = document.getElementById('password-message');
+                const confirmpasswordMessage = document.getElementById('confirm-password-message');
+                const password = passwordInput.value;
+                const confirmPassword = confirmPasswordInput.value;
+    
+                const hasUppercase = /[A-Z]/.test(password);
+                const hasSpecialCharacter = /[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]/.test(password);
+                const hasNumber = /[0-9]/.test(password)
+    
+                if (hasUppercase && hasSpecialCharacter && hasNumber) {
+                    if (password === confirmPassword) {
+                        confirmpasswordMessage.textContent = 'Passwords match and are valid';
+                        confirmpasswordMessage.style.color = 'green';
+                    } else {
+                        passwordMessage.textContent = '';
+                        confirmpasswordMessage.textContent = 'Passwords do not match';
+                        confirmpasswordMessage.style.color = 'red';
+                    }
+                } else {
+                    passwordMessage.textContent = 'Password must have at least one uppercase letter, one number and one special character';
+                    passwordMessage.style.color = 'red';
+                }
+            }
+        </script>
         <script src="{{asset('assets')}}/js/jquery-3.7.0.min.js"></script>
         <script src="{{asset('assets')}}/js/bootstrap.bundle.min.js"></script>
         <script src="{{asset('assets')}}/js/app.js"></script>

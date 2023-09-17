@@ -12,6 +12,15 @@ class AvailabilityController extends Controller
 {
     public function index()
     {
+        if (!auth()->user()->is_completed) {
+            toastr()->warning("Please complete your registration!");
+            return redirect()->route('employee.complete-registration');
+        }
+        if (!auth()->user()->is_verified) {
+            toastr()->success("Your information is current under review!");
+            return redirect()->route('employee.complete-registration');
+        }
+
         $currentInstantUser = auth()->user();
         $data = array();
 
@@ -38,6 +47,14 @@ class AvailabilityController extends Controller
 
     public function store(Request $request)
     {
+        if (!auth()->user()->is_completed) {
+            toastr()->warning("Please complete your registration!");
+            return redirect()->route('employee.complete-registration');
+        }
+        if (!auth()->user()->is_verified) {
+            toastr()->success("Your information is current under review!");
+            return redirect()->route('employee.complete-registration');
+        }
         $currentInstantUser = auth()->user();
 
         $availability = EmployeeAvailability::create([
