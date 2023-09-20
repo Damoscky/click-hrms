@@ -11,6 +11,7 @@ use App\Models\EmployeeReference;
 use App\Models\Experience;
 use App\Models\NextOfKin;
 use App\Models\EmployeeShift;
+use App\Models\EmployeeReferenceResponse;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
@@ -241,8 +242,8 @@ class EmployeeController extends Controller
             //check if reference is two
             $record = EmployeeReference::where('user_id', auth()->user()->id)->count();
 
-            if($record > 1){
-                toastr()->warning("Maximum of 2 reference is required");
+            if($record >= 2){
+                toastr()->warning("Maximum of 2 references are required");
                 return back();
             }
             $verification_code = Str::random(30); 
@@ -278,6 +279,31 @@ class EmployeeController extends Controller
             toastr()->error($error->getMessage());
             return back();
         }
+    }
+
+    public function sendReferenceEmail($email)
+    {
+        $record = EmployeeReference::where('email', $email)->first();
+
+        $verification_code = Str::random(30); 
+
+        $data = [
+            'fullname' => $record->user->first_name.' '.$record->user->last_name,
+            'contact_name' => $record->contact_name,
+            'reference_type' => $record->reference_type,
+            'email' => $record->email,
+            'token' => $verification_code
+        ];
+
+        $record->update([
+            'token' => $verification_code,
+            'status' => 'Pending'
+        ]);
+
+        //send email to the referees
+        Notification::route('mail', $record->email)->notify(new ReferenceEmailNotification($data));
+
+        return "Done";
     }
 
     public function updateExperience(Request $request)
@@ -719,9 +745,50 @@ class EmployeeController extends Controller
 
         if(is_null($validateRecord) || !$token){
             toastr()->error("Invalid token!");
-            return redirect()->route('index');
+            return view('references.reference-error-page');
         }
 
-        return view('employee.reference-form', ['data' => $validateRecord]);
+        return view('references.reference-form', ['data' => $validateRecord]);
+    }
+
+    public function submitReference(Request $request)
+    {
+        //select reference record
+        $reference = EmployeeReference::where('token', $request->token)->where('email', $request->email)->first();
+        if(is_null($reference)){
+            toastr()->error("Invalid token!");
+            return view('references.reference-error-page');
+        }
+
+        $refereeResponse = EmployeeReferenceResponse::create([
+            'user_id' => $reference->user_id,
+            'employee_references_id' => $reference->id,
+            'email' => $reference->email,
+            'date_of_employment' => $request->date_of_employment,
+            'position' => $request->position_employed,
+            'annual_income' => $request->annual_income,
+            'reason_for_leaving' => $request->reason_for_leaving,
+            'name_of_referee' => $request->name_of_referee,
+            'name_of_organization' => $request->name_of_organization,
+            'referee_position' => $request->referee_position,
+            'referee_email' => $request->referee_email,
+            'telephone_number' => $request->telephone_number,
+            'teamwork' => $request->teamwork,
+            'honesty' => $request->honesty,
+            'observation' => $request->observation,
+            'appearance' => $request->appearance,
+            'communication' => $request->communication,
+            'altitude' => $request->altitude,
+            'feedback' => $request->feedback,
+            'signed_date' => $request->signed_date,
+            'signed_name' => $request->signed_name,
+        ]);
+
+        $reference->update([
+            'status' => 'Submitted'
+        ]);
+
+        toastr()->success("Your Reference has been submitted successfully!");
+        return view('references.reference-submitted');
     }
 }

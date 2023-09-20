@@ -12,6 +12,6 @@ class TimesheetController extends Controller
     {
         $timesheets = EmployeeTimesheet::with('employee', 'shift')->orderBy('created_at', 'DESC')->get();
 
-        return view('admin.timesheet.all-timesheet');
+        return view('admin.timesheet.all-timesheet', ['timesheets' => $timesheets]);
     }
 }

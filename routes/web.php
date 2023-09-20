@@ -37,6 +37,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [PagesController::class, 'index'])->name('index');
 
 Route::get('/reference/submit/{token}', [EmployeeController::class, 'referenceForm'])->name('employee.reference');
+Route::post('/reference/send', [EmployeeController::class, 'submitReference'])->name('employee.reference.submit');
+Route::get('/reference/send/email/{email}', [EmployeeController::class, 'sendReferenceEmail'])->name('employee.reference.send');
 
 Route::group(['prefix' => 'auth'], function (){
     Route::post('/login', [LoginController::class, 'login'])->name('auth.login');

@@ -83,15 +83,15 @@
                                             <td>
                                                 <h2 class="table-avatar">
                                                     @if ($timesheet->employee->employeeRecord->image)
-                                                        <a href="client-profile.html" class="avatar"><img
+                                                        <a href="{{ route('admin.employee.show', base64_encode($timesheet->employee->id)) }}" class="avatar"><img
                                                                 src="{{ $timesheet->employee->employeeRecord->image }}"
                                                                 alt="User Image" /></a>
                                                     @else
-                                                        <a href="client-profile.html" class="avatar"><img
+                                                        <a href="{{ route('admin.employee.show', base64_encode($timesheet->employee->id)) }}" class="avatar"><img
                                                                 src="{{ asset('assets') }}/img/user.jpg"
                                                                 alt="User Image" /></a>
                                                     @endif
-                                                    <a href="client-profile.html">{{ $timesheet->employee->first_name }}
+                                                    <a href="{{ route('admin.employee.show', base64_encode($timesheet->employee->id)) }}">{{ $timesheet->employee->first_name }}
                                                         {{ $timesheet->employee->last_name }}</a>
                                                 </h2>
                                             </td>

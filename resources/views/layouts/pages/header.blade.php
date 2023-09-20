@@ -11,6 +11,7 @@
     <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.png">
 
     <link rel="stylesheet" href="{{asset('assets')}}/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ asset('assets') }}/css/dataTables.bootstrap4.min.css" />
 
     <link rel="stylesheet" href="{{asset('assets')}}/plugins/fontawesome/css/fontawesome.min.css">
     <link rel="stylesheet" href="{{asset('assets')}}/plugins/fontawesome/css/all.min.css">
@@ -24,7 +25,7 @@
 </head>
     <body class="account-page">
 
-            @yield('content');
+            @yield('content')
 
         <script>
             function validatePassword() {
@@ -57,5 +58,6 @@
         <script src="{{asset('assets')}}/js/jquery-3.7.0.min.js"></script>
         <script src="{{asset('assets')}}/js/bootstrap.bundle.min.js"></script>
         <script src="{{asset('assets')}}/js/app.js"></script>
+        <script src="{{ asset('assets') }}/js/jquery.dataTables.min.js"></script>
     </body>
 </html>
