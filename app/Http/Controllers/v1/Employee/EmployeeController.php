@@ -262,6 +262,7 @@ class EmployeeController extends Controller
             ]);
 
             $data = [
+                'fullname' => auth()->user()->first_name.' '.auth()->user()->last_name,
                 'contact_name' => $request->contact_name,
                 'reference_type' => $request->reference_type,
                 'email' => $request->email,
@@ -376,7 +377,7 @@ class EmployeeController extends Controller
                 $fileMime = $image->getMimeType(); 
                 $fileExt = $image->getClientOriginalExtension();
                 $uniqueId = bin2hex(openssl_random_pseudo_bytes(4));
-                $name = 'image_' . $record->employee_id . '_'. $request->document_type . '.' . $fileExt;
+                $name = 'document_' . $record->employee_id . '_'. $request->document_type . '.' . $fileExt;
                 $fileUrl = config('app.url') . 'documents/' . $name;
     
                 $image->move(public_path('documents'), $fileUrl);
@@ -460,7 +461,7 @@ class EmployeeController extends Controller
                 $fileMime = $image->getMimeType(); 
                 $fileExt = $image->getClientOriginalExtension();
                 $uniqueId = bin2hex(openssl_random_pseudo_bytes(4));
-                $name = 'image_' . $record->employee_id . '_'. $request->document_type . '.' . $fileExt;
+                $name = 'document_' . $record->employee_id . '_'. $request->document_type . '.' . $fileExt;
                 $fileUrl = config('app.url') . 'documents/' . $name;
     
                 $image->move(public_path('documents'), $fileUrl);
@@ -475,6 +476,7 @@ class EmployeeController extends Controller
                 'document_extension' => $fileExt,
                 'size' => '',
                 'file_path' => $fileUrl,
+                'is_admin' => false,
                 'size' => $fileSize,
                 'document_mime' => $fileMime,
                 'issued_date' => $request->issued_date,

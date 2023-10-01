@@ -140,10 +140,13 @@ Route::group(['prefix' => 'admin', 'middleware' => ["auth:web", "admin"]], funct
 
     Route::group(['prefix' => 'employee'], function(){
         Route::get('/', [AdminEmployeeController::class, 'index'])->name('admin.employee.all');
+        Route::post('certificate/upload', [AdminEmployeeController::class, 'uploadCertification'])->name('admin.employee.certificate.upload');
         Route::post('/search', [AdminEmployeeController::class, 'search'])->name('admin.employee.search');
         Route::get('/pending', [AdminEmployeeController::class, 'pendingApproval'])->name('admin.employee.pending');
         Route::get('/pending/registration', [AdminEmployeeController::class, 'pendingRegistration'])->name('admin.employee.pending.registration');
         Route::post('/store', [AdminEmployeeController::class, 'store'])->name('admin.employee.store');
+        Route::get('/resend/notification/{id}', [AdminEmployeeController::class, 'resendNotification'])->name('admin.employee.resend.notification');
+        Route::get('/resend/reference/notification/{id}', [AdminEmployeeController::class, 'sendReferenceReminder'])->name('admin.employee.reference.notify');
         Route::get('/view/{id}', [AdminEmployeeController::class, 'show'])->name('admin.employee.show');
         Route::get('/approve/{id}', [AdminEmployeeController::class, 'approveEmployee'])->name('admin.employee.approve');
         Route::post('/disapprove/{id}', [AdminEmployeeController::class, 'declineEmployee'])->name('admin.employee.disapprove');

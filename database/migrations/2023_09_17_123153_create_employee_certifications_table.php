@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('document_extension')->nullable();
             $table->string('size')->nullable();
             $table->string('document_mime')->nullable();
+            $table->string('is_admin')->default(false);
             $table->timestamp('issued_date')->nullable();
             $table->timestamp('expiry_date')->nullable();
             $table->mediumText('file_path')->nullable();

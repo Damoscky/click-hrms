@@ -485,40 +485,57 @@
                                                         @foreach (auth()->user()->certificate as $document)
                                                             <div class="col-12 col-sm-4 col-md-3 col-lg-4 col-xl-3">
                                                                 <div class="card card-file">
-                                                                    <div class="dropdown-file">
-                                                                        <a href="#" class="dropdown-link"
-                                                                            data-bs-toggle="dropdown"><i
-                                                                                class="fa-solid fa-ellipsis-vertical"></i></a>
-                                                                        <div class="dropdown-menu dropdown-menu-right">
+                                                                    @if (!$document->is_admin)
+                                                                        <div class="dropdown-file">
+                                                                            <a href="#" class="dropdown-link"
+                                                                                data-bs-toggle="dropdown"><i
+                                                                                    class="fa-solid fa-ellipsis-vertical"></i></a>
+                                                                            <div class="dropdown-menu dropdown-menu-right">
 
-                                                                            <a href="{{ $document->file_path }}"
-                                                                                target="_blank"
-                                                                                class="dropdown-item">Download</a>
-                                                                            @if (!auth()->user()->sent_for_approval)
-                                                                                <a href="{{ route('employee.certificate.delete', base64_encode($document->id)) }}"
-                                                                                    class="dropdown-item">Delete</a>
-                                                                            @endif
+                                                                                <a href="{{ $document->file_path }}"
+                                                                                    target="_blank"
+                                                                                    class="dropdown-item">Download</a>
+                                                                                @if (!auth()->user()->sent_for_approval)
+                                                                                    <a href="{{ route('employee.certificate.delete', base64_encode($document->id)) }}"
+                                                                                        class="dropdown-item">Delete</a>
+                                                                                @endif
+                                                                            </div>
                                                                         </div>
-                                                                    </div>
+                                                                    @endif
                                                                     <div class="card-file-thumb">
                                                                         @if ($document->document_extension == 'pdf')
-                                                                            <a href="{{ $document->file_path }}"
-                                                                                target="_blank"><i
-                                                                                    class="fa-regular fa-file-pdf"></i></a>
+                                                                            @if (!$document->is_admin)
+                                                                                <a href="{{ $document->file_path }}"
+                                                                                    target="_blank"><i
+                                                                                        class="fa-regular fa-file-pdf"></i></a>
+                                                                            @else
+                                                                                <a href="#"><i
+                                                                                        class="fa-regular fa-file-pdf"></i></a>
+                                                                            @endif
                                                                         @elseif($document->document_extension == 'docx')
-                                                                            <a href="{{ $document->file_path }}"
-                                                                                target="_blank"><i
-                                                                                    class="fa-regular fa-file-word"></i></a>
+                                                                            @if (!$document->is_admin)
+                                                                                <a href="{{ $document->file_path }}"
+                                                                                    target="_blank"><i
+                                                                                        class="fa-regular fa-file-word"></i></a>
+                                                                            @else
+                                                                                <a href="#"><i
+                                                                                        class="fa-regular fa-file-word"></i></a>
+                                                                            @endif
                                                                         @else
-                                                                            <a href="{{ $document->file_path }}"
-                                                                                target="_blank"><i
-                                                                                    class="fa-regular fa-file-image"></i></a>
+                                                                            @if (!$document->is_admin)
+                                                                                <a href="{{ $document->file_path }}"
+                                                                                    target="_blank"><i
+                                                                                        class="fa-regular fa-file-image"></i></a>
+                                                                            @else
+                                                                                <a href="#"><i
+                                                                                        class="fa-regular fa-file-image"></i></a>
+                                                                            @endif
                                                                         @endif
 
                                                                     </div>
                                                                     <div class="card-body">
-                                                                        <h6><a
-                                                                                href="#">{{ $document->document_type }}.{{ $document->document_extension }}</a>
+                                                                        <h6>
+                                                                            <a href="#">{{ $document->document_type }}.{{ $document->document_extension }}</a>
                                                                         </h6>
                                                                         <span>{{$document->size}}mb</span>
                                                                     </div>
@@ -542,7 +559,8 @@
             </div>
             @if (!auth()->user()->sent_for_approval)
                 <button class="btn btn-success" onclick="checkEmployeeDocument('{{auth()->user()->employeeRecord->department->name}}', '{{count(auth()->user()->certificate)}}', '{{count(auth()->user()->document)}}', '{{count(auth()->user()->employeeReference)}}')">Submit for
-                    Approval</button>
+                    Approval
+                </button>
             @endif
             <!--Submit for Approval Modal -->
             <div class="modal custom-modal fade" id="confirm_approval_modal" role="dialog">
@@ -901,21 +919,91 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="input-block mb-3">
-                                                        <select required class="select" name="document_type">
-                                                            <option value="" data-document-type="">Select Document Type</option>
-                                                            <option value="BRP" data-document-type="BRP">BRP (Right to Work)</option>
-                                                            <option value="Passport" data-document-type="Passport">Passport</option>
-                                                            <option value="Enhanced DBS Document" data-document-type="Enhanced DBS Document">Enhanced DBS Document</option>
-                                                            <option value="Passport Picture" data-document-type="Passport Picture">Passport Picture (White Background) </option>
-                                                            <option value="OSCE Certificate" data-document-type="OSCE Certificate">OSCE Certificate </option>
-                                                            <option value="Driving Licence" data-document-type="Driving Licence">Driving Licence (Optional)</option>
-                                                            <option value="Proof of Address" data-document-type="Proof of Address">Proof of Address (Utility Bill or Bank Statement)</option>
-                                                            <option value="Covid Vaccine" data-document-type="Covid Vaccine">Covid Vaccine (Optional) </option>
-                                                            <option value="Proof of NIN/Payslip" data-document-type="Proof of NIN/Payslip">Proof of NIN/Payslip</option>
-                                                            <option value="Nurse Pin" data-document-type="Nurse Pin">Nurse Pin</option>
-                                                            <option value="IELTS" data-document-type="IELTS">IELTS</option>
-                                                            <option value="Updated CV" data-document-type="Updated CV">Updated CV</option>
-                                                        </select>
+                                                        @if (auth()->user()->employeeRecord->department->name == "Health Care Assistant")
+                                                            <select required class="select" name="document_type">
+                                                                <option value="" data-document-type="">Select Document Type</option>
+                                                                <option value="BRP" data-document-type="BRP">BRP (Right to Work)</option>
+                                                                <option value="Passport" data-document-type="Passport">Passport</option>
+                                                                <option value="Enhanced_DBS_Document" data-document-type="Enhanced_DBS_Document">Enhanced DBS Document (On Update Service)</option>
+                                                                <option value="Photograph" data-document-type="Photograph"> Photograph (White Background) </option>
+                                                                <option value="Driving_Licence" data-document-type="Driving_Licence">Driving Licence (Optional)</option>
+                                                                <option value="Proof_of_Address" data-document-type="Proof_of_Address">Proof of Address (Utility Bill or Bank Statement)</option>
+                                                                <option value="Covid_Vaccine" data-document-type="Covid_Vaccine">Covid Vaccine (Optional) </option>
+                                                                <option value="Proof_of_NIN_Payslip" data-document-type="Proof_of_NIN_Payslip">Proof of NIN/Payslip</option>
+                                                                <option value="Updated_CV" data-document-type="Updated_CV">Updated CV</option>
+                                                            </select>
+                                                        @elseif(auth()->user()->employeeRecord->department->name == "Senior Healthcare Assistant")
+                                                            <select required class="select" name="document_type">
+                                                                <option value="" data-document-type="">Select Document Type</option>
+                                                                <option value="BRP" data-document-type="BRP">BRP (Right to Work)</option>
+                                                                <option value="Passport" data-document-type="Passport">Passport</option>
+                                                                <option value="Enhanced_DBS_Document" data-document-type="Enhanced_DBS_Document">Enhanced DBS Document (On Update Service)</option>
+                                                                <option value="Photograph" data-document-type="Photograph"> Photograph (White Background) </option>
+                                                                <option value="OSCE_Certificate" data-document-type="OSCE_Certificate">OSCE Certificate (Optional)</option>
+                                                                <option value="Driving_Licence" data-document-type="Driving_Licence">Driving Licence (Optional)</option>
+                                                                <option value="Proof_of_Address" data-document-type="Proof_of_Address">Proof of Address (Utility Bill or Bank Statement)</option>
+                                                                <option value="Covid_Vaccine" data-document-type="Covid_Vaccine">Covid Vaccine (Optional) </option>
+                                                                <option value="Proof_of_NIN_Payslip" data-document-type="Proof_of_NIN_Payslip">Proof of NIN/Payslip</option>
+                                                                <option value="Nurse_Pin" data-document-type="Nurse_Pin">Nurse Pin (Optional)</option>
+                                                                <option value="IELTS" data-document-type="IELTS">IELTS (optional)</option>
+                                                                <option value="Updated_CV" data-document-type="Updated_CV">Updated CV</option>
+                                                            </select>
+                                                        @elseif(auth()->user()->employeeRecord->department->name == "Nurse")
+                                                            <select required class="select" name="document_type">
+                                                                <option value="" data-document-type="">Select Document Type</option>
+                                                                <option value="BRP" data-document-type="BRP">BRP (Right to Work)</option>
+                                                                <option value="Passport" data-document-type="Passport">Passport</option>
+                                                                <option value="Enhanced_DBS_Document" data-document-type="Enhanced_DBS_Document">Enhanced DBS Document (On Update Service)</option>
+                                                                <option value="Photograph" data-document-type="Photograph"> Photograph (White Background) </option>
+                                                                <option value="OSCE_Certificate" data-document-type="OSCE_Certificate">OSCE Certificate </option>
+                                                                <option value="Driving_Licence" data-document-type="Driving_Licence">Driving Licence (Optional)</option>
+                                                                <option value="Proof_of_Address" data-document-type="Proof_of_Address">Proof of Address (Utility Bill or Bank Statement)</option>
+                                                                <option value="Covid_Vaccine" data-document-type="Covid_Vaccine">Covid Vaccine (Optional) </option>
+                                                                <option value="Proof_of_NIN_Payslip" data-document-type="Proof_of_NIN_Payslip">Proof of NIN/Payslip</option>
+                                                                <option value="Nurse_Pin" data-document-type="Nurse_Pin">Nurse Pin </option>
+                                                                <option value="IELTS" data-document-type="IELTS">IELTS </option>
+                                                                <option value="Updated_CV" data-document-type="Updated_CV">Updated CV</option>
+                                                            </select>
+                                                        @elseif(auth()->user()->employeeRecord->department->name == "Cleaning")
+                                                            <select required class="select" name="document_type">
+                                                                <option value="" data-document-type="">Select Document Type</option>
+                                                                <option value="BRP" data-document-type="BRP">BRP (Right to Work)</option>
+                                                                <option value="Passport" data-document-type="Passport">Passport</option>
+                                                                <option value="Enhanced_DBS_Document" data-document-type="Enhanced_DBS_Document">Enhanced DBS Document (On Update Service)</option>
+                                                                <option value="Photograph" data-document-type="Photograph"> Photograph (White Background) </option>
+                                                                <option value="Driving_Licence" data-document-type="Driving_Licence">Driving Licence (Optional)</option>
+                                                                <option value="Proof_of_Address" data-document-type="Proof_of_Address">Proof of Address (Utility Bill or Bank Statement)</option>
+                                                                <option value="Covid_Vaccine" data-document-type="Covid_Vaccine">Covid Vaccine (Optional) </option>
+                                                                <option value="Proof_of_NIN_Payslip" data-document-type="Proof_of_NIN_Payslip">Proof of NIN/Payslip</option>
+                                                                <option value="Updated_CV" data-document-type="Updated_CV">Updated CV</option>
+                                                            </select>
+                                                        @elseif(auth()->user()->employeeRecord->department->name == "Kitchen Assistant")
+                                                            <select required class="select" name="document_type">
+                                                                <option value="" data-document-type="">Select Document Type</option>
+                                                                <option value="BRP" data-document-type="BRP">BRP (Right to Work)</option>
+                                                                <option value="Passport" data-document-type="Passport">Passport</option>
+                                                                <option value="Enhanced_DBS_Document" data-document-type="Enhanced_DBS_Document">Enhanced DBS Document (On Update Service)</option>
+                                                                <option value="Photograph" data-document-type="Photograph"> Photograph (White Background) </option>
+                                                                <option value="Driving_Licence" data-document-type="Driving_Licence">Driving Licence (Optional)</option>
+                                                                <option value="Proof_of_Address" data-document-type="Proof_of_Address">Proof of Address (Utility Bill or Bank Statement)</option>
+                                                                <option value="Covid_Vaccine" data-document-type="Covid_Vaccine">Covid Vaccine (Optional) </option>
+                                                                <option value="Proof_of_NIN_Payslip" data-document-type="Proof_of_NIN_Payslip">Proof of NIN/Payslip</option>
+                                                                <option value="Updated_CV" data-document-type="Updated_CV">Updated CV</option>
+                                                            </select>
+                                                        @elseif(auth()->user()->employeeRecord->department->name == "Chef")
+                                                            <select required class="select" name="document_type">
+                                                                <option value="" data-document-type="">Select Document Type</option>
+                                                                <option value="BRP" data-document-type="BRP">BRP (Right to Work)</option>
+                                                                <option value="Passport" data-document-type="Passport">Passport</option>
+                                                                <option value="Enhanced_DBS_Document" data-document-type="Enhanced_DBS_Document">Enhanced DBS Document (On Update Service)</option>
+                                                                <option value="Photograph" data-document-type="Photograph"> Photograph (White Background) </option>
+                                                                <option value="Driving_Licence" data-document-type="Driving_Licence">Driving Licence (Optional)</option>
+                                                                <option value="Proof_of_Address" data-document-type="Proof_of_Address">Proof of Address (Utility Bill or Bank Statement)</option>
+                                                                <option value="Covid_Vaccine" data-document-type="Covid_Vaccine">Covid Vaccine (Optional) </option>
+                                                                <option value="Proof_of_NIN_Payslip" data-document-type="Proof_of_NIN_Payslip">Proof of NIN/Payslip</option>
+                                                                <option value="Updated_CV" data-document-type="Updated_CV">Updated CV</option>
+                                                            </select>
+                                                        @endif
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
@@ -983,29 +1071,163 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="input-block mb-3">
-                                                        <select class="select" required name="document_type">
-                                                            <option value="">Select Document Type</option>
-                                                            <option value="Information Governance">Information Governance</option>
-                                                            <option value="GDPR">GDPR</option>
-                                                            <option value="Food Safety Level 2">Food Safety Level 2</option>
-                                                            <option value="Medication Management">Medication Management Practical</option>
-                                                            <option value="Basic Life Support">Basic Life Support</option>
-                                                            <option value="Equality and Diversity">Equality and Diversity</option>
-                                                            <option value="Fire Safety">Fire Safety</option>
-                                                            <option value="Health and Safety">Health and Safety</option>
-                                                            <option value="Infection Prevention and Control">Infection Prevention and Control</option>
-                                                            <option value="First Aid">First Aid</option>
-                                                            <option value="Person Centred Awareness and Communication">Person Centred Awareness and Communication</option>
-                                                            <option value="Learning Disability Awareness">Learning Disability Awareness</option>
-                                                            <option value="Epilepsy Awareness">Epilepsy Awareness</option>
-                                                            <option value="Dementia Awareness">Dementia Awareness</option>
-                                                            <option value="Autism Awareness">Autism Awareness</option>
-                                                            <option value="Safeguarding Children">Safeguarding Children</option>
-                                                            <option value="Medication Training (Practical)">Medication Training (Practical)</option>
-                                                            <option value="Medication Training (Theory)">Medication Training (Theory)</option>
-                                                            <option value="Moving & Handling (Practical)">Moving & Handling (Practical) </option>
-                                                            <option value="Moving & Handling(Theory)">Moving & Handling (Theory) </option>
-                                                        </select>
+                                                        @if (auth()->user()->employeeRecord->department->name == "Health Care Assistant")
+                                                            <select class="select" required name="document_type">
+                                                                <option value="">Select Document Type</option>
+                                                                <option value="Information Governance">Information Governance</option>
+                                                                <option value="GDPR">GDPR</option>
+                                                                <option value="PMVA">PMVA (Optional)</option>
+                                                                <option value="Food Hygiene & Safety">Food Hygiene & Safety</option>
+                                                                <option value="Food Safety Level 2">Food Safety Level 2 (Optional)</option>
+                                                                <option value="Basic Life Support">Basic Life Support</option>
+                                                                <option value="Equality and Diversity">Equality and Diversity</option>
+                                                                <option value="Fire Safety">Fire Safety</option>
+                                                                <option value="Health and Safety">Health and Safety</option>
+                                                                <option value="Infection Prevention and Control">Infection Prevention and Control</option>
+                                                                <option value="First Aid">First Aid</option>
+                                                                <option value="Person Centred Awareness and Communication">Person Centred Awareness and Communication</option>
+                                                                <option value="Learning Disability Awareness">Learning Disability Awareness</option>
+                                                                <option value="Epilepsy Awareness">Epilepsy Awareness</option>
+                                                                <option value="Dementia Awareness">Dementia Awareness</option>
+                                                                <option value="Autism Awareness">Autism Awareness</option>
+                                                                <option value="Safeguarding Children">Safeguarding Children</option>
+                                                                <option value="Safeguarding Adult">Safeguarding Adult</option>
+                                                                <option value="Medication Training (Practical)">Medication Training Practical (Optional)</option>
+                                                                <option value="Medication Training (Theory)">Medication Training (Theory)</option>
+                                                                <option value="Moving & Handling (Practical)">Moving & Handling (Practical) </option>
+                                                                <option value="Moving & Handling(Theory)">Moving & Handling (Theory) </option>
+                                                            </select>
+                                                        @elseif(auth()->user()->employeeRecord->department->name == "Senior Healthcare Assistant")
+                                                            <select class="select" required name="document_type">
+                                                                <option value="">Select Document Type</option>
+                                                                <option value="Information Governance">Information Governance</option>
+                                                                <option value="GDPR">GDPR</option>
+                                                                <option value="PMVA">PMVA (Optional)</option>
+                                                                <option value="Food Hygiene & Safety">Food Hygiene & Safety</option>
+                                                                <option value="Food Safety Level 2">Food Safety Level 2 (Optional)</option>
+                                                                <option value="Basic Life Support">Basic Life Support</option>
+                                                                <option value="Equality and Diversity">Equality and Diversity</option>
+                                                                <option value="Fire Safety">Fire Safety</option>
+                                                                <option value="Health and Safety">Health and Safety</option>
+                                                                <option value="Infection Prevention and Control">Infection Prevention and Control</option>
+                                                                <option value="First Aid">First Aid</option>
+                                                                <option value="Person Centred Awareness and Communication">Person Centred Awareness and Communication</option>
+                                                                <option value="Learning Disability Awareness">Learning Disability Awareness</option>
+                                                                <option value="Epilepsy Awareness">Epilepsy Awareness</option>
+                                                                <option value="Dementia Awareness">Dementia Awareness</option>
+                                                                <option value="Autism Awareness">Autism Awareness</option>
+                                                                <option value="Safeguarding Children">Safeguarding Children</option>
+                                                                <option value="Safeguarding Adult">Safeguarding Adult</option>
+                                                                <option value="Medication Training (Practical)">Medication Training Practical (Optional)</option>
+                                                                <option value="Medication Training (Theory)">Medication Training (Theory)</option>
+                                                                <option value="Moving & Handling (Practical)">Moving & Handling (Practical) </option>
+                                                                <option value="Moving & Handling(Theory)">Moving & Handling (Theory) </option>
+                                                            </select>
+                                                        @elseif(auth()->user()->employeeRecord->department->name == "Cleaning")
+                                                            <select class="select" required name="document_type">
+                                                                <option value="">Select Document Type</option>
+                                                                <option value="Information Governance">Information Governance</option>
+                                                                <option value="Fire Safety">Fire Safety</option>
+                                                                <option value="Health and Safety">Health and Safety</option>
+                                                                <option value="COSCH">COSCH</option>
+                                                                <option value="Infection Prevention and Control">Infection Prevention and Control</option>
+                                                                <option value="First Aid">First Aid</option>
+                                                                <option value="Moving & Handling(Theory)">Moving & Handling Theory </option>
+                                                                <option value="GDPR">GDPR (Optional)</option>
+                                                                <option value="PMVA">PMVA (Optional)</option>
+                                                                <option value="Food Hygiene & Safety">Food Hygiene & Safety (Optional)</option>
+                                                                <option value="Food Safety Level 2">Food Safety Level 2 (Optional)</option>
+                                                                <option value="Basic Life Support">Basic Life Support (Optional)</option>
+                                                                <option value="Equality and Diversity">Equality and Diversity (Optional)</option>
+                                                                <option value="Person Centred Awareness and Communication">Person Centred Awareness and Communication (Optional)</option>
+                                                                <option value="Learning Disability Awareness">Learning Disability Awareness (Optional)</option>
+                                                                <option value="Epilepsy Awareness">Epilepsy Awareness (Optional)</option>
+                                                                <option value="Dementia Awareness">Dementia Awareness (Optional)</option>
+                                                                <option value="Autism Awareness">Autism Awareness (Optional)</option>
+                                                                <option value="Safeguarding Children">Safeguarding Children (Optional)</option>
+                                                                <option value="Safeguarding Adult">Safeguarding Adult (Optional)</option>
+                                                                <option value="Medication Training (Practical)">Medication Training Practical (Optional)</option>
+                                                                <option value="Medication Training (Theory)">Medication Training Theory (Optional)</option>
+                                                                <option value="Moving & Handling (Practical)">Moving & Handling Practical (Optional) </option>
+                                                            </select>
+                                                        @elseif(auth()->user()->employeeRecord->department->name == "Kitchen Assistant")
+                                                            <select class="select" required name="document_type">
+                                                                <option value="">Select Document Type</option>
+                                                                <option value="Food Hygiene & Safety">Food Hygiene & Safety</option>
+                                                                <option value="Food Safety Level 2">Food Safety Level 2</option>
+                                                                <option value="First Aid">First Aid</option>
+                                                                <option value="Information Governance">Information Governance  (Optional)</option>
+                                                                <option value="GDPR">GDPR (Optional)</option>
+                                                                <option value="Basic Life Support">Basic Life Support (Optional)</option>
+                                                                <option value="Equality and Diversity">Equality and Diversity (Optional)</option>
+                                                                <option value="Fire Safety">Fire Safety (Optional)</option>
+                                                                <option value="Health and Safety">Health and Safety (Optional)</option>
+                                                                <option value="Infection Prevention and Control">Infection Prevention and Control (Optional)</option>
+                                                                <option value="Person Centred Awareness and Communication">Person Centred Awareness and Communication (Optional)</option>
+                                                                <option value="Learning Disability Awareness">Learning Disability Awareness (Optional)</option>
+                                                                <option value="Epilepsy Awareness">Epilepsy Awareness (Optional)</option>
+                                                                <option value="Dementia Awareness">Dementia Awareness (Optional)</option>
+                                                                <option value="Autism Awareness">Autism Awareness (Optional)</option>
+                                                                <option value="Safeguarding Children">Safeguarding Children (Optional)</option>
+                                                                <option value="Safeguarding Adult">Safeguarding Adult (Optional)</option>
+                                                                <option value="Medication Training (Practical)">Medication Training Practical (Optional)</option>
+                                                                <option value="Medication Training (Theory)">Medication Training Theory (Optional)</option>
+                                                                <option value="Moving & Handling (Practical)">Moving & Handling Practical (Optional) </option>
+                                                                <option value="Moving & Handling(Theory)">Moving & Handling Theory (Optional) </option>
+                                                            </select>
+                                                        @elseif(auth()->user()->employeeRecord->department->name == "Chef")
+                                                            <select class="select" required name="document_type">
+                                                                <option value="">Select Document Type</option>
+                                                                <option value="Food Hygiene & Safety">Food Hygiene & Safety</option>
+                                                                <option value="Food Safety Level 2">Food Safety Level 2</option>
+                                                                <option value="First Aid">First Aid</option>
+                                                                <option value="Information Governance">Information Governance  (Optional)</option>
+                                                                <option value="GDPR">GDPR (Optional)</option>
+                                                                <option value="Basic Life Support">Basic Life Support (Optional)</option>
+                                                                <option value="Equality and Diversity">Equality and Diversity (Optional)</option>
+                                                                <option value="Fire Safety">Fire Safety (Optional)</option>
+                                                                <option value="Health and Safety">Health and Safety (Optional)</option>
+                                                                <option value="Infection Prevention and Control">Infection Prevention and Control (Optional)</option>
+                                                                <option value="Person Centred Awareness and Communication">Person Centred Awareness and Communication (Optional)</option>
+                                                                <option value="Learning Disability Awareness">Learning Disability Awareness (Optional)</option>
+                                                                <option value="Epilepsy Awareness">Epilepsy Awareness (Optional)</option>
+                                                                <option value="Dementia Awareness">Dementia Awareness (Optional)</option>
+                                                                <option value="Autism Awareness">Autism Awareness (Optional)</option>
+                                                                <option value="Safeguarding Children">Safeguarding Children (Optional)</option>
+                                                                <option value="Safeguarding Adult">Safeguarding Adult (Optional)</option>
+                                                                <option value="Medication Training (Practical)">Medication Training Practical (Optional)</option>
+                                                                <option value="Medication Training (Theory)">Medication Training Theory (Optional)</option>
+                                                                <option value="Moving & Handling (Practical)">Moving & Handling Practical (Optional) </option>
+                                                                <option value="Moving & Handling(Theory)">Moving & Handling Theory (Optional) </option>
+                                                            </select>
+                                                        @elseif(auth()->user()->employeeRecord->department->name == "Nursing")
+                                                            <select class="select" required name="document_type">
+                                                                <option value="">Select Document Type</option>
+                                                                <option value="Information Governance">Information Governance</option>
+                                                                <option value="GDPR">GDPR</option>
+                                                                <option value="PMVA">PMVA (Optional)</option>
+                                                                <option value="Food Hygiene & Safety">Food Hygiene & Safety</option>
+                                                                <option value="Food Safety Level 2">Food Safety Level 2 (Optional)</option>
+                                                                <option value="Basic Life Support">Basic Life Support</option>
+                                                                <option value="Equality and Diversity">Equality and Diversity</option>
+                                                                <option value="Fire Safety">Fire Safety</option>
+                                                                <option value="Health and Safety">Health and Safety</option>
+                                                                <option value="Infection Prevention and Control">Infection Prevention and Control</option>
+                                                                <option value="First Aid">First Aid</option>
+                                                                <option value="Person Centred Awareness and Communication">Person Centred Awareness and Communication</option>
+                                                                <option value="Learning Disability Awareness">Learning Disability Awareness</option>
+                                                                <option value="Epilepsy Awareness">Epilepsy Awareness</option>
+                                                                <option value="Dementia Awareness">Dementia Awareness</option>
+                                                                <option value="Autism Awareness">Autism Awareness</option>
+                                                                <option value="Safeguarding Children">Safeguarding Children</option>
+                                                                <option value="Safeguarding Adult">Safeguarding Adult</option>
+                                                                <option value="Medication Training (Practical)">Medication Training Practical (Optional)</option>
+                                                                <option value="Medication Training (Theory)">Medication Training (Theory)</option>
+                                                                <option value="Moving & Handling (Practical)">Moving & Handling (Practical) </option>
+                                                                <option value="Moving & Handling(Theory)">Moving & Handling (Theory) </option>
+                                                            </select>
+                                                        @endif
+                                                        
                                                     </div>
                                                 </div>
                                                 

@@ -16,4 +16,9 @@ class EmployeeReferenceResponse extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function employeeReference()
+    {
+        return $this->belongsTo(EmployeeReference::class, 'employee_references_id');
+    }
 }

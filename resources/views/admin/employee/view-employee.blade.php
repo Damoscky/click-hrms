@@ -291,6 +291,7 @@
                                                         <th>Email</th>
                                                         <th>Phone No</th>
                                                         <th>Action</th>
+                                                        <th>Send Reminder</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -305,12 +306,146 @@
                                                             <td>{{ $reference->email }}</td>
                                                             <td>{{ $reference->phoneno }}</td>
                                                             <td>
-                                                                <a class="delete-table me-2" href="#">
+                                                                <a class="delete-table me-2" href="#" data-bs-toggle="modal"
+                                                                data-bs-target="#view_reference-{{$reference->id}}">
                                                                     <img src="{{ asset('assets') }}/img/icons/eye.svg"
                                                                         alt="Eye Icon" />
                                                                 </a>
                                                             </td>
+                                                            <td>
+                                                                <a class="btn btn-success" href="{{route('admin.employee.reference.notify', base64_encode($employee->id))}}">
+                                                                    Send
+                                                                </a>
+                                                            </td>
                                                         </tr>
+
+                                                        <div class="modal custom-modal fade" id="view_reference-{{$reference->id}}" role="dialog">
+                                                            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title">{{$reference->user->first_name}} {{$reference->reference_type}} Reference</h5>
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                            aria-label="Close">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <div class="row">
+                                                                            <div class="col-md-6">
+                                                                                <div class="card punch-status">
+                                                                                    <div class="card-body">
+                                                                                        <h5 class="card-title">
+                                                                                            {{isset($reference->employeeReferenceResponse) ? $reference->employeeReferenceResponse->name_of_organization : 'N/A'}}
+                                                                                            
+                                                                                        </h5>
+                                                                                        <div class="punch-det">
+                                                                                            <h6>Referee Name</h6>
+                                                                                            <p>{{isset($reference->employeeReferenceResponse) ? $reference->employeeReferenceResponse->name_of_referee : 'N/A'}}</p>
+                                                                                        </div>
+                                                                                        <div class="punch-det">
+                                                                                            <h6>Referee Phone</h6>
+                                                                                            <p>{{isset($reference->employeeReferenceResponse) ? $reference->employeeReferenceResponse->telephone_number : 'N/A'}}</p>
+                                                                                        </div>
+                                                                                        <div class="punch-det">
+                                                                                            <h6>Referee Email</h6>
+                                                                                            <p>{{isset($reference->employeeReferenceResponse) ? $reference->employeeReferenceResponse->referee_email : 'N/A'}}</p>
+                                                                                        </div>
+                                                                                        <div class="punch-det">
+                                                                                            <h6>Referee Position</h6>
+                                                                                            <p>{{isset($reference->employeeReferenceResponse) ? $reference->employeeReferenceResponse->referee_position : 'N/A'}}</p>
+                                                                                        </div>
+                                                                                        <div class="punch-det">
+                                                                                            <h6>Date of Employement</h6>
+                                                                                            <p>{{isset($reference->employeeReferenceResponse) ? Carbon\Carbon::parse($reference->employeeReferenceResponse->date_of_employment)->format('l, j F, Y') : 'N/A'}}</p>
+                                                                                        </div>
+                                                                                        <div class="punch-det">
+                                                                                            <h6>Employee Position</h6>
+                                                                                            <p>{{isset($reference->employeeReferenceResponse) ? $reference->employeeReferenceResponse->position : 'N/A'}}</p>
+                                                                                        </div>
+                                                                                        <div class="punch-det">
+                                                                                            <h6>Annual Income</h6>
+                                                                                            <p>{{isset($reference->employeeReferenceResponse) ? $reference->employeeReferenceResponse->annual_income : 'N/A'}}</p>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-md-6">
+                                                                                <div class="card punch-status">
+                                                                                    <div class="card-body">
+                                                                                        <div class="row">
+                                                                                            <div class="col-sm-6">
+                                                                                                <div class="punch-det">
+                                                                                                    <h6>Teamwork</h6>
+                                                                                                    <p>{{isset($reference->employeeReferenceResponse) ? $reference->employeeReferenceResponse->teamwork : 'N/A'}}</p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="col-sm-6">
+                                                                                                <div class="punch-det">
+                                                                                                    <h6>Honesty</h6>
+                                                                                                    <p>{{isset($reference->employeeReferenceResponse) ? $reference->employeeReferenceResponse->honesty : 'N/A'}}</p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="row">
+                                                                                            <div class="col-sm-6">
+                                                                                                <div class="punch-det">
+                                                                                                    <h6>Observation</h6>
+                                                                                                    <p>{{isset($reference->employeeReferenceResponse) ? $reference->employeeReferenceResponse->observation : 'N/A'}}</p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="col-sm-6">
+                                                                                                <div class="punch-det">
+                                                                                                    <h6>Appearance</h6>
+                                                                                                    <p>{{isset($reference->employeeReferenceResponse) ? $reference->employeeReferenceResponse->appearance : 'N/A'}}</p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="row">
+                                                                                            <div class="col-sm-6">
+                                                                                                <div class="punch-det">
+                                                                                                    <h6>Communication</h6>
+                                                                                                    <p>{{isset($reference->employeeReferenceResponse) ? $reference->employeeReferenceResponse->communication : 'N/A'}}</p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="col-sm-6">
+                                                                                                <div class="punch-det">
+                                                                                                    <h6>Altitude</h6>
+                                                                                                    <p>{{isset($reference->employeeReferenceResponse) ? $reference->employeeReferenceResponse->altitude : 'N/A'}}</p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="card recent-activity">
+                                                                                    <div class="card-body">
+                                                                                        <h5 class="card-title">Reason for Leaving</h5>
+                                                                                        <div class="punch-det">
+                                                                                            <h6>{{isset($reference->employeeReferenceResponse) ? $reference->employeeReferenceResponse->reason_for_leaving : 'N/A'}}</h6>
+                                                                                        </div>
+                                                                                        <h5 class="card-title">Feedback</h5>
+                                                                                        <div class="punch-det">
+                                                                                            <h6>{{isset($reference->employeeReferenceResponse) ? $reference->employeeReferenceResponse->feedback : 'N/A'}}</h6>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="card recent-activity">
+                                                                                    <div class="card-body">
+                                                                                        <div class="punch-det">
+                                                                                            <h6>Date Submitted</h6>
+                                                                                            <p>{{isset($reference->employeeReferenceResponse) ? Carbon\Carbon::parse($reference->employeeReferenceResponse->signed_date)->format('l, j F, Y') : 'N/A'}}</p>
+                                                                                        </div>
+                                                                                        <div class="punch-det">
+                                                                                            <h6>Signed By</h6>
+                                                                                            <p>{{isset($reference->employeeReferenceResponse) ? $reference->employeeReferenceResponse->signed_name : 'N/A'}}</p>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     @endforeach
 
                                                 </tbody>
@@ -402,6 +537,9 @@
                                                 <div class="file-scroll">
                                                     <div class="file-content-inner">
                                                         <h4>Recents Certificates 
+                                                            <a href="#" class="edit-icon" data-bs-toggle="modal"
+                                                                data-bs-target="#certification_info"><i
+                                                                class="fa-solid fa-plus"></i></a>
                                                         </h4>
                                                         <div class="row row-sm">
                                                             @if (count($employee->certificate))
@@ -466,6 +604,94 @@
                         </div>
                     </div>
                 </div>
+                @php
+                    $currentDate = date('Y-m-d');
+                @endphp
+                <div id="certification_info" class="modal custom-modal fade" role="dialog">
+                    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Upload Certificate</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="admincertificateUploadForm" enctype="multipart/form-data">
+                                    {{csrf_field()}}
+                                    <input type="hidden" name="viewed_employee_id" value="{{$employee->id}}">
+                                    <div class="form-scroll">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="input-block mb-3">
+                                                            <select class="select" required name="document_type">
+                                                                <option value="">Select Document Type</option>
+                                                                <option value="Information Governance">Information Governance</option>
+                                                                <option value="GDPR">GDPR</option>
+                                                                <option value="Food Safety Level 2">Food Safety Level 2</option>
+                                                                <option value="Medication Management">Medication Management Practical</option>
+                                                                <option value="Basic Life Support">Basic Life Support</option>
+                                                                <option value="Equality and Diversity">Equality and Diversity</option>
+                                                                <option value="Fire Safety">Fire Safety</option>
+                                                                <option value="Health and Safety">Health and Safety</option>
+                                                                <option value="Infection Prevention and Control">Infection Prevention and Control</option>
+                                                                <option value="First Aid">First Aid</option>
+                                                                <option value="Person Centred Awareness and Communication">Person Centred Awareness and Communication</option>
+                                                                <option value="Learning Disability Awareness">Learning Disability Awareness</option>
+                                                                <option value="Epilepsy Awareness">Epilepsy Awareness</option>
+                                                                <option value="Dementia Awareness">Dementia Awareness</option>
+                                                                <option value="Autism Awareness">Autism Awareness</option>
+                                                                <option value="Safeguarding Children">Safeguarding Children</option>
+                                                                <option value="Medication Training (Practical)">Medication Training (Practical)</option>
+                                                                <option value="Medication Training (Theory)">Medication Training (Theory)</option>
+                                                                <option value="Moving & Handling (Practical)">Moving & Handling (Practical) </option>
+                                                                <option value="Moving & Handling(Theory)">Moving & Handling (Theory) </option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="col-md-6">
+                                                        <div class="input-block mb-3">
+                                                            <input type="file" required name="document_file"
+                                                                value="" class="form-control" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="input-block mb-3 form-focus focused">
+                                                            <div>
+                                                                <input type="date" required value="" name="issued_date"
+                                                                    class="form-control" />
+                                                            </div>
+                                                            <label class="focus-label">Issued Date</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="input-block mb-3 form-focus focused">
+                                                            <div>
+                                                                <input type="date" value="" name="expiry_date"
+                                                                    class="form-control" min="{{$currentDate}}" />
+                                                            </div>
+                                                            <label class="focus-label">Expiry Date</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                {{-- <div class="add-more">
+                                                    <a href="javascript:void(0);"><i class="fa-solid fa-plus-circle"></i> Add
+                                                        More</a>
+                                                </div> --}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="submit-section">
+                                        <button class="btn btn-primary submit-btn" type="submit">Submit</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="modal custom-modal fade" id="approve_modal" role="dialog">
                     <div class="modal-dialog modal-dialog-centered">
@@ -526,6 +752,7 @@
                         </div>
                     </div>
                 </div>
+                
 
 
 

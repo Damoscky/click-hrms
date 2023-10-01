@@ -129,7 +129,7 @@
         var today = new Date($.now());
 
         // Example API endpoint
-        const apiUrl = 'http://127.0.0.1:8000/employee/availability/all';
+        const apiUrl = 'https://www.clickhrm.com/employee/availability/all';
 
         // Making a GET request using fetch
         fetch(apiUrl)

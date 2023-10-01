@@ -233,7 +233,6 @@
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyApcI-eCy2vhDU9Fx4GmhKsysL8xoZ69oU&libraries=places"></script>
     
-    <script src="{{ asset('assets') }}/js/check-employee-documents.js"></script>
     <script src="{{ asset('assets') }}/js/get-user-location.js"></script>
     <script src="{{ asset('assets') }}/js/employee_filter_by_status.js"></script>
     <script src="{{ asset('assets') }}/js/disable-start-time.js"></script>
@@ -243,7 +242,8 @@
 
     <script src="{{ asset('assets') }}/js/jquery.slimscroll.min.js"></script>
     <script src="{{ asset('assets') }}/js/upload-certificate.js"></script>
-    <script src="{{ asset('assets') }}/js/upload-document.js"></script>
+    <script src="{{ asset('assets') }}/js/upload-employee-document.js"></script>
+    <script src="{{ asset('assets') }}/js/check-employee-documents.js"></script>
     <script>
         $(document).ready(function () {
             // Initialize Datepicker on the "Expiry Date" input field
